@@ -1,0 +1,65 @@
+------------------
+ (Abstract) Pin
+------------------
+|- Color : String
+|- xPos  : Int
+|- yPos  : Int
+|+ getPos()
+|+ getColor()
+\-----------------
+        ^
+------------------
+    SmallPin
+------------------
+|
+\-----------------
+        ^
+------------------
+   NormalPin
+------------------
+|
+\-----------------
+
+------------------
+    Player
+------------------
+|- name : String
+|- guess[] : NormalPin
+|- outcome[] : SmallPin
+|- maxGuesses : int
+|- totalGuesses : int
+|- points[] : int
+|- currentRound : int
+|- playing : boolean
+|+ selectPin()
+|+ setPin()
+|+ removePin()
+|+ setPlaying()
+|+ getPlaying()
+|+ getName()
+\-----------------
+        ^
+------------------
+    Computer
+------------------
+|-(oti exei o player)
+/**
+* Gia otan kanei guess to AI
+*/
+|+ easyAlgorithm()
+|+ mediumAlgorithm()
+|+ hardAlgorithm()
+\-----------------
+
+------------------
+    MainGame
+------------------
+|- player1 : Player
+|- player2 : Player
+|- winner : Player
+|- started : boolean
+|+ run()
+|+ createPlayers()
+|+ createBoard() (?)
+|+ startGame()
+\-----------------
