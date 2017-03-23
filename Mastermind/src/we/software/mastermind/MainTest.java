@@ -9,6 +9,7 @@ public class MainTest {
 		System.out.println("I must have called a thousand tiiiiiiimes!");
 		System.out.println("Hacking intensifies");
 		System.out.println("Firewall intensifies");
+		System.out.println("Fluxion is the future!!");
 	}
 
 }
