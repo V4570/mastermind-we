@@ -10,6 +10,7 @@ public class MainTest {
 		System.out.println("Hacking intensifies");
 		System.out.println("Firewall intensifies");
 		System.out.println("Fluxion is the future!!");
+		System.out.println("Fluxion is censored!!");
 	}
 
 }
