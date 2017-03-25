@@ -3,7 +3,7 @@ package we.software.mastermind;
 /**
  * Created by ralph on 3/24/17.
  */
-public class NormalPin extends Pin {
+public class SmallPeg extends Peg{
 
     @Override
     int getXPos() {
@@ -19,4 +19,10 @@ public class NormalPin extends Pin {
     String getColor() {
         return null;
     }
+
+	@Override
+	boolean selected() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
