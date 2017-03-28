@@ -7,8 +7,7 @@ public abstract class Peg {
     private String color;
     private int xPos;
     private int yPos;
-    private int newX;
-    private int newY;
+    private boolean selected;
 
     public Peg(){
 
@@ -16,5 +15,6 @@ public abstract class Peg {
 
     abstract int getXPos();
     abstract int getYPos();
+    abstract boolean selected();
     abstract String getColor();
 }
