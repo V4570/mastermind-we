@@ -5,8 +5,9 @@ package we.software.mastermind;
  */
 public class Computer extends Player{
 
-    public Computer(String name, int numberOfPins) {
-        super(name, numberOfPins);
+    public Computer() {
+
+        super();
     }
 
     public void easyAlgorithm(){

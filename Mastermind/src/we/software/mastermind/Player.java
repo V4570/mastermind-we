@@ -16,9 +16,7 @@ public class Player {
     private int currentRound;
     private boolean guessing = true;
 
-    public Player(String name, int numberOfPins){
-        this.name = name;
-        this.numberOfPins = numberOfPins;
+    public Player(){
         guess = new ArrayList();
         outcome = new SmallPeg[numberOfPins];
     }
@@ -44,9 +42,9 @@ public class Player {
     	}
     }
 
-    public Peg selectPin(){
+    /*public Peg selectPin(){
 
-    }
+    }*/
 
     public boolean getGuessing(){
     	return guessing;
