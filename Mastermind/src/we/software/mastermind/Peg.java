@@ -15,6 +15,5 @@ public abstract class Peg {
 
     abstract int getXPos();
     abstract int getYPos();
-    abstract boolean selected();
     abstract String getColor();
 }

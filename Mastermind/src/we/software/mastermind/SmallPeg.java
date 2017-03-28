@@ -20,9 +20,4 @@ public class SmallPeg extends Peg{
         return null;
     }
 
-	@Override
-	boolean selected() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

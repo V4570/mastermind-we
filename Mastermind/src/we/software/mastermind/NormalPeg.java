@@ -19,10 +19,4 @@ public class NormalPeg extends Peg {
     String getColor() {
         return null;
     }
-
-	@Override
-	boolean selected() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
