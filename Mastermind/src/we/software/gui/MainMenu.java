@@ -36,6 +36,7 @@ public class MainMenu extends JFrame{
 
     }
 
+    //===================================================================================================initFrame
     /**
      * Εδώ αρχικοποιείται το frame μαζί με ότι στοιχεία θέλουμε να προσθέσουμε.
      * Καλείτε τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
@@ -71,6 +72,7 @@ public class MainMenu extends JFrame{
         setVisible(true);
     }
 
+    //==================================================================================================setUpButtons
     /**
      * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
      * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
@@ -123,9 +125,10 @@ public class MainMenu extends JFrame{
         exitButton.setBounds(1001,5,18,15);
     }
 
+    //==================================================================================================GameMode
     /**
      * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
-     * το παραθυράκι επιλο
+     * το παραθυράκι επιλογής game mode αφού πατηθεί το κουμπί Play.
      */
     class GameMode extends JPanel{
 
@@ -144,13 +147,12 @@ public class MainMenu extends JFrame{
             }
 
             try {
-                new LoadAssets();
 				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             exit = new JButton();
-            //exit.setBounds(0, 0, exitIcon.getIconWidth(), exitIcon.getIconHeight());
             exit.setIcon(exitIcon);
             exit.setOpaque(false);
             exit.setContentAreaFilled(false);
@@ -181,7 +183,11 @@ public class MainMenu extends JFrame{
             }
         }
     }
-
+    //==================================================================================================ButtonListener
+    /**
+     * Ειδική κλάση για να ελέγχει ποιό κουμπί πατήθηκε και να
+     * ακολουθει τα αντίστοιχα βήματα.
+     */
     class ButtonListener implements ActionListener{
 
         public void actionPerformed(ActionEvent e) {
@@ -201,10 +207,12 @@ public class MainMenu extends JFrame{
             }
         }
     }
-
+    //==================================================================================================MenuButton
+    /**
+     * Ειδική κλάση για καλύτερη διαχείρηση των κουμπιών του μενού.
+     */
     class MenuButton extends JButton{
 
-        private Dimension size;
         private ImageIcon image;
         private ImageIcon imageHover;
         private int x, y;
@@ -212,6 +220,7 @@ public class MainMenu extends JFrame{
         public MenuButton(String imagePath){
             x = posX;
             y = posY;
+
             try {
                 image = new ImageIcon(ImageIO.read(LoadAssets.load(imagePath)));
                 imageHover = new ImageIcon(ImageIO.read(LoadAssets.load("h" +imagePath)));
@@ -222,6 +231,7 @@ public class MainMenu extends JFrame{
             setIcon(image);
             addActionListener(b);
             setBounds(x, y, image.getIconWidth(), image.getIconHeight());
+
             this.addMouseListener(new MouseAdapter(){
                 public void mouseEntered(MouseEvent e){
                     setIcon(imageHover);
