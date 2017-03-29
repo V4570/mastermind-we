@@ -14,6 +14,8 @@ public class MainTest {
 		System.out.println("Firewall intensifies");
 		System.out.println("Fluxion is the future!!");
 		System.out.println("Fluxion is censored!!");*/
+		
+		System.out.println("It fucking works");
 	}
 
 }
