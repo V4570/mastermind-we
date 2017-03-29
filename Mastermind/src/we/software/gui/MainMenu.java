@@ -134,44 +134,62 @@ public class MainMenu extends JFrame{
 
         private Image background;
         private ImageIcon exitIcon;
+        private ImageIcon exitIconHover;
         private boolean flag = false;
         private JButton exit;
-        private GridBagConstraints c;
 
         private GameMode(){
 
+            readImages();
+            addExit();
+            initPanel();
+
+        }
+        private void readImages(){
+
             try {
                 background = ImageIO.read(LoadAssets.load("gameoptions.png"));
+                exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
+                exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("sexit.png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            try {
-				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            exit = new JButton();
-            exit.setIcon(exitIcon);
-            exit.addActionListener(b);
-            exit.setOpaque(false);
-            exit.setContentAreaFilled(false);
-            exit.setBorderPainted(false);
-
-            setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-
-            setLayout(new GridBagLayout());
-            c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            add(exit, c);
-
+        }
+        private void initPanel(){
+            setLayout(null);
+            add(exit);
 
             setBounds(420, 280, background.getWidth(null), background.getHeight(null));
             setOpaque(false);
             setVisible(flag);
         }
+
+        private void addExit(){
+            exit = new JButton();
+            exit.setIcon(exitIcon);
+            exit.setBounds(323, 15, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+            exit.addActionListener(b);
+            exit.setOpaque(false);
+            exit.setContentAreaFilled(false);
+            exit.setBorderPainted(false);
+            exit.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    exit.setBounds(317, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
+                    exit.setIcon(exitIconHover);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    exit.setBounds(323, 15, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+                    exit.setIcon(exitIcon);
+                }
+            });
+
+
+        }
+
         @Override
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
