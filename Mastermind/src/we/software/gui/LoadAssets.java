@@ -3,7 +3,7 @@ package we.software.gui;
 import java.io.InputStream;
 
 /**
- * Created by ralph on 3/28/17.
+ * Created by bill on 3/28/17.
  */
 public class LoadAssets {
 

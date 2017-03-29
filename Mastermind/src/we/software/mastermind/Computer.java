@@ -1,7 +1,7 @@
 package we.software.mastermind;
 
 /**
- * Created by ralph on 3/24/17.
+ * Created by bill on 3/24/17.
  */
 public class Computer extends Player{
 
