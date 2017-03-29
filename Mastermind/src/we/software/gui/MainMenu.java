@@ -154,6 +154,7 @@ public class MainMenu extends JFrame{
 
             exit = new JButton();
             exit.setIcon(exitIcon);
+            exit.addActionListener(b);
             exit.setOpaque(false);
             exit.setContentAreaFilled(false);
             exit.setBorderPainted(false);
@@ -178,9 +179,13 @@ public class MainMenu extends JFrame{
         }
 
         public void setVisible(){
-            if(!flag){
-                setVisible(true);
+            if(flag){
+                setVisible(false);
+                flag = false;
+                return;
             }
+            setVisible(true);
+            flag = true;
         }
     }
     //==================================================================================================ButtonListener
@@ -200,6 +205,9 @@ public class MainMenu extends JFrame{
             }
             else if(e.getSource() == options){
                 System.out.println("options");
+            }
+            else if(e.getSource() == gameModePanel.exit){
+                gameModePanel.setVisible();
             }
             else{
                 System.exit(0);
