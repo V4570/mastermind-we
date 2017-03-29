@@ -1,18 +1,15 @@
 package we.software.gui;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Created by bill on 3/28/17.
  */
 public class LoadAssets {
 
-    public static InputStream load(String path) {
-        InputStream input = LoadAssets.class.getResourceAsStream(path);
-        if (input == null) {
-            input = LoadAssets.class.getResourceAsStream("/" + path);
-        }
-
-        return input;
+    public static URL load(String path) throws IOException{
+        URL url = LoadAssets.class.getResource("/"+ path);
+        return url;
     }
 }

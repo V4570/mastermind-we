@@ -16,7 +16,6 @@ import java.io.IOException;
  */
 public class MainMenu extends JFrame{
 
-    private JLabel title;
     private MenuButton howToPlay;
     private MenuButton play;
     private MenuButton options;
@@ -24,7 +23,6 @@ public class MainMenu extends JFrame{
     private GameMode gameModePanel;
     private static int WIDTH = 1024;
     private static int HEIGHT = WIDTH / 12*9;
-    private Image image;
     private int posX = 130;
     private int posY = 300;
     private ButtonListener b = new ButtonListener();
@@ -120,13 +118,14 @@ public class MainMenu extends JFrame{
         private GameMode(){
 
             try {
-                background = ImageIO.read(new File("C:\\Users\\Camel\\IdeaProjects\\mastermind-we\\Mastermind\\Images\\gameoptions.png"));
+                background = ImageIO.read(LoadAssets.load("gameoptions.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             try {
-                exitIcon = new ImageIcon(ImageIO.read(new LoadAssets().load("exit.png")));
+                new LoadAssets();
+				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
