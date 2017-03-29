@@ -44,7 +44,7 @@ public class MainMenu extends JFrame{
         setResizable(false);
 
         try {
-            setIconImage(ImageIO.read(new LoadAssets().load("master.png")));
+            setIconImage(ImageIO.read(LoadAssets.load("master.png")));
         }
         catch (IOException exc) {
             exc.printStackTrace();
