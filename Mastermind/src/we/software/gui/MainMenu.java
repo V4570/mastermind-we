@@ -76,7 +76,7 @@ public class MainMenu extends JFrame{
         exitButton = new JButton();
 
         try {
-            exitButton.setIcon(new ImageIcon(ImageIO.read(new LoadAssets().load("exit.png"))));
+            exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +84,7 @@ public class MainMenu extends JFrame{
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(new LoadAssets().load("exit2.png"))));
+                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit2.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -93,7 +93,7 @@ public class MainMenu extends JFrame{
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(new LoadAssets().load("exit.png"))));
+                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }
