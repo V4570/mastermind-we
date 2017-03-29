@@ -109,7 +109,7 @@ public class MainMenu extends JFrame{
 
     class GameMode extends JPanel{
 
-        private BufferedImage background;
+        private Image background;
         private ImageIcon exitIcon;
         private boolean flag = false;
         private JButton exit;
@@ -145,7 +145,7 @@ public class MainMenu extends JFrame{
             add(exit, c);
 
 
-            setBounds(420, 280, background.getWidth(), background.getHeight());
+            setBounds(420, 280, background.getWidth(null), background.getHeight(null));
             setOpaque(false);
             setVisible(flag);
         }
