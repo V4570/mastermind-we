@@ -15,7 +15,8 @@ public class MainTest {
 		System.out.println("Fluxion is the future!!");
 		System.out.println("Fluxion is censored!!");*/
 		
-		System.out.println("It fucking works");
+		//System.out.println("It fucking works");
+		
 	}
 
 }
