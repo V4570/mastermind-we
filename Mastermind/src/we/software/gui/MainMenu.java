@@ -36,6 +36,11 @@ public class MainMenu extends JFrame{
 
     }
 
+    /**
+     * Εδώ αρχικοποιείται το frame μαζί με ότι στοιχεία θέλουμε να προσθέσουμε.
+     * Καλείτε τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
+     * μέρους στοιχεία όπως Buttons, Panels, κλπ.
+     */
     private void initFrame(){
 
         setSize(WIDTH, HEIGHT);
@@ -66,6 +71,11 @@ public class MainMenu extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
+     * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
+     * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
+     */
     private void setUpButtons(){
         howToPlay = new MenuButton("howtoplay.png");
         posY += 70;
@@ -80,6 +90,12 @@ public class MainMenu extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        /**
+         * Εδώ αλλάζει η εικόνα του exit button κάθε φορά που πάει το ποντίκι
+         * πάνω του. Δεν προσφέρει κάτι στην λειτουργικότητα παρά μόνο στην
+         * εμφάνιση του παιχνιδιού.
+         */
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -107,6 +123,10 @@ public class MainMenu extends JFrame{
         exitButton.setBounds(1001,5,18,15);
     }
 
+    /**
+     * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
+     * το παραθυράκι επιλο
+     */
     class GameMode extends JPanel{
 
         private Image background;
