@@ -5,10 +5,8 @@ This is a simple version of the well known Mastermind game, coded in Java as par
 "Software Engineering Technology".
 
 # Members
-<li>
-  George Panagiotou
-  Dima Leonidis
-  Dimitris Holevas
-  Bill Psifidis
-  Bill Tosounidis
-</li>
+<li>George Panagiotou</li>
+<li>Dima Leonidis</li>
+<li>Dimitris Holevas</li>
+<li>Bill Psifidis</li>
+<li>Bill Tosounidis</li>
