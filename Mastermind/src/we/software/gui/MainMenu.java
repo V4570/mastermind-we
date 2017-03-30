@@ -131,18 +131,12 @@ public class MainMenu extends JFrame{
     class GameMode extends JPanel{
 
         private Image background;
-        private ImageIcon exitIcon;
-        private ImageIcon exitIconHover;
-        private ImageIcon titleImage;
-        private ImageIcon pvaiIcon;
-        private ImageIcon pvaiIconHover;
-        private JButton pvai;
-        private ImageIcon pvpIcon;
-        private ImageIcon pvpIconHover;
-        private JButton pvp;
-        private boolean flag = false;
-        private JButton exit;
+        private ImageIcon exitIcon, exitIconHover, titleImage, pvaiIcon,
+                pvaiIconHover, pvaiTitle, pvpIcon, pvpIconHover, pvpTitle;
+        private JButton pvai, pvp, exit;
         private JLabel title;
+        private boolean flag = false;
+        private boolean flagOptions = true;
 
         private GameMode(){
             title = new JLabel();
@@ -152,6 +146,8 @@ public class MainMenu extends JFrame{
                 pvaiIconHover = new ImageIcon(LoadAssets.load("hpvai.png"));
                 pvpIcon = new ImageIcon(LoadAssets.load("pvp.png"));
                 pvpIconHover = new ImageIcon(LoadAssets.load("hpvp.png"));
+                pvaiTitle = new ImageIcon(LoadAssets.load("pvaititle.png"));
+                pvpTitle = new ImageIcon(LoadAssets.load("pvptitle.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -162,16 +158,14 @@ public class MainMenu extends JFrame{
             pvai.setIcon(pvaiIcon);
             pvai.setBounds(39, 46, pvaiIcon.getIconWidth(), pvaiIcon.getIconHeight());
             pvai.addMouseListener(new MouseAdapter() {
-                @Override
                 public void mouseEntered(MouseEvent e) {
                     pvai.setIcon(pvaiIconHover);
                 }
-
-                @Override
                 public void mouseExited(MouseEvent e) {
                     pvai.setIcon(pvaiIcon);
                 }
             });
+            pvai.addActionListener(b);
             pvai.setOpaque(false);
             pvai.setContentAreaFilled(false);
             pvai.setBorderPainted(false);
@@ -190,9 +184,11 @@ public class MainMenu extends JFrame{
                     pvp.setIcon(pvpIcon);
                 }
             });
+            pvp.addActionListener(b);
             pvp.setOpaque(false);
             pvp.setContentAreaFilled(false);
             pvp.setBorderPainted(false);
+
 
             readImages();
             addExit();
@@ -253,6 +249,9 @@ public class MainMenu extends JFrame{
             g.drawImage(background,0,0,null);
         }
 
+        /**
+         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         */
         public void setPanelVisible(){
             if(!flag){
                 setVisible(!flag);
@@ -260,11 +259,24 @@ public class MainMenu extends JFrame{
             }
         }
 
+        /**
+         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         */
         public void setPanelInvisible(){
             if(flag){
                 setVisible(!flag);
                 flag = !flag;
             }
+        }
+
+        /**
+         * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
+         */
+        public void panelRestart(){
+            pvp.setVisible(true);
+            pvai.setVisible(true);
+            title.setIcon(titleImage);
+            title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
         }
     }
     //==================================================================================================ButtonListener
@@ -287,11 +299,46 @@ public class MainMenu extends JFrame{
             else if(e.getSource() == options){
                 System.out.println("options");
                 gameModePanel.setPanelInvisible();
+                if(!gameModePanel.flagOptions){
+                    gameModePanel.panelRestart();
+                }
                 //select.playClip();
-
             }
+            /**
+             * Κλείνει το gameOptions Panel και καλεί την μέθοδο
+             * panelRestart() που θέτει το Panel στην αρχική του
+             * κατάσταση εφόσον έχει πατηθεί κάποιο κουμπί μέσα
+             * στο Panel και έχει αλλάξει η δομή του.
+             */
             else if(e.getSource() == gameModePanel.exit){
                 gameModePanel.setPanelInvisible();
+                if(!gameModePanel.flagOptions){
+                    gameModePanel.panelRestart();
+                }
+            }
+            /**
+             * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
+             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
+             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+             */
+            else if(e.getSource() == gameModePanel.pvp){
+                gameModePanel.pvp.setVisible(false);
+                gameModePanel.pvai.setVisible(false);
+                gameModePanel.title.setBounds(30, -2, gameModePanel.pvpTitle.getIconWidth(), gameModePanel.pvpTitle.getIconHeight());
+                gameModePanel.title.setIcon(gameModePanel.pvpTitle);
+                gameModePanel.flagOptions = false;
+            }
+            /**
+             * Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
+             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
+             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+             */
+            else if(e.getSource() == gameModePanel.pvai){
+                gameModePanel.pvp.setVisible(false);
+                gameModePanel.pvai.setVisible(false);
+                gameModePanel.title.setIcon(gameModePanel.pvaiTitle);
+                gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
+                gameModePanel.flagOptions = false;
             }
             else{
                 System.exit(0);
@@ -342,17 +389,6 @@ public class MainMenu extends JFrame{
             setOpaque(false);
             setContentAreaFilled(false);
             setBorderPainted(false);
-        }
-    }
-
-    class PanelButton extends JButton{
-
-        public PanelButton(){
-            //setText();
-            //setBounds();
-            setOpaque(false);
-            setBorderPainted(false);
-            setContentAreaFilled(false);
         }
     }
 }
