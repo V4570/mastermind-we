@@ -17,6 +17,7 @@ public class MainMenu extends JFrame{
     private MenuButton howToPlay, play, options;
     private JButton exitButton;
     private GameMode gameModePanel;
+    private Options optionsPanel;
     private static int WIDTH = 1024;
     private static int HEIGHT = WIDTH / 12*9;
     private int posX = 130;
@@ -25,6 +26,7 @@ public class MainMenu extends JFrame{
 
     public MainMenu(){
         gameModePanel = new GameMode();
+        optionsPanel = new Options();
 
         howToPlay = addMenuButton("howtoplay.png");
         play = addMenuButton("play.png");
@@ -66,6 +68,7 @@ public class MainMenu extends JFrame{
         add(play);
         add(options);
         add(gameModePanel);
+        add(optionsPanel);
         add(exitButton);
 
         setUndecorated(true);
@@ -73,17 +76,23 @@ public class MainMenu extends JFrame{
     }
 
     /**
-     * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνει κατά 70
-     * κάθε φορά που προστίθεται κουμπί για σωστή κατακόρυφη στοίχιση.
+     * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνεται κατά 70
+     * κάθε φορά που προστίθεται ένα κουμπί ώστε να γίνεται σωστή κατακόρυφη
+     * στοίχιση.
      */
     private MenuButton addMenuButton(String path){
-
         posY += 70;
         MenuButton button = new MenuButton(path, posX, posY);
         button.addActionListener(b);
         return button;
     }
 
+    //==================================================================================================setUpButtons
+    /**
+     * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
+     * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
+     * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
+     */
     private void setUpButtons(){
 
         exitButton = new JButton();
@@ -94,11 +103,6 @@ public class MainMenu extends JFrame{
             e.printStackTrace();
         }
 
-        /**
-         * Εδώ αλλάζει η εικόνα του exit button κάθε φορά που πάει το ποντίκι
-         * πάνω του. Δεν προσφέρει κάτι στην λειτουργικότητα παρά μόνο στην
-         * εμφάνιση του παιχνιδιού.
-         */
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -264,12 +268,17 @@ public class MainMenu extends JFrame{
             }
             else if(e.getSource() == play){
                 System.out.println("play");
+                optionsPanel.setPanelInvisible();
                 gameModePanel.setPanelVisible();
+                if(!optionsPanel.flagOptions){
+                    optionsPanel.panelRestart();
+                }
                 //select.playClip();
             }
             else if(e.getSource() == options){
                 System.out.println("options");
                 gameModePanel.setPanelInvisible();
+                optionsPanel.setPanelVisible();
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
@@ -311,10 +320,122 @@ public class MainMenu extends JFrame{
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
                 gameModePanel.flagOptions = false;
             }
+            else if(e.getSource() == optionsPanel.exit){
+                optionsPanel.setPanelInvisible();
+                if(!optionsPanel.flagOptions){
+                    optionsPanel.panelRestart();
+                }
+            }
             else{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
+        }
+    }
+
+    class Options extends JPanel{
+
+        private Image background;
+        private ImageIcon exitIcon, exitIconHover, titleImage,
+                pvaiTitle, pvpTitle;
+        private JButton exit;
+        private JLabel title;
+        private boolean flag = false;
+        private boolean flagOptions = true;
+
+        public Options(){
+            title = new JLabel();
+            try {
+                titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
+                pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
+                pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            title.setIcon(titleImage);
+            title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+
+
+            readImages();
+            addExit();
+            initPanel();
+        }
+
+        private void readImages(){
+
+            try {
+                background = ImageIO.read(LoadAssets.load("gameoptions.png"));
+                exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
+                exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("sexit.png")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        private void initPanel(){
+            setLayout(null);
+            add(exit);
+            add(title);
+
+            setBounds(420, 350, background.getWidth(null), background.getHeight(null));
+            setOpaque(false);
+            setVisible(flag);
+        }
+
+        private void addExit(){
+            exit = new JButton();
+            exit.setIcon(exitIcon);
+            exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+            exit.addActionListener(b);
+            exit.setOpaque(false);
+            exit.setContentAreaFilled(false);
+            exit.setBorderPainted(false);
+            exit.addMouseListener(new MouseAdapter() {
+
+                public void mouseEntered(MouseEvent e) {
+                    exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
+                    exit.setIcon(exitIconHover);
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+                    exit.setIcon(exitIcon);
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g){
+            super.paintComponent(g);
+            g.drawImage(background,0,0,null);
+        }
+
+        /**
+         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         */
+        public void setPanelVisible(){
+            if(!flag){
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+
+        /**
+         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         */
+        public void setPanelInvisible(){
+            if(flag){
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+
+        /**
+         * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
+         */
+        public void panelRestart(){
+            title.setIcon(titleImage);
+            title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
         }
     }
 }
