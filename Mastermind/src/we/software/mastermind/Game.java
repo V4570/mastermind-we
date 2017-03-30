@@ -1,6 +1,6 @@
 package we.software.mastermind;
 
-public class Game {
+class Game {
 
     private boolean started;
     private Player p1;

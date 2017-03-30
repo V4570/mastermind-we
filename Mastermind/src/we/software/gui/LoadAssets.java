@@ -6,7 +6,7 @@ import java.net.URL;
 /**
  * Created by bill on 3/28/17.
  */
-public class LoadAssets {
+class LoadAssets {
 
     /**
      * Μας βοηθάει στην καλύτερη φόρτωση των εικόνων και στην συμπερίληψή τους

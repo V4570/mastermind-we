@@ -14,19 +14,21 @@ import java.io.IOException;
  */
 public class MainMenu extends JFrame{
 
-    private MenuButton howToPlay;
-    private MenuButton play;
-    private MenuButton options;
+    private MenuButton howToPlay, play, options;
     private JButton exitButton;
     private GameMode gameModePanel;
     private static int WIDTH = 1024;
     private static int HEIGHT = WIDTH / 12*9;
     private int posX = 130;
-    private int posY = 300;
+    private int posY = 230;
     private ButtonListener b = new ButtonListener();
 
     public MainMenu(){
         gameModePanel = new GameMode();
+
+        howToPlay = addMenuButton("howtoplay.png");
+        play = addMenuButton("play.png");
+        options = addMenuButton("options.png");
 
         setUpButtons();
 
@@ -70,6 +72,17 @@ public class MainMenu extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνει κατά 70
+     * κάθε φορά που προστίθεται κουμπί για σωστή στοίχιση.
+     */
+    private MenuButton addMenuButton(String path){
+        posY += 70;
+        MenuButton button = new MenuButton(path, posX, posY);
+        button.addActionListener(b);
+        return button;
+    }
+
     //==================================================================================================setUpButtons
     /**
      * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
@@ -77,12 +90,7 @@ public class MainMenu extends JFrame{
      * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
      */
     private void setUpButtons(){
-        howToPlay = new MenuButton("howtoplay.png");
-        posY += 70;
-        play = new MenuButton("play.png");
-        posY += 70;
-        options = new MenuButton("options.png");
-        posY += 70;
+
         exitButton = new JButton();
 
         try {
@@ -100,7 +108,7 @@ public class MainMenu extends JFrame{
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit2.png"))));
+                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("hexit.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -312,51 +320,6 @@ public class MainMenu extends JFrame{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
-        }
-    }
-    //==================================================================================================MenuButton
-    /**
-     * Ειδική κλάση για καλύτερη διαχείρηση των κουμπιών του μενού.
-     */
-    class MenuButton extends JButton{
-
-        private ImageIcon image;
-        private ImageIcon imageHover;
-        private int x, y;
-        //private AudioLoad hover;
-
-        public MenuButton(String imagePath){
-            x = posX;
-            y = posY;
-            //hover = new AudioLoad("Hover.wav");
-
-            try {
-                image = new ImageIcon(ImageIO.read(LoadAssets.load(imagePath)));
-                imageHover = new ImageIcon(ImageIO.read(LoadAssets.load("h" +imagePath)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            setIcon(image);
-            addActionListener(b);
-            setBounds(x, y, image.getIconWidth(), image.getIconHeight());
-
-            this.addMouseListener(new MouseAdapter(){
-                public void mouseEntered(MouseEvent e){
-                    setIcon(imageHover);
-                    setBounds(x-51, y, imageHover.getIconWidth(), imageHover.getIconHeight());
-                    //hover.playClip();
-                }
-                public void mouseExited(MouseEvent e){
-                    setIcon(image);
-                    setBounds(x, y, image.getIconWidth(), image.getIconHeight());
-                    //hover.closeClip();
-                }
-            });
-
-            setOpaque(false);
-            setContentAreaFilled(false);
-            setBorderPainted(false);
         }
     }
 }

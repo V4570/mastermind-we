@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Created by Camel on 30-Mar-17.
  */
-public class OptionsButton extends JButton {
+class OptionsButton extends JButton {
 
     private ImageIcon buttonIcon;
     private ImageIcon hoverButtonIcon;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by ralph on 3/24/17.
  */
-public class Player {
+class Player {
 
     private String name;
     private ArrayList<NormalPeg> guess;

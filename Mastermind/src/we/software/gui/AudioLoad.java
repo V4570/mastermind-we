@@ -10,12 +10,13 @@ import java.net.URL;
  * Created by bill on 30-Mar-17.
  */
 public class AudioLoad implements LineListener{
-    URL audioFile;
-    AudioInputStream audioStream;
-    AudioFormat format;
-    DataLine.Info info;
-    Clip audioClip;
-    boolean playCompleted;
+
+    private URL audioFile;
+    private AudioInputStream audioStream;
+    private AudioFormat format;
+    private DataLine.Info info;
+    private Clip audioClip;
+    private boolean playCompleted;
 
     public AudioLoad(String path){
 

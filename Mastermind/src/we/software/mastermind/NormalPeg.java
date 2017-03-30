@@ -3,7 +3,7 @@ package we.software.mastermind;
 /**
  * Created by ralph on 3/24/17.
  */
-public class NormalPeg extends Peg {
+class NormalPeg extends Peg {
 
     @Override
     int getXPos() {
