@@ -133,10 +133,66 @@ public class MainMenu extends JFrame{
         private Image background;
         private ImageIcon exitIcon;
         private ImageIcon exitIconHover;
+        private ImageIcon titleImage;
+        private ImageIcon pvaiIcon;
+        private ImageIcon pvaiIconHover;
+        private JButton pvai;
+        private ImageIcon pvpIcon;
+        private ImageIcon pvpIconHover;
+        private JButton pvp;
         private boolean flag = false;
         private JButton exit;
+        private JLabel title;
 
         private GameMode(){
+            title = new JLabel();
+            try {
+                titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
+                pvaiIcon = new ImageIcon(LoadAssets.load("pvai.png"));
+                pvaiIconHover = new ImageIcon(LoadAssets.load("hpvai.png"));
+                pvpIcon = new ImageIcon(LoadAssets.load("pvp.png"));
+                pvpIconHover = new ImageIcon(LoadAssets.load("hpvp.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            title.setIcon(titleImage);
+            title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+
+            pvai = new JButton();
+            pvai.setIcon(pvaiIcon);
+            pvai.setBounds(39, 46, pvaiIcon.getIconWidth(), pvaiIcon.getIconHeight());
+            pvai.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    pvai.setIcon(pvaiIconHover);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    pvai.setIcon(pvaiIcon);
+                }
+            });
+            pvai.setOpaque(false);
+            pvai.setContentAreaFilled(false);
+            pvai.setBorderPainted(false);
+
+            pvp = new JButton();
+            pvp.setIcon(pvpIcon);
+            pvp.setBounds(39, 98, pvpIcon.getIconWidth(), pvpIcon.getIconHeight());
+            pvp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    pvp.setIcon(pvpIconHover);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    pvp.setIcon(pvpIcon);
+                }
+            });
+            pvp.setOpaque(false);
+            pvp.setContentAreaFilled(false);
+            pvp.setBorderPainted(false);
 
             readImages();
             addExit();
@@ -157,6 +213,9 @@ public class MainMenu extends JFrame{
         private void initPanel(){
             setLayout(null);
             add(exit);
+            add(title);
+            add(pvai);
+            add(pvp);
 
             setBounds(420, 280, background.getWidth(null), background.getHeight(null));
             setOpaque(false);
@@ -166,7 +225,7 @@ public class MainMenu extends JFrame{
         private void addExit(){
             exit = new JButton();
             exit.setIcon(exitIcon);
-            exit.setBounds(323, 15, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+            exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
             exit.addActionListener(b);
             exit.setOpaque(false);
             exit.setContentAreaFilled(false);
@@ -174,13 +233,13 @@ public class MainMenu extends JFrame{
             exit.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    exit.setBounds(317, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
+                    exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
                     exit.setIcon(exitIconHover);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    exit.setBounds(323, 15, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+                    exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
                     exit.setIcon(exitIcon);
                 }
             });
@@ -283,6 +342,17 @@ public class MainMenu extends JFrame{
             setOpaque(false);
             setContentAreaFilled(false);
             setBorderPainted(false);
+        }
+    }
+
+    class PanelButton extends JButton{
+
+        public PanelButton(){
+            //setText();
+            //setBounds();
+            setOpaque(false);
+            setBorderPainted(false);
+            setContentAreaFilled(false);
         }
     }
 }
