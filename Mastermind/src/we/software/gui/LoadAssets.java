@@ -13,7 +13,6 @@ class LoadAssets {
      * στο τελικό εκτελέσιμο αρχείο.
      */
     public static URL load(String path) throws IOException{
-        URL url = LoadAssets.class.getResource("/"+ path);
-        return url;
+        return LoadAssets.class.getResource("/"+ path);
     }
 }

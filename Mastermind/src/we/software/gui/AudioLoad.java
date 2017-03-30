@@ -1,7 +1,5 @@
 package we.software.gui;
 
-import com.intellij.database.view.generators.Clipboard;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
@@ -11,20 +9,16 @@ import java.net.URL;
  */
 public class AudioLoad implements LineListener{
 
-    private URL audioFile;
-    private AudioInputStream audioStream;
-    private AudioFormat format;
-    private DataLine.Info info;
     private Clip audioClip;
     private boolean playCompleted;
 
     public AudioLoad(String path){
 
         try {
-            audioFile = LoadAssets.load(path);
-            audioStream = AudioSystem.getAudioInputStream(audioFile);
-            format = audioStream.getFormat();
-            info = new DataLine.Info(Clip.class, format);
+            URL audioFile = LoadAssets.load(path);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
             audioClip = (Clip) AudioSystem.getLine(info);
             audioClip.addLineListener(this);
             audioClip.open(audioStream);

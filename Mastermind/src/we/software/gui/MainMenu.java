@@ -20,7 +20,6 @@ public class MainMenu extends JFrame{
     private Options optionsPanel;
     private static int WIDTH = 1024;
     private static int HEIGHT = WIDTH / 12*9;
-    private int posX = 130;
     private int posY = 230;
     private ButtonListener b = new ButtonListener();
 
@@ -47,7 +46,7 @@ public class MainMenu extends JFrame{
     private void initFrame(){
 
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -82,6 +81,7 @@ public class MainMenu extends JFrame{
      */
     private MenuButton addMenuButton(String path){
         posY += 70;
+        int posX = 130;
         MenuButton button = new MenuButton(path, posX, posY);
         button.addActionListener(b);
         return button;

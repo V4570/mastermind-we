@@ -9,8 +9,8 @@ class MainTest {
 		// TODO Auto-generated method stub
 
 		new MainMenu();
-		/*AudioLoad l = new AudioLoad("MainMenu.wav");
-		l.playMenuClip();*/
+		AudioLoad l = new AudioLoad("MainMenu.wav");
+		l.playMenuClip();
 	}
 
 }
