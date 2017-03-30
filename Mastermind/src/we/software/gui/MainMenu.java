@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -196,14 +194,18 @@ public class MainMenu extends JFrame{
             g.drawImage(background,0,0,null);
         }
 
-        public void setVisible(){
-            if(flag){
-                setVisible(false);
-                flag = false;
-                return;
+        public void setPanelVisible(){
+            if(!flag){
+                setVisible(!flag);
+                flag = !flag;
             }
-            setVisible(true);
-            flag = true;
+        }
+
+        public void setPanelInvisible(){
+            if(flag){
+                setVisible(!flag);
+                flag = !flag;
+            }
         }
     }
     //==================================================================================================ButtonListener
@@ -212,20 +214,25 @@ public class MainMenu extends JFrame{
      * ακολουθει τα αντίστοιχα βήματα.
      */
     class ButtonListener implements ActionListener{
-
+        //private AudioLoad select = new AudioLoad("Select.wav");
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == howToPlay){
                 System.out.println("how");
+                //select.playClip();
             }
             else if(e.getSource() == play){
                 System.out.println("play");
-                gameModePanel.setVisible();
+                gameModePanel.setPanelVisible();
+                //select.playClip();
             }
             else if(e.getSource() == options){
                 System.out.println("options");
+                gameModePanel.setPanelInvisible();
+                //select.playClip();
+
             }
             else if(e.getSource() == gameModePanel.exit){
-                gameModePanel.setVisible();
+                gameModePanel.setPanelInvisible();
             }
             else{
                 System.exit(0);
@@ -242,10 +249,12 @@ public class MainMenu extends JFrame{
         private ImageIcon image;
         private ImageIcon imageHover;
         private int x, y;
+        //private AudioLoad hover;
 
         public MenuButton(String imagePath){
             x = posX;
             y = posY;
+            //hover = new AudioLoad("Hover.wav");
 
             try {
                 image = new ImageIcon(ImageIO.read(LoadAssets.load(imagePath)));
@@ -262,10 +271,12 @@ public class MainMenu extends JFrame{
                 public void mouseEntered(MouseEvent e){
                     setIcon(imageHover);
                     setBounds(x-51, y, imageHover.getIconWidth(), imageHover.getIconHeight());
+                    //hover.playClip();
                 }
                 public void mouseExited(MouseEvent e){
                     setIcon(image);
                     setBounds(x, y, image.getIconWidth(), image.getIconHeight());
+                    //hover.closeClip();
                 }
             });
 
