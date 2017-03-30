@@ -254,6 +254,136 @@ public class MainMenu extends JFrame{
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
         }
     }
+
+
+    class Options extends JPanel{
+
+        private Image background;
+        private ImageIcon exitIcon, exitIconHover, titleImage, musicTitle, soundFXTitle, optionsSquare;
+        private JLabel music;
+        private JLabel soundFX;
+        private OptionsButton musicButton;
+        private OptionsButton soundFXButton;
+        private JButton exit;
+        private JLabel title;
+        private boolean flag = false;
+        private boolean flagOptions = true;
+
+        public Options(){
+
+            title = new JLabel();
+            music = new JLabel();
+            soundFX = new JLabel();
+
+            try {
+                titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
+                musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
+                soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            title.setIcon(titleImage);
+            title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+
+            music.setIcon(musicTitle);
+            music.setBounds(44, 60, musicTitle.getIconWidth(), musicTitle.getIconHeight());
+
+            soundFX.setIcon(soundFXTitle);
+            soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
+
+            musicButton = new OptionsButton("redsquare.png", 250, 60);
+            musicButton.addActionListener(b);
+            soundFXButton = new OptionsButton("redsquare.png", 250, 110);
+            soundFXButton.addActionListener(b);
+
+            readImages();
+            addExit();
+            initPanel();
+        }
+
+        private void readImages(){
+
+            try {
+                background = ImageIO.read(LoadAssets.load("gameoptions.png"));
+                exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
+                exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
+                optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void initPanel(){
+            setLayout(null);
+            add(exit);
+            add(title);
+            add(music);
+            add(soundFX);
+            add(musicButton);
+            add(soundFXButton);
+
+            setBounds(420, 350, background.getWidth(null), background.getHeight(null));
+            setOpaque(false);
+            setVisible(flag);
+        }
+
+        private void addExit(){
+            exit = new JButton();
+            exit.setIcon(exitIcon);
+            exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+            exit.addActionListener(b);
+            exit.setOpaque(false);
+            exit.setContentAreaFilled(false);
+            exit.setBorderPainted(false);
+            exit.addMouseListener(new MouseAdapter() {
+
+                public void mouseEntered(MouseEvent e) {
+                    exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
+                    exit.setIcon(exitIconHover);
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
+                    exit.setIcon(exitIcon);
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g){
+            super.paintComponent(g);
+            g.drawImage(background,0,0,null);
+        }
+
+        /**
+         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         */
+        public void setPanelVisible(){
+            if(!flag){
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+
+        /**
+         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         */
+        public void setPanelInvisible(){
+            if(flag){
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+
+        /**
+         * Θέτει το Options Panel στην αρχική του κατάσταση.
+         */
+        public void panelRestart(){
+            title.setIcon(titleImage);
+            title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+        }
+    }
+
     //==================================================================================================ButtonListener
     /**
      * Ειδική κλάση για να ελέγχει ποιό κουμπί πατήθηκε και να
@@ -330,112 +460,6 @@ public class MainMenu extends JFrame{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
-        }
-    }
-
-    class Options extends JPanel{
-
-        private Image background;
-        private ImageIcon exitIcon, exitIconHover, titleImage,
-                pvaiTitle, pvpTitle;
-        private JButton exit;
-        private JLabel title;
-        private boolean flag = false;
-        private boolean flagOptions = true;
-
-        public Options(){
-            title = new JLabel();
-            try {
-                titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
-                pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
-                pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            title.setIcon(titleImage);
-            title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
-
-
-            readImages();
-            addExit();
-            initPanel();
-        }
-
-        private void readImages(){
-
-            try {
-                background = ImageIO.read(LoadAssets.load("gameoptions.png"));
-                exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
-                exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("sexit.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        private void initPanel(){
-            setLayout(null);
-            add(exit);
-            add(title);
-
-            setBounds(420, 350, background.getWidth(null), background.getHeight(null));
-            setOpaque(false);
-            setVisible(flag);
-        }
-
-        private void addExit(){
-            exit = new JButton();
-            exit.setIcon(exitIcon);
-            exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-            exit.addActionListener(b);
-            exit.setOpaque(false);
-            exit.setContentAreaFilled(false);
-            exit.setBorderPainted(false);
-            exit.addMouseListener(new MouseAdapter() {
-
-                public void mouseEntered(MouseEvent e) {
-                    exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
-                    exit.setIcon(exitIconHover);
-                }
-
-                public void mouseExited(MouseEvent e) {
-                    exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-                    exit.setIcon(exitIcon);
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g){
-            super.paintComponent(g);
-            g.drawImage(background,0,0,null);
-        }
-
-        /**
-         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
-         */
-        public void setPanelVisible(){
-            if(!flag){
-                setVisible(!flag);
-                flag = !flag;
-            }
-        }
-
-        /**
-         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
-         */
-        public void setPanelInvisible(){
-            if(flag){
-                setVisible(!flag);
-                flag = !flag;
-            }
-        }
-
-        /**
-         * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
-         */
-        public void panelRestart(){
-            title.setIcon(titleImage);
-            title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
         }
     }
 }
