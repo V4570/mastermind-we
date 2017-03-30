@@ -74,21 +74,16 @@ public class MainMenu extends JFrame{
 
     /**
      * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνει κατά 70
-     * κάθε φορά που προστίθεται κουμπί για σωστή στοίχιση.
+     * κάθε φορά που προστίθεται κουμπί για σωστή κατακόρυφη στοίχιση.
      */
     private MenuButton addMenuButton(String path){
+
         posY += 70;
         MenuButton button = new MenuButton(path, posX, posY);
         button.addActionListener(b);
         return button;
     }
 
-    //==================================================================================================setUpButtons
-    /**
-     * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
-     * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
-     * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
-     */
     private void setUpButtons(){
 
         exitButton = new JButton();
