@@ -131,9 +131,10 @@ public class MainMenu extends JFrame{
     class GameMode extends JPanel{
 
         private Image background;
-        private ImageIcon exitIcon, exitIconHover, titleImage, pvaiIcon,
-                pvaiIconHover, pvaiTitle, pvpIcon, pvpIconHover, pvpTitle;
-        private JButton pvai, pvp, exit;
+        private ImageIcon exitIcon, exitIconHover, titleImage,
+                 pvaiTitle, pvpTitle;
+        private OptionsButton pVsAi, pVsP;
+        private JButton exit;
         private JLabel title;
         private boolean flag = false;
         private boolean flagOptions = true;
@@ -142,52 +143,19 @@ public class MainMenu extends JFrame{
             title = new JLabel();
             try {
                 titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
-                pvaiIcon = new ImageIcon(LoadAssets.load("pvai.png"));
-                pvaiIconHover = new ImageIcon(LoadAssets.load("hpvai.png"));
-                pvpIcon = new ImageIcon(LoadAssets.load("pvp.png"));
-                pvpIconHover = new ImageIcon(LoadAssets.load("hpvp.png"));
-                pvaiTitle = new ImageIcon(LoadAssets.load("pvaititle.png"));
-                pvpTitle = new ImageIcon(LoadAssets.load("pvptitle.png"));
+                pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
+                pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             title.setIcon(titleImage);
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
-            pvai = new JButton();
-            pvai.setIcon(pvaiIcon);
-            pvai.setBounds(39, 46, pvaiIcon.getIconWidth(), pvaiIcon.getIconHeight());
-            pvai.addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent e) {
-                    pvai.setIcon(pvaiIconHover);
-                }
-                public void mouseExited(MouseEvent e) {
-                    pvai.setIcon(pvaiIcon);
-                }
-            });
-            pvai.addActionListener(b);
-            pvai.setOpaque(false);
-            pvai.setContentAreaFilled(false);
-            pvai.setBorderPainted(false);
+            pVsAi = new OptionsButton("pvai.png", 39, 46);
+            pVsAi.addActionListener(b);
 
-            pvp = new JButton();
-            pvp.setIcon(pvpIcon);
-            pvp.setBounds(39, 98, pvpIcon.getIconWidth(), pvpIcon.getIconHeight());
-            pvp.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    pvp.setIcon(pvpIconHover);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    pvp.setIcon(pvpIcon);
-                }
-            });
-            pvp.addActionListener(b);
-            pvp.setOpaque(false);
-            pvp.setContentAreaFilled(false);
-            pvp.setBorderPainted(false);
+            pVsP = new OptionsButton("pvp.png", 39, 98);
+            pVsP.addActionListener(b);
 
 
             readImages();
@@ -210,8 +178,8 @@ public class MainMenu extends JFrame{
             setLayout(null);
             add(exit);
             add(title);
-            add(pvai);
-            add(pvp);
+            add(pVsAi);
+            add(pVsP);
 
             setBounds(420, 280, background.getWidth(null), background.getHeight(null));
             setOpaque(false);
@@ -273,8 +241,8 @@ public class MainMenu extends JFrame{
          * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
          */
         public void panelRestart(){
-            pvp.setVisible(true);
-            pvai.setVisible(true);
+            pVsP.setVisible(true);
+            pVsAi.setVisible(true);
             title.setIcon(titleImage);
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
         }
@@ -321,9 +289,9 @@ public class MainMenu extends JFrame{
              * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
-            else if(e.getSource() == gameModePanel.pvp){
-                gameModePanel.pvp.setVisible(false);
-                gameModePanel.pvai.setVisible(false);
+            else if(e.getSource() == gameModePanel.pVsP){
+                gameModePanel.pVsP.setVisible(false);
+                gameModePanel.pVsAi.setVisible(false);
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvpTitle.getIconWidth(), gameModePanel.pvpTitle.getIconHeight());
                 gameModePanel.title.setIcon(gameModePanel.pvpTitle);
                 gameModePanel.flagOptions = false;
@@ -333,9 +301,9 @@ public class MainMenu extends JFrame{
              * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
-            else if(e.getSource() == gameModePanel.pvai){
-                gameModePanel.pvp.setVisible(false);
-                gameModePanel.pvai.setVisible(false);
+            else if(e.getSource() == gameModePanel.pVsAi){
+                gameModePanel.pVsP.setVisible(false);
+                gameModePanel.pVsAi.setVisible(false);
                 gameModePanel.title.setIcon(gameModePanel.pvaiTitle);
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
                 gameModePanel.flagOptions = false;
