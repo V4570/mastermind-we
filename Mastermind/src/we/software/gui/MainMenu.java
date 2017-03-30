@@ -18,8 +18,8 @@ public class MainMenu extends JFrame{
     private JButton exitButton;
     private GameMode gameModePanel;
     private Options optionsPanel;
-    private static int WIDTH = 1024;
-    private static int HEIGHT = WIDTH / 12*9;
+    private final int WIDTH = 1024;
+    private final int HEIGHT = WIDTH / 12*9;
     private int posY = 230;
     private ButtonListener b = new ButtonListener();
 
