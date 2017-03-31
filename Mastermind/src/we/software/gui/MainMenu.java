@@ -148,13 +148,11 @@ public class MainMenu extends JFrame{
 
         private GameMode(){
             title = new JLabel();
-            try {
-                titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
-                pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
-                pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
+            pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
+            pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
+
             title.setIcon(titleImage);
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
@@ -275,13 +273,10 @@ public class MainMenu extends JFrame{
             music = new JLabel();
             soundFX = new JLabel();
 
-            try {
-                titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
-                musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
-                soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
+            musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
+            soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
+
             title.setIcon(titleImage);
             title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 

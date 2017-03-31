@@ -12,7 +12,7 @@ class LoadAssets {
      * Μας βοηθάει στην καλύτερη φόρτωση των εικόνων και στην συμπερίληψή τους
      * στο τελικό εκτελέσιμο αρχείο.
      */
-    public static URL load(String path) throws IOException{
+    public static URL load(String path){
         return LoadAssets.class.getResource("/"+ path);
     }
 }
