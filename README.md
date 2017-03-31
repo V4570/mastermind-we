@@ -13,6 +13,6 @@ This is a simple version of the well known Mastermind game, coded in Java as par
 
 # Disclaimer
 
-All buttons, textures and images are neither made or owned by us. This project is not meant by any means to be commercial and it will just serve the purpose of the course assignment. After that all of the buttons, textures and images will be removed from github.
+All buttons, textures, sounds and images are neither made or owned by us. This project is not meant by any means to be commercial and it will just serve the purpose of the course assignment. After that all of the buttons, textures, sounds and images will be removed from github.
 
-All the buttons, textures and images were created by <a href="http://www.theswain.com/">The Swain</a> and <a href="http://www.newgrounds.com/">Newgrounds.com</a>.
+All the buttons, textures, sounds and images were created by <a href="http://www.theswain.com/">The Swain</a> and <a href="http://www.newgrounds.com/">Newgrounds.com</a>.
