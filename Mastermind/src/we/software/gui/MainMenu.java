@@ -31,8 +31,6 @@ public class MainMenu extends JFrame{
         play = addMenuButton("play.png");
         options = addMenuButton("options.png");
 
-        addExitButton();
-
         initFrame();
 
     }
@@ -44,6 +42,10 @@ public class MainMenu extends JFrame{
      * μέρους στοιχεία όπως Buttons, Panels, κλπ.
      */
     private void initFrame(){
+
+
+        exitButton = new MenuButton("exit.png", 1001, 5, 0);
+        exitButton.addActionListener(b);
 
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -87,49 +89,6 @@ public class MainMenu extends JFrame{
         return button;
     }
 
-    //==================================================================================================addExitButton
-    /**
-     * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
-     * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
-     * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
-     */
-    private void addExitButton(){
-
-        exitButton = new JButton();
-
-        try {
-            exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        exitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("hexit.png"))));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-            }
-        });
-
-        exitButton.setOpaque(false);
-        exitButton.setContentAreaFilled(false);
-        exitButton.setBorderPainted(false);
-        exitButton.addActionListener(b);
-        exitButton.setBounds(1001,5,18,15);
-    }
-
     //==================================================================================================GameMode
     /**
      * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
@@ -147,6 +106,7 @@ public class MainMenu extends JFrame{
         private boolean flagOptions = true;
 
         private GameMode(){
+
             title = new JLabel();
 
             titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
