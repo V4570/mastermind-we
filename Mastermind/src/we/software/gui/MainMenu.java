@@ -15,7 +15,6 @@ import java.io.IOException;
 public class MainMenu extends JFrame{
 
     private MenuButton howToPlay, play, options;
-    private JButton exitButton;
     private GameMode gameModePanel;
     private Options optionsPanel;
     private final int WIDTH = 1024;
@@ -44,7 +43,7 @@ public class MainMenu extends JFrame{
     private void initFrame(){
 
 
-        exitButton = new MenuButton("exit.png", 1001, 5, 0);
+        JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
         exitButton.addActionListener(b);
 
         setSize(WIDTH, HEIGHT);
@@ -379,7 +378,7 @@ public class MainMenu extends JFrame{
 
                 options.playSound();
             }
-            /**
+            /*
              * Κλείνει το gameOptions Panel και καλεί την μέθοδο
              * panelRestart() που θέτει το Panel στην αρχική του
              * κατάσταση εφόσον έχει πατηθεί κάποιο κουμπί μέσα
@@ -395,7 +394,7 @@ public class MainMenu extends JFrame{
 
                 options.playSound();
             }
-            /**
+            /*
              * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
              * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
@@ -411,10 +410,10 @@ public class MainMenu extends JFrame{
                 gameModePanel.flagOptions = false;
                 gameModePanel.pVsP.playSound();
             }
-            /**
-             * Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
-             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
-             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+            /*
+              Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
+              και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
+              τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
             else if(e.getSource() == gameModePanel.pVsAi){
 

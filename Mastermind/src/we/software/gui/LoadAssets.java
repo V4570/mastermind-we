@@ -1,6 +1,5 @@
 package we.software.gui;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
