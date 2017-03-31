@@ -456,6 +456,12 @@ public class MainMenu extends JFrame{
                     optionsPanel.panelRestart();
                 }
             }
+            else if(e.getSource() == optionsPanel.musicButton){
+
+            }
+            else if(e.getSource() == optionsPanel.soundFXButton){
+
+            }
             else{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
