@@ -300,13 +300,15 @@ public class MainMenu extends JFrame{
 
             try {
                 background = ImageIO.read(LoadAssets.load("gameoptions.png"));
-                exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
-                exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
-                optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
+            exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
+            optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
         }
+
+
 
         private void initPanel(){
             setLayout(null);
@@ -346,6 +348,7 @@ public class MainMenu extends JFrame{
 
         @Override
         protected void paintComponent(Graphics g){
+
             super.paintComponent(g);
             g.drawImage(background,0,0,null);
         }
@@ -385,28 +388,35 @@ public class MainMenu extends JFrame{
      * ακολουθει τα αντίστοιχα βήματα.
      */
     class ButtonListener implements ActionListener{
-        //private AudioLoad select = new AudioLoad("Select.wav");
+
         public void actionPerformed(ActionEvent e) {
+
             if(e.getSource() == howToPlay){
-                System.out.println("how");
+
                 howToPlay.playSound();
             }
+
             else if(e.getSource() == play){
-                System.out.println("play");
+
                 optionsPanel.setPanelInvisible();
                 gameModePanel.setPanelVisible();
+
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
+
                 play.playSound();
             }
+
             else if(e.getSource() == options){
-                System.out.println("options");
+
                 gameModePanel.setPanelInvisible();
                 optionsPanel.setPanelVisible();
+
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
+
                 options.playSound();
             }
             /**
@@ -416,10 +426,13 @@ public class MainMenu extends JFrame{
              * στο Panel και έχει αλλάξει η δομή του.
              */
             else if(e.getSource() == gameModePanel.exit){
+
                 gameModePanel.setPanelInvisible();
+
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
+
                 options.playSound();
             }
             /**
@@ -428,10 +441,13 @@ public class MainMenu extends JFrame{
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
             else if(e.getSource() == gameModePanel.pVsP){
+
                 gameModePanel.pVsP.setVisible(false);
                 gameModePanel.pVsAi.setVisible(false);
+
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvpTitle.getIconWidth(), gameModePanel.pvpTitle.getIconHeight());
                 gameModePanel.title.setIcon(gameModePanel.pvpTitle);
+
                 gameModePanel.flagOptions = false;
                 gameModePanel.pVsP.playSound();
             }
@@ -441,26 +457,36 @@ public class MainMenu extends JFrame{
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
             else if(e.getSource() == gameModePanel.pVsAi){
+
                 gameModePanel.pVsP.setVisible(false);
                 gameModePanel.pVsAi.setVisible(false);
+
                 gameModePanel.title.setIcon(gameModePanel.pvaiTitle);
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
+
                 gameModePanel.flagOptions = false;
                 gameModePanel.pVsAi.playSound();
             }
+
             else if(e.getSource() == optionsPanel.exit){
+
                 optionsPanel.setPanelInvisible();
+
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
+
                 options.playSound();
             }
+
             else if(e.getSource() == optionsPanel.musicButton){
 
             }
+
             else if(e.getSource() == optionsPanel.soundFXButton){
 
             }
+
             else{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
