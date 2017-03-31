@@ -31,7 +31,7 @@ public class MainMenu extends JFrame{
         play = addMenuButton("play.png");
         options = addMenuButton("options.png");
 
-        setUpButtons();
+        addExitButton();
 
         initFrame();
 
@@ -82,18 +82,18 @@ public class MainMenu extends JFrame{
     private MenuButton addMenuButton(String path){
         posY += 70;
         int posX = 130;
-        MenuButton button = new MenuButton(path, posX, posY);
+        MenuButton button = new MenuButton(path, posX, posY, 51);
         button.addActionListener(b);
         return button;
     }
 
-    //==================================================================================================setUpButtons
+    //==================================================================================================addExitButton
     /**
      * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
      * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
      * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
      */
-    private void setUpButtons(){
+    private void addExitButton(){
 
         exitButton = new JButton();
 
@@ -140,7 +140,7 @@ public class MainMenu extends JFrame{
         private Image background;
         private ImageIcon exitIcon, exitIconHover, titleImage,
                  pvaiTitle, pvpTitle;
-        private OptionsButton pVsAi, pVsP;
+        private MenuButton pVsAi, pVsP;
         private JButton exit;
         private JLabel title;
         private boolean flag = false;
@@ -158,10 +158,10 @@ public class MainMenu extends JFrame{
             title.setIcon(titleImage);
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
-            pVsAi = new OptionsButton("pvai.png", 39, 46);
+            pVsAi = new MenuButton("pvai.png", 39, 46, 0);
             pVsAi.addActionListener(b);
 
-            pVsP = new OptionsButton("pvp.png", 39, 98);
+            pVsP = new MenuButton("pvp.png", 39, 98, 0);
             pVsP.addActionListener(b);
 
 
@@ -262,8 +262,8 @@ public class MainMenu extends JFrame{
         private ImageIcon exitIcon, exitIconHover, titleImage, musicTitle, soundFXTitle, optionsSquare;
         private JLabel music;
         private JLabel soundFX;
-        private OptionsButton musicButton;
-        private OptionsButton soundFXButton;
+        private MenuButton musicButton;
+        private MenuButton soundFXButton;
         private JButton exit;
         private JLabel title;
         private boolean flag = false;
@@ -291,9 +291,9 @@ public class MainMenu extends JFrame{
             soundFX.setIcon(soundFXTitle);
             soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
 
-            musicButton = new OptionsButton("redsquare.png", 250, 60);
+            musicButton = new MenuButton("redsquare.png", 250, 60, 0);
             musicButton.addActionListener(b);
-            soundFXButton = new OptionsButton("redsquare.png", 250, 110);
+            soundFXButton = new MenuButton("redsquare.png", 250, 110, 0);
             soundFXButton.addActionListener(b);
 
             readImages();
@@ -394,7 +394,7 @@ public class MainMenu extends JFrame{
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == howToPlay){
                 System.out.println("how");
-                //select.playClip();
+                howToPlay.playSound();
             }
             else if(e.getSource() == play){
                 System.out.println("play");
@@ -403,7 +403,7 @@ public class MainMenu extends JFrame{
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
-                //select.playClip();
+                play.playSound();
             }
             else if(e.getSource() == options){
                 System.out.println("options");
@@ -412,7 +412,7 @@ public class MainMenu extends JFrame{
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
-                //select.playClip();
+                options.playSound();
             }
             /**
              * Κλείνει το gameOptions Panel και καλεί την μέθοδο
@@ -425,6 +425,7 @@ public class MainMenu extends JFrame{
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
+                options.playSound();
             }
             /**
              * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
@@ -437,6 +438,7 @@ public class MainMenu extends JFrame{
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvpTitle.getIconWidth(), gameModePanel.pvpTitle.getIconHeight());
                 gameModePanel.title.setIcon(gameModePanel.pvpTitle);
                 gameModePanel.flagOptions = false;
+                gameModePanel.pVsP.playSound();
             }
             /**
              * Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
@@ -449,12 +451,14 @@ public class MainMenu extends JFrame{
                 gameModePanel.title.setIcon(gameModePanel.pvaiTitle);
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
                 gameModePanel.flagOptions = false;
+                gameModePanel.pVsAi.playSound();
             }
             else if(e.getSource() == optionsPanel.exit){
                 optionsPanel.setPanelInvisible();
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
+                options.playSound();
             }
             else if(e.getSource() == optionsPanel.musicButton){
 
