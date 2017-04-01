@@ -1,0 +1,2 @@
+Mastermind, 0, 0
+Bill, 100, 5
