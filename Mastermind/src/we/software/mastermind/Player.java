@@ -111,6 +111,7 @@ class Player {
 			 }
     	}
     	
+    	
         guess = new ArrayList();
         outcome = new SmallPeg[numberOfPins];
     	
