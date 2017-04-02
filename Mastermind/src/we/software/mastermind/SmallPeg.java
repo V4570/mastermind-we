@@ -16,8 +16,8 @@ class SmallPeg extends Peg{
     }
 
     @Override
-    String getColor() {
-        return null;
+    int getColor() {
+        return 0;
     }
 
 }
