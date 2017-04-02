@@ -17,7 +17,7 @@ public class ClientServer extends Thread {
 	String fileGamePATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\game.log");
 	boolean requestCounter = true;
 	int TPORT = 1248;
-	String serverIp;
+	String serverIp = "127.0.0.1";
 	String doJob;
 	String transmitter = "User";
 	String reciever;
@@ -49,41 +49,40 @@ public class ClientServer extends Thread {
 			reciever = info[0].split(":")[2];
 			message = info[1];
 
-			switch (doJob) {
-			case "score": {
-				SaveScore();
-				break;
-			}
-			case "message": {
-				// show message
-
-			}
-			case "play": {
-				SaveGame();
-
-			}
-			case "request": {
-				if (message.equals("accepted")) {
-					// Pop up window OK and game starts
-				} else if (message.equals("inGame")) {
-					// Pop up window PLAYER IN GAME
-				} else {
-					requestJob();
+			if (!inmessage.equals(null)) {
+				switch (doJob) {
+				case "score": {
+					SaveScore();
+					break;
 				}
+				case "message": {
+					// show message
+					System.out.println(transmitter + ": " + message);
 
-			}
-			default:
-				break;
-			}
-			System.out.println(inmessage);
+				}
+				case "play": {
+					SaveGame();
 
+				}
+				case "request": {
+					if (message.equals("accepted")) {
+						// Pop up window OK and game starts
+					} else if (message.equals("inGame")) {
+						// Pop up window PLAYER IN GAME
+					} else {
+						requestJob();
+					}
+
+				}
+				}
+			}
+			socket.close();
 		} catch (IOException e) {
-			System.out.println("Something seriously bad happened");
+			System.out.println("Connection lost...");
 		}
-
 	}
 
-	private void SaveScore() {
+	void SaveScore() {
 		FileWriter fw = null;
 		PrintWriter pw = null;
 		try {
@@ -120,7 +119,7 @@ public class ClientServer extends Thread {
 		}
 	}
 
-	private void SaveGame() {
+	void SaveGame() {
 		FileWriter fw = null;
 		PrintWriter pw = null;
 		try {
