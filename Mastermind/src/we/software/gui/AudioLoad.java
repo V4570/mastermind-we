@@ -7,7 +7,7 @@ import java.net.URL;
 /**
  * Created by bill on 30-Mar-17.
  */
-public class AudioLoad implements LineListener{
+public class AudioLoad{
 
     private Clip audioClip;
     private boolean playCompleted;
@@ -20,66 +20,35 @@ public class AudioLoad implements LineListener{
             AudioFormat format = audioStream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
             audioClip = (Clip) AudioSystem.getLine(info);
-            audioClip.addLineListener(this);
             audioClip.open(audioStream);
 
 
         } catch (IOException e) {
-            System.out.println("Error playing the audio file.");
             e.printStackTrace();
         } catch (UnsupportedAudioFileException ex) {
-            System.out.println("The specified audio file is not supported.");
             ex.printStackTrace();
         } catch (LineUnavailableException ex) {
-            System.out.println("Audio line for playing back is unavailable.");
             ex.printStackTrace();
         }
     }
 
-    @Override
-    public void update(LineEvent event) {
-        LineEvent.Type type = event.getType();
 
-        if (type == LineEvent.Type.START) {
-            System.out.println("Playback started.");
-
-        } else if (type == LineEvent.Type.STOP) {
-            playCompleted = true;
-            System.out.println("Playback completed.");
-        }
-    }
 
     public synchronized void closeClip(){
-        audioClip.close();
-    }
-
-    public synchronized void playClip(){
-        audioClip.start();
-
-        while (!playCompleted) {
-            // wait for the playback completes
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
 
         audioClip.stop();
+        audioClip.setFramePosition(0);
     }
+
 
     public void playMenuClip(){
-        audioClip.start();
-        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-        while (!playCompleted) {
-            // wait for the playback completes
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
 
-        audioClip.stop();
+        new Thread(){
+            public void run(){
+                audioClip.start();
+                audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        }.start();
+
     }
 }

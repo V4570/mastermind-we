@@ -1,5 +1,7 @@
 package we.software.gui;
 
+import sun.applet.Main;
+
 import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -15,6 +17,7 @@ class MenuButton extends JButton {
     private ImageIcon image;
     private ImageIcon imageHover;
     private AudioClip hover, pressed;
+    private boolean isOn = false;
 
     public MenuButton(String imagePath, int xPos, int yPos, int displacement){
 
@@ -30,16 +33,23 @@ class MenuButton extends JButton {
 
                 setIcon(imageHover);
                 setBounds(xPos-displacement, yPos, imageHover.getIconWidth(), imageHover.getIconHeight());
-                URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
-                hover = Applet.newAudioClip(hoverUrl);
-                hover.play();
+
+                if(MainMenu.soundfxOn){
+                    URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
+                    hover = Applet.newAudioClip(hoverUrl);
+                    hover.play();
+                    isOn = true;
+                }
             }
 
             public void mouseExited(MouseEvent e){
 
                 setIcon(image);
                 setBounds(xPos, yPos, image.getIconWidth(), image.getIconHeight());
-                hover.stop();
+                if(isOn){
+                    hover.stop();
+                    isOn = false;
+                }
             }
         });
 
@@ -53,5 +63,11 @@ class MenuButton extends JButton {
         pressed = Applet.newAudioClip(pressedUrl);
         pressed.play();
         //pressed.stop();
+    }
+
+    public void setIcon(String path){
+
+        ImageIcon newImage = new ImageIcon(LoadAssets.load(path));
+        setIcon(newImage);
     }
 }

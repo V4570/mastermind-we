@@ -21,8 +21,13 @@ public class MainMenu extends JFrame{
     private final int HEIGHT = WIDTH / 12*9;
     private int posY = 230;
     private ButtonListener b = new ButtonListener();
+    private boolean musicOn = true;
+    public static boolean soundfxOn = true;
+    private AudioLoad l;
 
     public MainMenu(){
+
+        l = new AudioLoad("MainMenu.wav");
         gameModePanel = new GameMode();
         optionsPanel = new Options();
 
@@ -41,7 +46,6 @@ public class MainMenu extends JFrame{
      * μέρους στοιχεία όπως Buttons, Panels, κλπ.
      */
     private void initFrame(){
-
 
         JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
         exitButton.addActionListener(b);
@@ -73,6 +77,7 @@ public class MainMenu extends JFrame{
 
         setUndecorated(true);
         setVisible(true);
+        l.playMenuClip();
     }
 
     /**
@@ -352,7 +357,7 @@ public class MainMenu extends JFrame{
 
             if(e.getSource() == howToPlay){
 
-                howToPlay.playSound();
+                if(soundfxOn) howToPlay.playSound();
             }
 
             else if(e.getSource() == play){
@@ -364,7 +369,7 @@ public class MainMenu extends JFrame{
                     optionsPanel.panelRestart();
                 }
 
-                play.playSound();
+                if(soundfxOn) play.playSound();
             }
 
             else if(e.getSource() == options){
@@ -376,7 +381,8 @@ public class MainMenu extends JFrame{
                     gameModePanel.panelRestart();
                 }
 
-                options.playSound();
+                if(soundfxOn) options.playSound();
+
             }
             /*
              * Κλείνει το gameOptions Panel και καλεί την μέθοδο
@@ -392,7 +398,8 @@ public class MainMenu extends JFrame{
                     gameModePanel.panelRestart();
                 }
 
-                options.playSound();
+                if(soundfxOn) options.playSound();
+
             }
             /*
              * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
@@ -408,7 +415,7 @@ public class MainMenu extends JFrame{
                 gameModePanel.title.setIcon(gameModePanel.pvpTitle);
 
                 gameModePanel.flagOptions = false;
-                gameModePanel.pVsP.playSound();
+                if(soundfxOn) gameModePanel.pVsP.playSound();
             }
             /*
               Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
@@ -424,7 +431,7 @@ public class MainMenu extends JFrame{
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
 
                 gameModePanel.flagOptions = false;
-                gameModePanel.pVsAi.playSound();
+                if(soundfxOn) gameModePanel.pVsAi.playSound();
             }
 
             else if(e.getSource() == optionsPanel.exit){
@@ -440,10 +447,22 @@ public class MainMenu extends JFrame{
 
             else if(e.getSource() == optionsPanel.musicButton){
 
+                optionsPanel.musicButton.setIcon("hredsquare.png");
+                if(musicOn){
+                    musicOn = false;
+                    l.closeClip();
+                }
+                else{
+                    musicOn = true;
+                    l.playMenuClip();
+                }
             }
 
             else if(e.getSource() == optionsPanel.soundFXButton){
 
+                optionsPanel.soundFXButton.setIcon("hredsquare.png");
+                if(soundfxOn) soundfxOn = false;
+                else soundfxOn = true;
             }
 
             else{
