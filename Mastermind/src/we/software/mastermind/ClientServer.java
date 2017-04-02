@@ -47,6 +47,7 @@ public class ClientServer extends Thread {
 				break;
 			}
 			case "message": {
+				
 
 			}
 			case "play":{
@@ -64,7 +65,7 @@ public class ClientServer extends Thread {
 
 	}
 
-	public void SaveScore() {
+	private void SaveScore() {
 		FileWriter fw = null;
 		PrintWriter pw = null;
 		try {
@@ -101,7 +102,7 @@ public class ClientServer extends Thread {
 		}
 	}
 	
-	public void SaveGame() {
+	private void SaveGame() {
 		FileWriter fw = null;
 		PrintWriter pw = null;
 		try {
@@ -137,5 +138,6 @@ public class ClientServer extends Thread {
 
 		}
 	}
+	
 
 }
