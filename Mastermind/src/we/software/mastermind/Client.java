@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class Client extends Player{
 	Socket socket;
 	int TPORT = 1248;
-	String ServerIp;
+	String serverIp;
 	String username = "O Klain";
 	String enemy = "Mr. Mastermind";
 	String dirPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind");
@@ -45,11 +45,11 @@ public class Client extends Player{
 	}
 
 	public String getServerIp() {
-		return ServerIp;
+		return serverIp;
 	}
 
 	public void setServerIp(String serverIp) {
-		ServerIp = serverIp;
+		serverIp = serverIp;
 	}
 
 	public String getUsername() {
@@ -107,7 +107,7 @@ public class Client extends Player{
 
 	public void SubmitButton(int turn) throws IOException {
 		SaveGame(turn);
-		socket = new Socket(ServerIp, TPORT);
+		socket = new Socket(serverIp, TPORT);
 		String sline = Files.readAllLines(Paths.get(fileGamePATH)).get(turn);
 		sline = sline.split(".", 2)[1].toString().split(" ")[2];
 		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
