@@ -1,22 +1,16 @@
 package we.software.mastermind;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
-public class Client extends Player{
+public class Client extends Player {
 	Socket socket;
 	int TPORT = 1248;
 	String serverIp;
@@ -49,7 +43,7 @@ public class Client extends Player{
 	}
 
 	public void setServerIp(String serverIp) {
-		serverIp = serverIp;
+		this.serverIp = serverIp;
 	}
 
 	public String getUsername() {
@@ -68,19 +62,18 @@ public class Client extends Player{
 		this.enemy = enemy;
 	}
 
-	// Γράφει
 	public void SaveGame(int turn) {
 		try {
 			File file = new File(dirPATH);
-			if (!file.exists()){
+			if (!file.exists()) {
 				file.mkdir();
 			}
-			fw = new FileWriter(fileGamePATH,true);
+			fw = new FileWriter(fileGamePATH, true);
 			bw = new PrintWriter(fw);
-			
-			bw.print(Integer.toString(turn)+".");
-			for(int pin:pins){
-			bw.print(pin+" ");
+
+			bw.print(Integer.toString(turn) + ".");
+			for (int pin : pins) {
+				bw.print(pin + " ");
 			}
 			bw.println();
 			System.out.println("Done");
@@ -115,10 +108,19 @@ public class Client extends Player{
 		socket.close();
 
 	}
+
+	public void sendGameRequest() throws UnknownHostException, IOException {
+		socket = new Socket(serverIp, TPORT);
+		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+		printWriter.println("play:" + username + ":" + enemy + "%" + "gameRequest");
+		socket.close();
+
+	}
+
 	@Override
-	public void addPin(NormalPeg pin){
+	public void addPin(NormalPeg pin) {
 		pins.add(0, pin.getColor());
-		
+
 	}
 
 }

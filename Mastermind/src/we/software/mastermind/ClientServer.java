@@ -6,10 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 
 public class ClientServer extends Thread {
 	Socket socket;
@@ -17,13 +15,14 @@ public class ClientServer extends Thread {
 	String dirPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind");
 	String message = null;
 	String fileGamePATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\game.log");
-	boolean requestCounter=true;
+	boolean requestCounter = true;
 	int TPORT = 1248;
 	String serverIp;
 	String doJob;
 	String transmitter = "User";
 	String reciever;
 	String inmessage;
+
 	public boolean isRequestCounter() {
 		return requestCounter;
 	}
@@ -38,12 +37,6 @@ public class ClientServer extends Thread {
 	}
 
 	public void run() {
-		String doJob;
-		// String tAddress;
-		String transmitter = "User";
-		String reciever;
-		String inmessage;
-
 		try {
 
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -62,24 +55,22 @@ public class ClientServer extends Thread {
 				break;
 			}
 			case "message": {
-				//show message
+				// show message
 
 			}
-			case "play":{
+			case "play": {
 				SaveGame();
-				
+
 			}
-			case "request":{
-				if(message.equals("accepted")){
-					//Pop up window OK and game starts
-				}
-				else if(message.equals("inGame")){
-					//Pop up window PLAYER IN GAME
-				}
-				else{
+			case "request": {
+				if (message.equals("accepted")) {
+					// Pop up window OK and game starts
+				} else if (message.equals("inGame")) {
+					// Pop up window PLAYER IN GAME
+				} else {
 					requestJob();
 				}
-				
+
 			}
 			default:
 				break;
@@ -128,7 +119,7 @@ public class ClientServer extends Thread {
 
 		}
 	}
-	
+
 	private void SaveGame() {
 		FileWriter fw = null;
 		PrintWriter pw = null;
@@ -165,21 +156,20 @@ public class ClientServer extends Thread {
 
 		}
 	}
-	public void requestJob() throws UnknownHostException, IOException{
-		if(isRequestCounter()){
+
+	public void requestJob() throws UnknownHostException, IOException {
+		if (isRequestCounter()) {
 			// Pop up window request
 			socket = new Socket(serverIp, TPORT);
 			PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 			printWriter.println("request:" + reciever + ":" + transmitter + "%" + "accepted");
 			socket.close();
-		}
-		else{
+		} else {
 			socket = new Socket(serverIp, TPORT);
 			PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 			printWriter.println("request:" + reciever + ":" + transmitter + "%" + "inGame");
 			socket.close();
 		}
 	}
-	
 
 }
