@@ -7,6 +7,7 @@ class Game {
     private Player p2;
     private Computer c;
     private int gameType;
+    private int difficulty; // 0-2 (Easy - Hard)
 
 
     public Game(int gameType){
@@ -14,12 +15,12 @@ class Game {
         setGame();
     }
 
-    private void setGame(){
+    private void setGame(){	//PvP / PvE selection
 
         switch (gameType){
             case 0:
                 p1 = new Player();
-                c = new Computer();
+                c = new Computer(difficulty);
                 break;
             case 1:
                 p1 = new Player();
