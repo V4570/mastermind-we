@@ -85,7 +85,7 @@ class Player {
     		
     		try {
 
-    			String data = "aNane, 0, 0\n";
+    			String data = aName + ", 0, 0\n";
 
     			fw = new FileWriter(file.getAbsoluteFile(), true);
     			bw = new BufferedWriter(fw);
