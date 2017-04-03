@@ -5,17 +5,29 @@ package we.software.mastermind;
  */
 class Computer extends Player{
 
-    public Computer() {
+    public Computer(int difficultyChoise) {
 
         super();
+        
+        switch (difficultyChoise){
+        case 0:
+            easyAlgorithm();
+            break;
+        case 1:
+        	mediumAlgorithm();
+            break;
+        case 2:
+        	hardAlgorithm();
+        	
+    }
     }
 
+    
     public void easyAlgorithm(){
 
     }
 
     public void mediumAlgorithm(){
-
     }
 
     public void hardAlgorithm(){

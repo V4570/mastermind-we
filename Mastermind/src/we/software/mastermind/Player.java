@@ -13,17 +13,26 @@ import java.util.Scanner;
  */
 class Player {
 
+	//General User Information
     private String name;
     private int highScore;
     private int leastTurns;
-    private ArrayList<NormalPeg> guess;
-    private SmallPeg[] outcome;
-    private int numberOfPins;
+    
+    //Current Game player information.
+    
+    private ArrayList<PlayingPegs> guess;
+    private ResultPegs[] result;
+    
+    //Game Info
+    private int numberOfPins = 4; //Maybe change this to a global, or move it. 
     private int totalGuesses;
     private int[] points;
     private int currentRound;
+    
     private boolean guessing = true;
-
+    
+    
+    //Constructor
     public Player(String aName){
     	
     	//Διάβασμα του ονόματος του παίκτη - !-Βάλτε το αλλού-!
@@ -112,33 +121,31 @@ class Player {
     	}
     	
     	
-        guess = new ArrayList();
-        outcome = new SmallPeg[numberOfPins];
+        guess = new ArrayList<PlayingPegs>();
+        result = new ResultPegs[numberOfPins];
+        
+        //Αρχικοποιηση default των selected pegs σε 0.
+        for (PlayingPegs aPeg : guess){
+        	aPeg.setColour(0);
+        }
+        
     	
     }
     
-    public Player(){
+    public Player(){		//This is for calling the computer.
     		
     	name = "Mastemind";
     	
-        guess = new ArrayList();
-        outcome = new SmallPeg[numberOfPins];
+        guess = new ArrayList<PlayingPegs>();
+        result = new ResultPegs[numberOfPins];
     }
+    
+    
+    //Methods : 
 
-
-	public void addPin(NormalPeg selectedPin){
-
-    	if(guessing){
-    		for(int i = 0; i < guess.size(); i++){
-        		if(guess.get(i).getXPos() == selectedPin.getXPos() && guess.get(i).getYPos() == selectedPin.getYPos()){
-        			guess.set(i, selectedPin);
-        			return;
-        		}
-        	}
-        	guess.add(selectedPin);
-    	}
-    	else{
-    	}
+    public void AddPin(int position , int colour){	//Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 1-6) 
+    	guess.get(position).setColour(colour);
+    	
     }
     
     public void endGuess(){
