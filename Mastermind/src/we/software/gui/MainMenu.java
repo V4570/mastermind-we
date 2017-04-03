@@ -15,23 +15,25 @@ import java.io.IOException;
 public class MainMenu extends JFrame{
 
     private MenuButton howToPlay, play, options;
-    private JButton exitButton;
     private GameMode gameModePanel;
     private Options optionsPanel;
     private final int WIDTH = 1024;
     private final int HEIGHT = WIDTH / 12*9;
     private int posY = 230;
     private ButtonListener b = new ButtonListener();
+    private boolean musicOn = true;
+    public static boolean soundfxOn = true;
+    private AudioLoad l;
 
     public MainMenu(){
+
+        l = new AudioLoad("MainMenu.wav");
         gameModePanel = new GameMode();
         optionsPanel = new Options();
 
         howToPlay = addMenuButton("howtoplay.png");
         play = addMenuButton("play.png");
         options = addMenuButton("options.png");
-
-        setUpButtons();
 
         initFrame();
 
@@ -44,6 +46,9 @@ public class MainMenu extends JFrame{
      * μέρους στοιχεία όπως Buttons, Panels, κλπ.
      */
     private void initFrame(){
+
+        JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
+        exitButton.addActionListener(b);
 
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -72,6 +77,7 @@ public class MainMenu extends JFrame{
 
         setUndecorated(true);
         setVisible(true);
+        l.playMenuClip();
     }
 
     /**
@@ -82,52 +88,9 @@ public class MainMenu extends JFrame{
     private MenuButton addMenuButton(String path){
         posY += 70;
         int posX = 130;
-        MenuButton button = new MenuButton(path, posX, posY);
+        MenuButton button = new MenuButton(path, posX, posY, 51);
         button.addActionListener(b);
         return button;
-    }
-
-    //==================================================================================================setUpButtons
-    /**
-     * Μέθοδος που αρχικοποιεί τα κουμπιά που θέλουμε να έχουμε στο μενού. Αφορά
-     * την αριστερή στήλη του μενού. Η μεταβλητή posY που αλλάζει αυξάνεται κάθε
-     * φορά που προστίθεται ένα κουμπί κατά 70 pixel για σωστή στοίχιση.
-     */
-    private void setUpButtons(){
-
-        exitButton = new JButton();
-
-        try {
-            exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        exitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("hexit.png"))));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                try {
-                    exitButton.setIcon(new ImageIcon(ImageIO.read(LoadAssets.load("exit.png"))));
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-            }
-        });
-
-        exitButton.setOpaque(false);
-        exitButton.setContentAreaFilled(false);
-        exitButton.setBorderPainted(false);
-        exitButton.addActionListener(b);
-        exitButton.setBounds(1001,5,18,15);
     }
 
     //==================================================================================================GameMode
@@ -140,28 +103,27 @@ public class MainMenu extends JFrame{
         private Image background;
         private ImageIcon exitIcon, exitIconHover, titleImage,
                  pvaiTitle, pvpTitle;
-        private OptionsButton pVsAi, pVsP;
+        private MenuButton pVsAi, pVsP;
         private JButton exit;
         private JLabel title;
         private boolean flag = false;
         private boolean flagOptions = true;
 
         private GameMode(){
+
             title = new JLabel();
-            try {
-                titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
-                pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
-                pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
+            pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
+            pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
+
             title.setIcon(titleImage);
             title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
-            pVsAi = new OptionsButton("pvai.png", 39, 46);
+            pVsAi = new MenuButton("pvai.png", 39, 46, 0);
             pVsAi.addActionListener(b);
 
-            pVsP = new OptionsButton("pvp.png", 39, 98);
+            pVsP = new MenuButton("pvp.png", 39, 98, 0);
             pVsP.addActionListener(b);
 
 
@@ -262,8 +224,8 @@ public class MainMenu extends JFrame{
         private ImageIcon exitIcon, exitIconHover, titleImage, musicTitle, soundFXTitle, optionsSquare;
         private JLabel music;
         private JLabel soundFX;
-        private OptionsButton musicButton;
-        private OptionsButton soundFXButton;
+        private MenuButton musicButton;
+        private MenuButton soundFXButton;
         private JButton exit;
         private JLabel title;
         private boolean flag = false;
@@ -275,13 +237,10 @@ public class MainMenu extends JFrame{
             music = new JLabel();
             soundFX = new JLabel();
 
-            try {
-                titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
-                musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
-                soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
+            musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
+            soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
+
             title.setIcon(titleImage);
             title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
@@ -291,9 +250,9 @@ public class MainMenu extends JFrame{
             soundFX.setIcon(soundFXTitle);
             soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
 
-            musicButton = new OptionsButton("redsquare.png", 250, 60);
+            musicButton = new MenuButton("redsquare.png", 250, 60, 0);
             musicButton.addActionListener(b);
-            soundFXButton = new OptionsButton("redsquare.png", 250, 110);
+            soundFXButton = new MenuButton("redsquare.png", 250, 110, 0);
             soundFXButton.addActionListener(b);
 
             readImages();
@@ -305,13 +264,15 @@ public class MainMenu extends JFrame{
 
             try {
                 background = ImageIO.read(LoadAssets.load("gameoptions.png"));
-                exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
-                exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
-                optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
+            exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
+            optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
         }
+
+
 
         private void initPanel(){
             setLayout(null);
@@ -351,6 +312,7 @@ public class MainMenu extends JFrame{
 
         @Override
         protected void paintComponent(Graphics g){
+
             super.paintComponent(g);
             g.drawImage(background,0,0,null);
         }
@@ -390,78 +352,119 @@ public class MainMenu extends JFrame{
      * ακολουθει τα αντίστοιχα βήματα.
      */
     class ButtonListener implements ActionListener{
-        //private AudioLoad select = new AudioLoad("Select.wav");
+
         public void actionPerformed(ActionEvent e) {
+
             if(e.getSource() == howToPlay){
-                System.out.println("how");
-                //select.playClip();
+
+                if(soundfxOn) howToPlay.playSound();
             }
+
             else if(e.getSource() == play){
-                System.out.println("play");
+
                 optionsPanel.setPanelInvisible();
                 gameModePanel.setPanelVisible();
+
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
-                //select.playClip();
+
+                if(soundfxOn) play.playSound();
             }
+
             else if(e.getSource() == options){
-                System.out.println("options");
+
                 gameModePanel.setPanelInvisible();
                 optionsPanel.setPanelVisible();
+
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
-                //select.playClip();
+
+                if(soundfxOn) options.playSound();
+
             }
-            /**
+            /*
              * Κλείνει το gameOptions Panel και καλεί την μέθοδο
              * panelRestart() που θέτει το Panel στην αρχική του
              * κατάσταση εφόσον έχει πατηθεί κάποιο κουμπί μέσα
              * στο Panel και έχει αλλάξει η δομή του.
              */
             else if(e.getSource() == gameModePanel.exit){
+
                 gameModePanel.setPanelInvisible();
+
                 if(!gameModePanel.flagOptions){
                     gameModePanel.panelRestart();
                 }
+
+                if(soundfxOn) options.playSound();
+
             }
-            /**
+            /*
              * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
              * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
              * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
             else if(e.getSource() == gameModePanel.pVsP){
+
                 gameModePanel.pVsP.setVisible(false);
                 gameModePanel.pVsAi.setVisible(false);
+
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvpTitle.getIconWidth(), gameModePanel.pvpTitle.getIconHeight());
                 gameModePanel.title.setIcon(gameModePanel.pvpTitle);
+
                 gameModePanel.flagOptions = false;
+                if(soundfxOn) gameModePanel.pVsP.playSound();
             }
-            /**
-             * Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
-             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
-             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+            /*
+              Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
+              και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
+              τα Bounds για να τοποθετείται σωστά μέσα στο panel.
              */
             else if(e.getSource() == gameModePanel.pVsAi){
+
                 gameModePanel.pVsP.setVisible(false);
                 gameModePanel.pVsAi.setVisible(false);
+
                 gameModePanel.title.setIcon(gameModePanel.pvaiTitle);
                 gameModePanel.title.setBounds(30, -2, gameModePanel.pvaiTitle.getIconWidth(), gameModePanel.pvaiTitle.getIconHeight());
+
                 gameModePanel.flagOptions = false;
+                if(soundfxOn) gameModePanel.pVsAi.playSound();
             }
+
             else if(e.getSource() == optionsPanel.exit){
+
                 optionsPanel.setPanelInvisible();
+
                 if(!optionsPanel.flagOptions){
                     optionsPanel.panelRestart();
                 }
+
+                options.playSound();
             }
+
             else if(e.getSource() == optionsPanel.musicButton){
 
+                optionsPanel.musicButton.setIcon("hredsquare.png");
+                if(musicOn){
+                    musicOn = false;
+                    l.closeClip();
+                }
+                else{
+                    musicOn = true;
+                    l.playMenuClip();
+                }
             }
+
             else if(e.getSource() == optionsPanel.soundFXButton){
 
+                optionsPanel.soundFXButton.setIcon("hredsquare.png");
+                if(soundfxOn) soundfxOn = false;
+                else soundfxOn = true;
             }
+
             else{
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
