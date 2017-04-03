@@ -117,10 +117,10 @@ public class Client extends Player {
 
 	}
 
-	@Override
-	public void addPin(NormalPeg pin) {
-		pins.add(0, pin.getColor());
-
-	}
+//	@Override
+//	public void addPin(PlayingPegs pin) {
+//		pins.add(0, pin.getColor());
+//
+//	}
 
 }
