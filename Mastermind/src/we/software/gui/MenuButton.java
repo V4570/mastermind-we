@@ -1,7 +1,5 @@
 package we.software.gui;
 
-import sun.applet.Main;
-
 import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -10,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 
 /**
- * Created by Camel on 30-Mar-17.
+ * Created by Bill on 30-Mar-17.
  */
 class MenuButton extends JButton {
 
@@ -59,10 +57,10 @@ class MenuButton extends JButton {
     }
 
     public void playSound(){
+
         URL pressedUrl = MenuButton.class.getResource("/Select.wav");
         pressed = Applet.newAudioClip(pressedUrl);
         pressed.play();
-        //pressed.stop();
     }
 
     public void setIcon(String path){

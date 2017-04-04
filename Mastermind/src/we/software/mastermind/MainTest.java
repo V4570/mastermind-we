@@ -1,6 +1,6 @@
 package we.software.mastermind;
 
-import we.software.gui.AudioLoad;
+
 import we.software.gui.MainMenu;
 
 class MainTest {

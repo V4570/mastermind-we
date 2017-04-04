@@ -24,6 +24,7 @@ public class MainMenu extends JFrame{
     private boolean musicOn = true;
     public static boolean soundfxOn = true;
     private AudioLoad l;
+    private String username;
 
     public MainMenu(){
 
@@ -39,10 +40,9 @@ public class MainMenu extends JFrame{
 
     }
 
-    //===================================================================================================initFrame
     /**
      * Εδώ αρχικοποιείται το frame μαζί με ότι στοιχεία θέλουμε να προσθέσουμε.
-     * Καλείτε τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
+     * Καλείται τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
      * μέρους στοιχεία όπως Buttons, Panels, κλπ.
      */
     private void initFrame(){
@@ -78,6 +78,10 @@ public class MainMenu extends JFrame{
         setUndecorated(true);
         setVisible(true);
         l.playMenuClip();
+
+        do{
+            username = JOptionPane.showInputDialog(null, "Give a username.");
+        }while(username == null || JOptionPane.showInputDialog(null, "Give a username.").isEmpty());
     }
 
     /**
@@ -86,6 +90,7 @@ public class MainMenu extends JFrame{
      * στοίχιση.
      */
     private MenuButton addMenuButton(String path){
+
         posY += 70;
         int posX = 130;
         MenuButton button = new MenuButton(path, posX, posY, 51);
@@ -93,7 +98,6 @@ public class MainMenu extends JFrame{
         return button;
     }
 
-    //==================================================================================================GameMode
     /**
      * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
      * το παραθυράκι επιλογής game mode αφού πατηθεί το κουμπί Play.
@@ -217,7 +221,6 @@ public class MainMenu extends JFrame{
         }
     }
 
-
     class Options extends JPanel{
 
         private Image background;
@@ -271,7 +274,6 @@ public class MainMenu extends JFrame{
             exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
             optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
         }
-
 
 
         private void initPanel(){
@@ -346,7 +348,6 @@ public class MainMenu extends JFrame{
         }
     }
 
-    //==================================================================================================ButtonListener
     /**
      * Ειδική κλάση για να ελέγχει ποιό κουμπί πατήθηκε και να
      * ακολουθει τα αντίστοιχα βήματα.
