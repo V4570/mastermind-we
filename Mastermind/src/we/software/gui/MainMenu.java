@@ -24,7 +24,7 @@ public class MainMenu extends JFrame{
     private boolean musicOn = true;
     public static boolean soundfxOn = true;
     private AudioLoad l;
-    private String username;
+    private String username = null;
 
     public MainMenu(){
 
@@ -79,9 +79,11 @@ public class MainMenu extends JFrame{
         setVisible(true);
         l.playMenuClip();
 
-        do{
+
+        while(username == null || username.equals("")){
             username = JOptionPane.showInputDialog(null, "Give a username.");
-        }while(username == null || JOptionPane.showInputDialog(null, "Give a username.").isEmpty());
+        }
+        System.out.println(username);
     }
 
     /**
@@ -467,6 +469,7 @@ public class MainMenu extends JFrame{
             }
 
             else{
+                //JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
                 System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
