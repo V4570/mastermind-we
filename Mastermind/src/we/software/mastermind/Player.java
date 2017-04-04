@@ -165,4 +165,8 @@ class Player {
     public String getName(){
         return name;
     }
+    
+    public ArrayList<PlayingPegs> getGuess(){
+    	return guess;
+    }
 }
