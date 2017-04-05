@@ -100,7 +100,6 @@ public class MainMenu extends JFrame{
             selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[0]);
         }
         username = txt.getText();
-        System.out.println(username);
     }
 
     /**
@@ -486,8 +485,8 @@ public class MainMenu extends JFrame{
             }
 
             else{
-                //JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
-                System.exit(0);
+                int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if(exit == 0) System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
         }
