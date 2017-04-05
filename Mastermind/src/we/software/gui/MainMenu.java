@@ -79,10 +79,27 @@ public class MainMenu extends JFrame{
         setVisible(true);
         l.playMenuClip();
 
+        getUsername();
 
-        while(username == null || username.equals("")){
-            username = JOptionPane.showInputDialog(null, "Give a username.");
+    }
+
+    private void getUsername(){
+
+        String[] options = {"OK"};
+        JPanel panel = new JPanel();
+        JLabel lbl = new JLabel("Enter Your username: ");
+        JTextField txt = new JTextField(10);
+        int selectedOption = 0;
+
+
+        panel.add(lbl);
+        panel.add(txt);
+
+
+        while(selectedOption != 1 && txt.getText().equals("")){
+            selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[0]);
         }
+        username = txt.getText();
         System.out.println(username);
     }
 
