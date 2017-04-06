@@ -57,15 +57,10 @@ public class MainMenu extends JFrame{
 
         try {
             setIconImage(ImageIO.read(LoadAssets.load("master.png")));
+            setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("Background.png")))));
         }
         catch (IOException exc) {
             exc.printStackTrace();
-        }
-
-        try {
-            setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("Background.png")))));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         add(howToPlay);
@@ -451,6 +446,9 @@ public class MainMenu extends JFrame{
 
                 gameModePanel.flagOptions = false;
                 if(soundfxOn) gameModePanel.pVsAi.playSound();
+                new GameGui();
+                setVisible(false);
+                if(musicOn) l.closeClip();
             }
 
             else if(e.getSource() == optionsPanel.exit){
@@ -485,10 +483,15 @@ public class MainMenu extends JFrame{
             }
 
             else{
+
                 int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
                 if(exit == 0) System.exit(0);
                 //setState(Frame.ICONIFIED);
             }
         }
+    }
+
+    public void setFrameVisible(){
+        setVisible(true);
     }
 }
