@@ -21,7 +21,7 @@ public class MainMenu extends JFrame{
     private final int HEIGHT = WIDTH / 12*9;
     private int posY = 230;
     private ButtonListener b = new ButtonListener();
-    private boolean musicOn = true;
+    public static boolean musicOn = true;
     public static boolean soundfxOn = true;
     private AudioLoad l;
     private String username = null;
@@ -446,8 +446,11 @@ public class MainMenu extends JFrame{
 
                 gameModePanel.flagOptions = false;
                 if(soundfxOn) gameModePanel.pVsAi.playSound();
-                new GameGui();
+                new GameGui(MainMenu.this);
                 setVisible(false);
+
+                gameModePanel.panelRestart();
+                gameModePanel.setPanelInvisible();
                 if(musicOn) l.closeClip();
             }
 
@@ -493,5 +496,6 @@ public class MainMenu extends JFrame{
 
     public void setFrameVisible(){
         setVisible(true);
+        l.playMenuClip();
     }
 }

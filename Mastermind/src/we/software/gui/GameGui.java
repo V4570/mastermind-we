@@ -11,13 +11,15 @@ import java.io.IOException;
  */
 public class GameGui extends JFrame{
 
+    private MainMenu previous;
     private final int WIDTH = 1024;
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
     private MenuButton exitButton, optionsButton, backButton;
 
-    public GameGui(){
+    public GameGui(MainMenu previous){
 
+        this.previous = previous;
         setUpButtons();
         initFrame();
     }
@@ -66,6 +68,8 @@ public class GameGui extends JFrame{
             }
             else if(e.getSource() == backButton){
 
+                setVisible(false);
+                previous.setFrameVisible();
             }
             else if(e.getSource() == exitButton){
                 System.exit(0);
