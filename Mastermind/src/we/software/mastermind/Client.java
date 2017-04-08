@@ -1,49 +1,35 @@
 package we.software.mastermind;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
-public class Client extends Player {
+public class Client {
+	String username;
+	String enemy;
 	Socket socket;
-	int TPORT = 1248;
-	String serverIp;
-	String username = "O Klain";
-	String enemy = "Mr. Mastermind";
-	String dirPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind");
-	String fileGamePATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\game.log");
-	PrintWriter bw = null;
-	FileWriter fw = null;
-	ArrayList<Integer> pins = new ArrayList<Integer>();
+	String addMeValue = null;
+	boolean isInGame = false;
 
-	public void setSocket(Socket socket) {
+	public boolean isInGame() {
+		return isInGame;
+	}
+
+	public void setInGame(boolean isInGame) {
+		this.isInGame = isInGame;
+	}
+
+	public String getAddMeValue() {
+		return addMeValue;
+	}
+
+	public void setAddMeValue(String addMeValue) {
+		this.addMeValue = addMeValue;
+	}
+
+	public Client(Socket socket) {
 		this.socket = socket;
-	}
-
-	public void setTPORT(int tPORT) {
-		TPORT = tPORT;
-	}
-
-	public Socket getSocket() {
-		return socket;
-	}
-
-	public int getTPORT() {
-		return TPORT;
-	}
-
-	public String getServerIp() {
-		return serverIp;
-	}
-
-	public void setServerIp(String serverIp) {
-		this.serverIp = serverIp;
 	}
 
 	public String getUsername() {
@@ -62,65 +48,48 @@ public class Client extends Player {
 		this.enemy = enemy;
 	}
 
-	public void SaveGame(int turn) {
-		try {
-			File file = new File(dirPATH);
-			if (!file.exists()) {
-				file.mkdir();
-			}
-			fw = new FileWriter(fileGamePATH, true);
-			bw = new PrintWriter(fw);
-
-			bw.print(Integer.toString(turn) + ".");
-			for (int pin : pins) {
-				bw.print(pin + " ");
-			}
-			bw.println();
-			System.out.println("Done");
-		} catch (IOException e) {
-			System.out.println("Den anoigei oute gia plaka...Hint: Tsekare to path");
-		} finally {
-
-			try {
-
-				if (bw != null)
-					bw.close();
-
-				if (fw != null)
-					fw.close();
-
-			} catch (IOException ex) {
-
-				System.out.println("Den kleinei me tipota...");
-
-			}
-
-		}
-	}
-
-	public void SubmitButton(int turn) throws IOException {
-		SaveGame(turn);
-		socket = new Socket(serverIp, TPORT);
-		String sline = Files.readAllLines(Paths.get(fileGamePATH)).get(turn);
-		sline = sline.split(".", 2)[1].toString().split(" ")[2];
-		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-		printWriter.println("play:" + username + ":" + enemy + "%" + sline);
-		socket.close();
+	public void addMe(String name) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("add:" + name + ": % ");
+		bw.newLine();
+		bw.flush();
 
 	}
 
-	public void sendGameRequest() throws UnknownHostException, IOException {
-		socket = new Socket(serverIp, TPORT);
-		PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-		printWriter.println("play:" + username + ":" + enemy + "%" + "gameRequest");
-		socket.close();
-
+	public void SendGameRequest() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("request:" + username + ":" + enemy + "%wannaplay");
+		bw.newLine();
+		bw.flush();
 	}
 
-//	@Override
-//	public void addPin(PlayingPegs pin) {
-//		pins.add(0, pin.getColor());
-//
-//	}
+	public void AcceptGameRequest() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("request:" + username + ":" + enemy + "%ok");
+		bw.newLine();
+		bw.flush();
+		// game starts
+	}
+
+	public void RejectGameRequest() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("request:" + username + ":" + enemy + "%anotherday");
+		bw.newLine();
+		bw.flush();
+	}
+
+	public void SendCloseMessage() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("close:" + username + ":" + "server" + "%close");
+		bw.newLine();
+		bw.flush();
+	}
+
+	public void SendMessage(String someone, String mes) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("message:" + username + ":" + someone + "%" + mes);
+		bw.newLine();
+		bw.flush();
+	}
 
 }
