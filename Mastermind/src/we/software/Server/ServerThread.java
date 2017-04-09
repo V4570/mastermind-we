@@ -42,7 +42,7 @@ public class ServerThread extends Thread {
 						host = info[0].split(":")[1];
 						reciever = info[0].split(":")[2];
 						message = info[1];
-						if (inmessage.startsWith("add") && host != null) {
+						if (inmessage.startsWith("add")) {
 							addJob(transmitter,host);
 
 						} else if (inmessage.startsWith("close")) {
