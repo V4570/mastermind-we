@@ -40,11 +40,10 @@ public class ServerThread extends Thread {
 					try {
 						String[] info = inmessage.split("%", 2);
 						host = info[0].split(":")[1];
-						transmitter.setName(host);
 						reciever = info[0].split(":")[2];
 						message = info[1];
 						if (inmessage.startsWith("add") && host != null) {
-							addJob(transmitter);
+							addJob(transmitter,host);
 
 						} else if (inmessage.startsWith("close")) {
 							closeJob(transmitter);
@@ -98,8 +97,9 @@ public class ServerThread extends Thread {
 	// O transmitter stelnei aitima gia na kataxwrithei sto mitrwo tou server
 	// kai na mporei na paiksei me allous. Ean to onoma einai diathesimo tote
 	// pairnei pisw to minima 'ok' alliws pairnei to minima 'taken'
-	void addJob(Client transmitter) throws UnknownHostException, IOException, InterruptedException {
+	void addJob(Client transmitter, String host) throws UnknownHostException, IOException, InterruptedException {
 		if (!clients.containsKey(transmitter.getName())) {
+			transmitter.setName(host);
 			clients.put(transmitter.getName(), transmitter);
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("add:server: %ok");
