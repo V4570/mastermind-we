@@ -98,7 +98,7 @@ public class ServerThread extends Thread {
 	// kai na mporei na paiksei me allous. Ean to onoma einai diathesimo tote
 	// pairnei pisw to minima 'ok' alliws pairnei to minima 'taken'
 	void addJob(Client transmitter, String host) throws UnknownHostException, IOException, InterruptedException {
-		if (!clients.containsKey(transmitter.getName())) {
+		if (!clients.containsKey(host)) {
 			transmitter.setName(host);
 			clients.put(transmitter.getName(), transmitter);
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
