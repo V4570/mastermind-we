@@ -95,6 +95,17 @@ public class MainMenu extends JFrame {
 
 		panel.add(lbl);
 		panel.add(txt);
+		// Checking Server connectivity remove 99-105, 107, 113-127 to make it
+		// like it was
+		// H allagh pou egine einai proxeirorammeni alla leitourgikh
+		// Zitaei apo ton xrhsth na dwsei onoma kai stin sunexeia tsekarei an
+		// ekeinh th stigmh einai kapoios me auto to onoma sundedemenos ston
+		// server an nai tote tou zitaei na
+		// ksanavalei onoma an oxi sunexizei kanonika
+		//gia na xrisimopoieisetai ton server tha anevasw ta stoixeia tou server pou prepei
+		//na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
+		//parakalw na min ginoun upload sto github gia logous asfaleias
+		//o server einai panw sxedon 24/7
 		player = new Client();
 		try {
 			player.startListening();

@@ -16,6 +16,7 @@ public class Client {
 	String server = "";
 	int PORT = 1;
 	String response;
+	BufferedWriter bw;
 
 	public String getResponse() {
 		return response;
@@ -25,13 +26,17 @@ public class Client {
 		this.response = response;
 	}
 
-	public Client(){
+	public Client() {
 		this.enemy = null;
 		this.username = null;
 		this.addMeValue = false;
 		this.response = null;
+		try {
+			this.bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		} catch (IOException e) {
+			System.out.println("Couldn't create bufferedWriter: " + e);
+		}
 	}
-	
 
 	public boolean isInGame() {
 		return isInGame;
@@ -64,69 +69,76 @@ public class Client {
 	public void setEnemy(String enemy) {
 		this.enemy = enemy;
 	}
-	public void startListening() throws UnknownHostException, IOException{
-		socket = new Socket(server,PORT);
-		cServer = new ClientServer(this,socket);
+
+	public void startListening() throws UnknownHostException, IOException {
+		socket = new Socket(server, PORT);
+		cServer = new ClientServer(this, socket);
 		cServer.start();
 	}
-	
-	//asks server's availability for current username
+
+	// asks server's availability for current username
 	public void addMe() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("add:" + username + ": % ");
 		bw.newLine();
 		bw.flush();
 
 	}
-	//send a game request
+
+	// send a game request
 	public void SendGameRequest() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("request:" + username + ":" + enemy + "%wannaplay");
 		bw.newLine();
 		bw.flush();
 	}
-	//accepts a game request
+
+	// accepts a game request
 	public void AcceptGameRequest() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("request:" + username + ":" + enemy + "%ok");
 		bw.newLine();
 		bw.flush();
 		// game starts
 	}
-	//rejects a game request
+
+	// rejects a game request
 	public void RejectGameRequest() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("request:" + username + ":" + enemy + "%not");
 		bw.newLine();
 		bw.flush();
 	}
-	//it will change soon
+
+	// it will change soon
 	public void SendGamePlay() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("play:" + username + ":" + enemy + "%" +"");
+		bw.write("play:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
 	}
-	//it will change soon
+
+	// it will change soon
 	public void SendGameRoundScore() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("score:" + username + ":" + enemy + "%" +"");
+		bw.write("score:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
 	}
-	//sends this message when the game closes to inform server
+
+	// it will change soon
+	public void SendFinalScore(String someone, String mes) throws IOException {
+		bw.write("fscore:" + username + ":" + enemy + "%" + "");
+		bw.newLine();
+		bw.flush();
+	}
+
+	// sends this message when the game closes to inform server
 	public void SendCloseMessage() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("close:" + username + ":" + "server" + "%close");
 		bw.newLine();
 		bw.flush();
 	}
-	//sends a chat message
+
+	// sends a chat message
 	public void SendMessage(String someone, String mes) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("message:" + username + ":" + someone + "%" + mes);
 		bw.newLine();
 		bw.flush();
 	}
-	
+
 }
