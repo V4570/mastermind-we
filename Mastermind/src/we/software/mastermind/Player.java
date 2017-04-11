@@ -125,6 +125,7 @@ class Player {
         result = new ResultPegs[numberOfPins];
         
         //Αρχικοποιηση default των selected pegs σε 0.
+        //Κανετε το for σε αδειο arrayList... Θελει διορθωση
         for (PlayingPegs aPeg : guess){
         	aPeg.setColour(0);
         }
