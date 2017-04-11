@@ -125,6 +125,7 @@ class Player {
         result = new ResultPegs[numberOfPins];
         
         //Αρχικοποιηση default των selected pegs σε 0.
+        //Κανετε το for σε αδειο arrayList... Θελει διορθωση
         for (PlayingPegs aPeg : guess){
         	aPeg.setColour(0);
         }
@@ -168,5 +169,49 @@ class Player {
     
     public ArrayList<PlayingPegs> getGuess(){
     	return guess;
+    }
+    
+    public void GuessToTxt(){
+    	File file = new File("Guess.txt");
+    	BufferedWriter bw = null;
+		FileWriter fw = null;
+		
+		try {
+			String data = "";
+			
+			for(PlayingPegs aPeg: guess)
+				data += aPeg.getColour();
+
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+			try {
+				bw.write(data);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			System.out.println("Done");
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}finally {
+
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			}catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			 }
+		}
     }
 }
