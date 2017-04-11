@@ -7,8 +7,8 @@ class Game {
 
     private boolean started;
     private Player p1;
-    private Player p2;
-    private Computer c;
+    private Player p2; //Player or Computer
+    //private Computer c;
     private int gameType;
     private int difficulty; // 0-2 (Easy - Hard)
 
@@ -23,7 +23,7 @@ class Game {
         switch (gameType){
             case 0:
                 p1 = new Player();
-                c = new Computer(difficulty);
+                p2 = new Computer(difficulty);
                 break;
             case 1:
                 p1 = new Player();
@@ -55,7 +55,7 @@ class Game {
     	ArrayList<PlayingPegs> guess = p1.getGuess();
     	
     	//Πίνακας Player2 ή AI (π2)
-    	ArrayList<PlayingPegs> code = new ArrayList<PlayingPegs>(); 
+    	ArrayList<PlayingPegs> code = p2.getGuess(); 
     	
     	//Αρχικοποίηση τελικού πίνακα (π3)
     	ArrayList<ResultPegs> result = new ArrayList<ResultPegs>();
@@ -74,11 +74,12 @@ class Game {
     		for(int j=0; j<4; j++){
     			PlayingPegs pp2 = code.get(i);
     			
-    			if(pp1.getColour()==pp2.getColour() && i==j)
-    				result.add(new ResultPegs(true));
-    			
-    			else if(guess.get(i).equals(code.get(j)))
-    				result.add(new ResultPegs(false));
+    			if(pp1.getColour()==pp2.getColour()){
+    				if(i==j)
+    					result.add(new ResultPegs(true));
+    				else
+    					result.add(new ResultPegs(false));
+    			}
     		}			
     	}
     	
