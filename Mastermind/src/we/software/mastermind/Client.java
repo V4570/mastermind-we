@@ -135,7 +135,6 @@ public class Client {
 		bw.write("close:" + username + ":" + "server" + "%close");
 		bw.newLine();
 		bw.flush();
-		
 	}
 
 	// sends a chat message
