@@ -52,10 +52,10 @@ class Game {
     private ArrayList<ResultPegs> checkGuess(){
     	
     	//Πίνακας Player1 (π1)
-    	ArrayList<PlayingPegs> guess = p1.getGuess();
+    	ArrayList<PlayingPegs> guess = p1.getCode();
     	
     	//Πίνακας Player2 ή AI (π2)
-    	ArrayList<PlayingPegs> code = p2.getGuess(); 
+    	ArrayList<PlayingPegs> code = p2.getCode();  
     	
     	//Αρχικοποίηση τελικού πίνακα (π3)
     	ArrayList<ResultPegs> result = new ArrayList<ResultPegs>();

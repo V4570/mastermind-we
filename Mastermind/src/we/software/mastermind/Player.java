@@ -166,7 +166,7 @@ class Player {
         return name;
     }
     
-    /*Επιστρέφει τον πίνακα "guess". 
+    /*Επιστρέφει τον πίνακα "guess" 
      *Το άλλαξα από getGuess -> getCode
      *Για να έχει το ίδιο όνομα με τη μέθοδο
      *στη κλάση Computer. 
