@@ -29,8 +29,17 @@ public class MainMenu extends JFrame {
 	public static boolean soundfxOn = true;
 	private AudioLoad l;
 	private String username = null;
+	Client player = null;
 
 	public MainMenu() {
+		
+		player = new Client();
+		
+		try {
+			player.startListening(this);
+		} catch (IOException e1) {
+			System.out.println("Tsekare Server...");
+		}
 
 		l = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
@@ -83,19 +92,19 @@ public class MainMenu extends JFrame {
 
 	}
 
-	private void getUsername() {
+	public void getUsername() {
 
 		String[] options = { "OK" };
 		JPanel panel = new JPanel();
 		JLabel lbl = new JLabel("Enter Your username: ");
 		JTextField txt = new JTextField(10);
-		Client player = null;
+		
 		boolean isOk = true;
 		int selectedOption = 0;
 
 		panel.add(lbl);
 		panel.add(txt);
-		// Checking Server connectivity remove 99-105, 107, 113-127 to make it
+		// Checking Server connectivity remove lines 127-131 to make it
 		// like it was
 		// H allagh pou egine einai proxeirorammeni alla leitourgikh
 		// Zitaei apo ton xrhsth na dwsei onoma kai stin sunexeia tsekarei an
@@ -106,35 +115,19 @@ public class MainMenu extends JFrame {
 		//na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
 		//parakalw na min ginoun upload sto github gia logous asfaleias
 		//o server einai panw sxedon 24/7
-		player = new Client();
-		try {
-			player.startListening();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
+		
 		while ((selectedOption != 1 && txt.getText().equals(""))) {
-			while (!player.getAddMeValue()) {
 				selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				username = txt.getText();
-
-				try {
-					player.setUsername(username);
-					player.addMe();
-					try {
-						Thread.currentThread().sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				} catch (IOException e) {
-					System.out.println("Couldn t create Client object");
-				}
-
-			}
+				
+		}
+		try {
+			player.addMe(username);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

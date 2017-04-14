@@ -6,6 +6,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import we.software.gui.MainMenu;
+
 public class Client {
 	String username;
 	String enemy;
@@ -65,16 +67,16 @@ public class Client {
 		this.enemy = enemy;
 	}
 	//Starts the client ServerThread 
-	public void startListening() throws UnknownHostException, IOException {
+	public void startListening(MainMenu mainMenu) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientServer(this, socket);
+		cServer = new ClientServer(this, socket, mainMenu);
 		cServer.start();
 	}
 
 	// asks server's availability for current username
-	public void addMe() throws IOException {
+	public void addMe(String name) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("add:" + username + ": % ");
+		bw.write("add:" + name + ": % ");
 		bw.newLine();
 		bw.flush();
 

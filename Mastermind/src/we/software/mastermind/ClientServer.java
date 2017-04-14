@@ -5,15 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import we.software.gui.MainMenu;
+
 public class ClientServer extends Thread {
 	final static String fileScorePATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\Score.log");
 	final static String dirPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind");
 	final static String filePlayPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\game.log");
 	Client client;
 	Socket socket;
-	public ClientServer(Client client, Socket socket) {
+	MainMenu mainMenu;
+	public ClientServer(Client client, Socket socket, MainMenu mainMenu) {
 		this.client = client;
 		this.socket = socket;
+		this.mainMenu = mainMenu;
 		
 	}
 
@@ -35,10 +39,10 @@ public class ClientServer extends Thread {
 					message = info[1];
 					if (inmessage.startsWith("add")) {
 						if (message.equals("ok")) {
-							client.setAddMeValue(true);
-						} else {
-							client.setAddMeValue(false);
-						}
+							client.setUsername(reciever);
+						} else if(message.equals("taken")){
+							mainMenu.getUsername();
+						} 
 					} else if (inmessage.startsWith("request")) {
 						if (message.equals("wannaplay")) {
 							if (!client.isInGame()) {
