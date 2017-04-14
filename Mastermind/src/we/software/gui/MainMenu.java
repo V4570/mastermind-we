@@ -54,12 +54,10 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * Ξ•Ξ΄Ο� Ξ±Ο�Ο‡ΞΉΞΊΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξ±ΞΉ Ο„ΞΏ frame ΞΌΞ±Ξ¶Ξ― ΞΌΞµ Ο�Ο„ΞΉ
-	 * ΟƒΟ„ΞΏΞΉΟ‡ΞµΞ―Ξ± ΞΈΞ­Ξ»ΞΏΟ…ΞΌΞµ Ξ½Ξ± Ο€Ο�ΞΏΟƒΞΈΞ­ΟƒΞΏΟ…ΞΌΞµ.
-	 * Ξ�Ξ±Ξ»ΞµΞ―Ο„Ξ±ΞΉ Ο„ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―Ξ± ΟƒΟ„ΞΏΞ½ constructor, Ξ±Ο†ΞΏΟ�
-	 * Ξ­Ο‡ΞΏΟ…Ξ½ Ξ΄Ξ·ΞΌΞΉΞΏΟ…Ο�Ξ³Ξ·ΞΈΞµΞ― Ο�Ξ»Ξ± Ο„Ξ± ΞµΟ€ΞΉ- ΞΌΞ­Ο�ΞΏΟ…Ο‚
-	 * ΟƒΟ„ΞΏΞΉΟ‡ΞµΞ―Ξ± Ο�Ο€Ο‰Ο‚ Buttons, Panels, ΞΊΞ»Ο€.
-	 */
+     * Εδώ αρχικοποιείται το frame μαζί με ότι στοιχεία θέλουμε να προσθέσουμε.
+     * Καλείται τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
+     * μέρους στοιχεία όπως Buttons, Panels, κλπ.
+     */
 	private void initFrame() {
 
 		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
@@ -132,11 +130,10 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * Ξ�Ξ­ΞΈΞΏΞ΄ΞΏΟ‚ Ο€ΞΏΟ… Ξ±Ο�Ο‡ΞΉΞΊΞΏΟ€ΞΏΞΉΞµΞ― Ο„Ξ± ΞΊΞΏΟ…ΞΌΟ€ΞΉΞ¬ Ξ³ΞΉΞ±
-	 * Ο„ΞΏ ΞΌΞµΞ½ΞΏΟ�. Ξ¤ΞΏ posY Ξ±Ο…ΞΎΞ¬Ξ½ΞµΟ„Ξ±ΞΉ ΞΊΞ±Ο„Ξ¬ 70 ΞΊΞ¬ΞΈΞµ
-	 * Ο†ΞΏΟ�Ξ¬ Ο€ΞΏΟ… Ο€Ο�ΞΏΟƒΟ„Ξ―ΞΈΞµΟ„Ξ±ΞΉ Ξ­Ξ½Ξ± ΞΊΞΏΟ…ΞΌΟ€Ξ― Ο�ΟƒΟ„Ξµ Ξ½Ξ±
-	 * Ξ³Ξ―Ξ½ΞµΟ„Ξ±ΞΉ ΟƒΟ‰ΟƒΟ„Ξ® ΞΊΞ±Ο„Ξ±ΞΊΟ�Ο�Ο…Ο†Ξ· ΟƒΟ„ΞΏΞ―Ο‡ΞΉΟƒΞ·.
-	 */
+     * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνεται κατά 70
+     * κάθε φορά που προστίθεται ένα κουμπί ώστε να γίνεται σωστή κατακόρυφη
+     * στοίχιση.
+     */
 	private MenuButton addMenuButton(String path) {
 
 		posY += 70;
@@ -147,11 +144,9 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * Ξ•ΟƒΟ‰Ο„ΞµΟ�ΞΉΞΊΞ® ΞΊΞ»Ξ¬ΟƒΞ· Ο„Ο�Ο€ΞΏΟ… JPanel Ξ· ΞΏΟ€ΞΏΞ―Ξ±
-	 * Ο‡Ο�Ξ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξ±ΞΉ Ξ³ΞΉΞ± Ξ½Ξ± ΞµΞΌΟ†Ξ±Ξ½Ξ―Ξ¶ΞµΟ„Ξ±ΞΉ Ο„ΞΏ
-	 * Ο€Ξ±Ο�Ξ±ΞΈΟ…Ο�Ξ¬ΞΊΞΉ ΞµΟ€ΞΉΞ»ΞΏΞ³Ξ®Ο‚ game mode Ξ±Ο†ΞΏΟ� Ο€Ξ±Ο„Ξ·ΞΈΞµΞ―
-	 * Ο„ΞΏ ΞΊΞΏΟ…ΞΌΟ€Ξ― Play.
-	 */
+     * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
+     * το παραθυράκι επιλογής game mode αφού πατηθεί το κουμπί Play.
+     */
 	class GameMode extends JPanel {
 
 		private Image background;
@@ -240,9 +235,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ Panel visible ΞµΟ†Ο�ΟƒΞΏΞ½ ΞµΞ»Ξ­Ξ³ΞΎΞµΞΉ Ο�Ο„ΞΉ
-		 * ΞµΞ―Ξ½Ξ±ΞΉ ΞΊΞ»ΞµΞΉΟƒΟ„Ο�.
-		 */
+         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         */
 		public void setPanelVisible() {
 			if (!flag) {
 				setVisible(!flag);
@@ -251,9 +245,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ Panel invisible ΞµΟ†Ο�ΟƒΞΏΞ½ ΞµΞ»Ξ­Ξ³ΞΎΞµΞΉ Ο�Ο„ΞΉ
-		 * ΞµΞ―Ξ½Ξ±ΞΉ Ξ±Ξ½ΞΏΞΉΟ‡Ο„Ο�.
-		 */
+         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         */
 		public void setPanelInvisible() {
 			if (flag) {
 				setVisible(!flag);
@@ -262,9 +255,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ gameOptions Panel ΟƒΟ„Ξ·Ξ½ Ξ±Ο�Ο‡ΞΉΞΊΞ® Ο„ΞΏΟ…
-		 * ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·.
-		 */
+         * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
+         */
 		public void panelRestart() {
 			pVsP.setVisible(true);
 			pVsAi.setVisible(true);
@@ -371,9 +363,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ Panel visible ΞµΟ†Ο�ΟƒΞΏΞ½ ΞµΞ»Ξ­Ξ³ΞΎΞµΞΉ Ο�Ο„ΞΉ
-		 * ΞµΞ―Ξ½Ξ±ΞΉ ΞΊΞ»ΞµΞΉΟƒΟ„Ο�.
-		 */
+         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         */
 		public void setPanelVisible() {
 			if (!flag) {
 				setVisible(!flag);
@@ -382,9 +373,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ Panel invisible ΞµΟ†Ο�ΟƒΞΏΞ½ ΞµΞ»Ξ­Ξ³ΞΎΞµΞΉ Ο�Ο„ΞΉ
-		 * ΞµΞ―Ξ½Ξ±ΞΉ Ξ±Ξ½ΞΏΞΉΟ‡Ο„Ο�.
-		 */
+         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         */
 		public void setPanelInvisible() {
 			if (flag) {
 				setVisible(!flag);
@@ -393,9 +383,8 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-		 * Ξ�Ξ­Ο„ΞµΞΉ Ο„ΞΏ Options Panel ΟƒΟ„Ξ·Ξ½ Ξ±Ο�Ο‡ΞΉΞΊΞ® Ο„ΞΏΟ…
-		 * ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·.
-		 */
+         * Θέτει το Options Panel στην αρχική του κατάσταση.
+         */
 		public void panelRestart() {
 			title.setIcon(titleImage);
 			title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
@@ -403,10 +392,9 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-	 * Ξ•ΞΉΞ΄ΞΉΞΊΞ® ΞΊΞ»Ξ¬ΟƒΞ· Ξ³ΞΉΞ± Ξ½Ξ± ΞµΞ»Ξ­Ξ³Ο‡ΞµΞΉ Ο€ΞΏΞΉΟ� ΞΊΞΏΟ…ΞΌΟ€Ξ―
-	 * Ο€Ξ±Ο„Ξ®ΞΈΞ·ΞΊΞµ ΞΊΞ±ΞΉ Ξ½Ξ± Ξ±ΞΊΞΏΞ»ΞΏΟ…ΞΈΞµΞΉ Ο„Ξ± Ξ±Ξ½Ο„Ξ―ΟƒΟ„ΞΏΞΉΟ‡Ξ±
-	 * Ξ²Ξ®ΞΌΞ±Ο„Ξ±.
-	 */
+     * Ειδική κλάση για να ελέγχει ποιό κουμπί πατήθηκε και να
+     * ακολουθει τα αντίστοιχα βήματα.
+     */
 	class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -444,12 +432,11 @@ public class MainMenu extends JFrame {
 
 			}
 			/*
-			 * Ξ�Ξ»ΞµΞ―Ξ½ΞµΞΉ Ο„ΞΏ gameOptions Panel ΞΊΞ±ΞΉ ΞΊΞ±Ξ»ΞµΞ― Ο„Ξ·Ξ½
-			 * ΞΌΞ­ΞΈΞΏΞ΄ΞΏ panelRestart() Ο€ΞΏΟ… ΞΈΞ­Ο„ΞµΞΉ Ο„ΞΏ Panel ΟƒΟ„Ξ·Ξ½
-			 * Ξ±Ο�Ο‡ΞΉΞΊΞ® Ο„ΞΏΟ… ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· ΞµΟ†Ο�ΟƒΞΏΞ½ Ξ­Ο‡ΞµΞΉ
-			 * Ο€Ξ±Ο„Ξ·ΞΈΞµΞ― ΞΊΞ¬Ο€ΞΏΞΉΞΏ ΞΊΞΏΟ…ΞΌΟ€Ξ― ΞΌΞ­ΟƒΞ± ΟƒΟ„ΞΏ Panel
-			 * ΞΊΞ±ΞΉ Ξ­Ο‡ΞµΞΉ Ξ±Ξ»Ξ»Ξ¬ΞΎΞµΞΉ Ξ· Ξ΄ΞΏΞΌΞ® Ο„ΞΏΟ….
-			 */
+             * Κλείνει το gameOptions Panel και καλεί την μέθοδο
+             * panelRestart() που θέτει το Panel στην αρχική του
+             * κατάσταση εφόσον έχει πατηθεί κάποιο κουμπί μέσα
+             * στο Panel και έχει αλλάξει η δομή του.
+             */
 			else if (e.getSource() == gameModePanel.exit) {
 
 				gameModePanel.setPanelInvisible();
@@ -463,13 +450,10 @@ public class MainMenu extends JFrame {
 
 			}
 			/*
-			 * Ξ�Ξ¬ΞΈΞµ Ο†ΞΏΟ�Ξ¬ Ο€ΞΏΟ… Ο€Ξ±Ο„ΞΉΞ­Ο„Ξ±ΞΉ Ο„ΞΏ ΞΊΞΏΟ…ΞΌΟ€Ξ―
-			 * Player vs Player ΞµΞΎΞ±Ο†Ξ±Ξ½Ξ―Ξ¶ΞµΞΉ Ο„Ξ± Ο…Ο€Ξ¬Ο�Ο‡ΞΏΞ½Ο„Ξ±
-			 * ΞΊΞΏΟ…ΞΌΟ€ΞΉΞ¬ ΞΊΞ±ΞΉ Ξ±Ξ»Ξ»Ξ¬Ξ¶ΞµΞΉ Ο„ΞΏΞ½ Ο„Ξ―Ο„Ξ»ΞΏ Ο„ΞΏΟ…
-			 * gameOptions Panel ΟƒΞµ Player vs Player. Ξ•Ο€Ξ―ΟƒΞ·Ο‚
-			 * Ξ±Ξ»Ξ»Ξ¬Ξ¶ΞµΞΉ Ο„Ξ± Bounds Ξ³ΞΉΞ± Ξ½Ξ± Ο„ΞΏΟ€ΞΏΞΈΞµΟ„ΞµΞ―Ο„Ξ±ΞΉ
-			 * ΟƒΟ‰ΟƒΟ„Ξ¬ ΞΌΞ­ΟƒΞ± ΟƒΟ„ΞΏ panel.
-			 */
+             * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
+             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
+             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+             */
 			else if (e.getSource() == gameModePanel.pVsP) {
 
 				gameModePanel.pVsP.setVisible(false);
@@ -484,13 +468,10 @@ public class MainMenu extends JFrame {
 					gameModePanel.pVsP.playSound();
 			}
 			/*
-			 * Ξ�Ξ¬ΞΈΞµ Ο†ΞΏΟ�Ξ¬ Ο€ΞΏΟ… Ο€Ξ±Ο„ΞΉΞ­Ο„Ξ±ΞΉ Ο„ΞΏ ΞΊΞΏΟ…ΞΌΟ€Ξ―
-			 * Player vs A.I ΞµΞΎΞ±Ο†Ξ±Ξ½Ξ―Ξ¶ΞµΞΉ Ο„Ξ± Ο…Ο€Ξ¬Ο�Ο‡ΞΏΞ½Ο„Ξ±
-			 * ΞΊΞΏΟ…ΞΌΟ€ΞΉΞ¬ ΞΊΞ±ΞΉ Ξ±Ξ»Ξ»Ξ¬Ξ¶ΞµΞΉ Ο„ΞΏΞ½ Ο„Ξ―Ο„Ξ»ΞΏ Ο„ΞΏΟ…
-			 * gameOptions Panel ΟƒΞµ Player vs A.I. Ξ•Ο€Ξ―ΟƒΞ·Ο‚ Ξ±Ξ»Ξ»Ξ¬Ξ¶ΞµΞΉ
-			 * Ο„Ξ± Bounds Ξ³ΞΉΞ± Ξ½Ξ± Ο„ΞΏΟ€ΞΏΞΈΞµΟ„ΞµΞ―Ο„Ξ±ΞΉ ΟƒΟ‰ΟƒΟ„Ξ¬
-			 * ΞΌΞ­ΟƒΞ± ΟƒΟ„ΞΏ panel.
-			 */
+            Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
+            και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
+            τα Bounds για να τοποθετείται σωστά μέσα στο panel.
+           */
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
 				gameModePanel.pVsP.setVisible(false);
