@@ -18,7 +18,6 @@ public class Client {
 	String server = "";
 	int PORT = 1;
 	String response;
-	
 
 	public String getResponse() {
 		return response;
