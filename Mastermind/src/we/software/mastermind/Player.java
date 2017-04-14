@@ -125,9 +125,8 @@ class Player {
         result = new ResultPegs[numberOfPins];
         
         //Αρχικοποιηση default των selected pegs σε 0.
-        //Κανετε το for σε αδειο arrayList... Θελει διορθωση
-        for (PlayingPegs aPeg : guess){
-        	aPeg.setColour(0);
+        for (int i=0; i<numberOfPins; i++){
+        	guess.add(new PlayingPegs(0));
         }
         
     	
@@ -167,7 +166,13 @@ class Player {
         return name;
     }
     
-    public ArrayList<PlayingPegs> getGuess(){
+    /*Επιστρέφει τον πίνακα "guess" 
+     *Το άλλαξα από getGuess -> getCode
+     *Για να έχει το ίδιο όνομα με τη μέθοδο
+     *στη κλάση Computer. 
+    */
+   
+    public ArrayList<PlayingPegs> getCode(){
     	return guess;
     }
     
