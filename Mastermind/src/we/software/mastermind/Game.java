@@ -6,7 +6,8 @@ import java.util.Collections;
 class Game {
 
     private boolean started;
-    private Player p1;
+    
+	private Player p1;
     private Player p2; //Player or Computer
     //private Computer c;
     private int gameType;
@@ -32,6 +33,13 @@ class Game {
         }
     }
     
+    public boolean isStarted() {
+		return started;
+	}
+
+	public void setStarted(boolean started) {
+		this.started = started;
+	}    
     
     private boolean checkIfWin(){
     	
