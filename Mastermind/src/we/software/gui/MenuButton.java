@@ -19,8 +19,8 @@ class MenuButton extends JButton {
 
     public MenuButton(String imagePath, int xPos, int yPos, int displacement){
 
-        image = new ImageIcon(LoadAssets.load(imagePath));
-        imageHover = new ImageIcon(LoadAssets.load("h" +imagePath));
+        image = new ImageIcon(LoadAssets.load("Buttons/"+imagePath));
+        imageHover = new ImageIcon(LoadAssets.load("Buttons/"+"h" +imagePath));
 
         setIcon(image);
         setBounds(xPos, yPos, image.getIconWidth(), image.getIconHeight());

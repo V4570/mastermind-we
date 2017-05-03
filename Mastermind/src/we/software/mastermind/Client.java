@@ -15,8 +15,8 @@ public class Client {
 	Socket socket;
 	boolean addMeValue;
 	boolean isInGame = false;
-	String server = "";
-	int PORT = 1;
+	String server = "83.212.99.117";
+	int PORT = 12498;
 	String response;
 	
 

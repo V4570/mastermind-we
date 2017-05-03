@@ -25,8 +25,8 @@ public class MainMenu extends JFrame {
 	private final int HEIGHT = WIDTH / 12 * 9;
 	private int posY = 230;
 	private ButtonListener b = new ButtonListener();
-	public static boolean musicOn = true;
-	public static boolean soundfxOn = true;
+	public static boolean musicOn = false;
+	public static boolean soundfxOn = false;
 	private AudioLoad l;
 	private String username = null;
 	Client player = null;
@@ -53,11 +53,7 @@ public class MainMenu extends JFrame {
 
 	}
 
-	/**
-     * Εδώ αρχικοποιείται το frame μαζί με ότι στοιχεία θέλουμε να προσθέσουμε.
-     * Καλείται τελευταία στον constructor, αφού έχουν δημιουργηθεί όλα τα επι-
-     * μέρους στοιχεία όπως Buttons, Panels, κλπ.
-     */
+
 	private void initFrame() {
 
 		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
@@ -84,10 +80,16 @@ public class MainMenu extends JFrame {
 
 		setUndecorated(true);
 		setVisible(true);
-		l.playMenuClip();
+		if(musicOn) l.playMenuClip();
 
-		getUsername();
+		//getUsername();
 
+	}
+
+
+	public void setFrameVisible() {
+		setVisible(true);
+		if(musicOn) l.playMenuClip();
 	}
 
 	public void getUsername() {
@@ -114,7 +116,7 @@ public class MainMenu extends JFrame {
 		//parakalw na min ginoun upload sto github gia logous asfaleias
 		//o server einai panw sxedon 24/7
 		
-		
+
 		while ((selectedOption != 1 && txt.getText().equals(""))) {
 				selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -161,9 +163,9 @@ public class MainMenu extends JFrame {
 
 			title = new JLabel();
 
-			titleImage = new ImageIcon(LoadAssets.load("selectgamemode.png"));
-			pvaiTitle = new ImageIcon(LoadAssets.load("titlepvai.png"));
-			pvpTitle = new ImageIcon(LoadAssets.load("titlepvp.png"));
+			titleImage = new ImageIcon(LoadAssets.load("Buttons/selectgamemode.png"));
+			pvaiTitle = new ImageIcon(LoadAssets.load("Buttons/titlepvai.png"));
+			pvpTitle = new ImageIcon(LoadAssets.load("Buttons/titlepvp.png"));
 
 			title.setIcon(titleImage);
 			title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
@@ -184,8 +186,8 @@ public class MainMenu extends JFrame {
 
 			try {
 				background = ImageIO.read(LoadAssets.load("gameoptions.png"));
-				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("exit.png")));
-				exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("sexit.png")));
+				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("Buttons/exit.png")));
+				exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("Buttons/sexit.png")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -284,9 +286,9 @@ public class MainMenu extends JFrame {
 			music = new JLabel();
 			soundFX = new JLabel();
 
-			titleImage = new ImageIcon(LoadAssets.load("titleoptions.png"));
-			musicTitle = new ImageIcon(LoadAssets.load("titlemusic.png"));
-			soundFXTitle = new ImageIcon(LoadAssets.load("titlesoundfx.png"));
+			titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
+			musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
+			soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
 
 			title.setIcon(titleImage);
 			title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
@@ -314,9 +316,9 @@ public class MainMenu extends JFrame {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			exitIcon = new ImageIcon(LoadAssets.load("exit.png"));
-			exitIconHover = new ImageIcon(LoadAssets.load("sexit.png"));
-			optionsSquare = new ImageIcon(LoadAssets.load("redsquare.png"));
+			exitIcon = new ImageIcon(LoadAssets.load("Buttons/exit.png"));
+			exitIconHover = new ImageIcon(LoadAssets.load("Buttons/sexit.png"));
+			optionsSquare = new ImageIcon(LoadAssets.load("Buttons/redsquare.png"));
 		}
 
 		private void initPanel() {
@@ -391,10 +393,6 @@ public class MainMenu extends JFrame {
 		}
 	}
 
-	/**
-     * Ειδική κλάση για να ελέγχει ποιό κουμπί πατήθηκε και να
-     * ακολουθει τα αντίστοιχα βήματα.
-     */
 	class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -501,7 +499,7 @@ public class MainMenu extends JFrame {
 					optionsPanel.panelRestart();
 				}
 
-				options.playSound();
+				if(soundfxOn) options.playSound();
 			}
 
 			else if (e.getSource() == optionsPanel.musicButton) {
@@ -534,10 +532,5 @@ public class MainMenu extends JFrame {
 				// setState(Frame.ICONIFIED);
 			}
 		}
-	}
-
-	public void setFrameVisible() {
-		setVisible(true);
-		l.playMenuClip();
 	}
 }
