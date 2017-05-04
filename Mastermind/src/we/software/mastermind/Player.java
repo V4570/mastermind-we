@@ -24,10 +24,12 @@ class Player {
     private ResultPegs[] result;
     
     //Game Info
-    private int numberOfPins = 4; //Maybe change this to a global, or move it. 
-    private int totalGuesses;
-    private int[] points;
-    private int currentRound;
+    private int numberOfPins = 4; 
+    
+    private int runningRounds;
+    private int redPegsFound;
+    private int whitePegsFound;
+    private int highscore;
     
     private boolean guessing = true;
     
@@ -128,6 +130,11 @@ class Player {
         for (int i=0; i<numberOfPins; i++){
         	guess.add(new PlayingPegs(0));
         }
+        //Restoring to 0 all highscore values.
+        runningRounds = 0;
+        redPegsFound =0;
+        whitePegsFound =0;
+        
         
     	
     }
@@ -142,39 +149,37 @@ class Player {
     
     
     //Methods : 
-
-    public void AddPin(int position , int colour){	//Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 1-6) 
+    
+    //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 1-6) 
+    public void AddPin(int position , int colour){
     	guess.get(position).setColour(colour);
     	
     }
     
-    public void endGuess(){
+    //When the turn has ended, restores the guessing ArrayList to the default state.
+    public void restoreGuessToDefault(){
     	for(int i = 0; i < guess.size(); i++){
     		guess.remove(i);
     	}
     }
-
-    /*public Peg selectPin(){
-
-    }*/
-
-    public boolean getGuessing(){
-    	return guessing;
+    
+    //Should increase every round by how many red pegs has the player scored. (Resets every time the player starts a new game.)
+    public void AddRedPegs(int found){
+    	redPegsFound += found;
     }
-
-    public String getName(){
-        return name;
+    //Should increase every round by how many white pegs has the player scored. (Resets every time the player starts a new game.)
+    public void AddWhitePegs(int found){
+    	whitePegsFound += found;
+    }
+    //Should increase every round by 1. (Resets every time the player starts a new game.)
+    public void roundIncrease(){
+    	runningRounds++;
+    }
+    //Returning the user highscore at the end of the round. 
+    public double returnHighScore(){
+    	return (redPegsFound * 10 + whitePegsFound * 5) * 1.25 - (0.05 * runningRounds);		//Placeholder values.
     }
     
-    /*Επιστρέφει τον πίνακα "guess" 
-     *Το άλλαξα από getGuess -> getCode
-     *Για να έχει το ίδιο όνομα με τη μέθοδο
-     *στη κλάση Computer. 
-    */
-   
-    public ArrayList<PlayingPegs> getCode(){
-    	return guess;
-    }
     
     public void GuessToTxt(){
     	File file = new File("Guess.txt");
@@ -219,4 +224,27 @@ class Player {
 			 }
 		}
     }
+
+    
+    //Getters 
+    
+    public boolean getGuessing(){
+    	return guessing;
+    }
+
+    public String getName(){
+        return name;
+    }
+    
+    /*Επιστρέφει τον πίνακα "guess" 
+     *Το άλλαξα από getGuess -> getCode
+     *Για να έχει το ίδιο όνομα με τη μέθοδο
+     *στη κλάση Computer. 
+    */
+   
+    public ArrayList<PlayingPegs> getCode(){
+    	return guess;
+    }
+    
+    
 }
