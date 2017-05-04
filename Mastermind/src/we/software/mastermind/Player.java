@@ -29,7 +29,7 @@ class Player {
     private int runningRounds;
     private int redPegsFound;
     private int whitePegsFound;
-    private int highscore;
+    private double highscore;
     
     private boolean guessing = true;
     
@@ -126,10 +126,7 @@ class Player {
         guess = new ArrayList<PlayingPegs>();
         result = new ResultPegs[numberOfPins];
         
-        //Αρχικοποιηση default των selected pegs σε 0.
-        for (int i=0; i<numberOfPins; i++){
-        	guess.add(new PlayingPegs(0));
-        }
+        
         //Restoring to 0 all highscore values.
         runningRounds = 0;
         redPegsFound =0;
@@ -150,26 +147,47 @@ class Player {
     
     //Methods : 
     
-    //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 1-6) 
+    //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
     public void AddPin(int position , int colour){
-    	guess.get(position).setColour(colour);
+    	/* Αμα βγαλουμε τελειως τις κλασεις PlayingPegs / Result pegs
+    	 * 
+    	 * guess.add(position, colour);
+    	 * */
+    	PlayingPegs aPeg = new PlayingPegs(colour);
+    	guess.add(position, aPeg);
     	
+    	
+    }
+    
+    //Before checking the guess ArrayList, fill the position of the pegs that where not assigned a colour, with the default (blank) peg.
+    
+    public void prepareGuess(){
+    	
+    	if (!(guess.size() == 4)){ // If size = 4 , then it is complete.
+    		for(int i = 0; i < guess.size(); i++){
+    			
+        		if (guess.get(i) == null){ // If there is no peg in this position, add the blank peg.
+        			
+        			guess.add(i , new PlayingPegs(0));
+        		}
+        	}
+    	}
     }
     
     //When the turn has ended, restores the guessing ArrayList to the default state.
     public void restoreGuessToDefault(){
-    	for(int i = 0; i < guess.size(); i++){
-    		guess.remove(i);
-    	}
+    	guess.clear();
     }
     
-    //Should increase every round by how many red pegs has the player scored. (Resets every time the player starts a new game.)
-    public void AddRedPegs(int found){
-    	redPegsFound += found;
+    //HighScore
+    
+    //Increases the number of red pegs found by 1. (Resets every time the player starts a new game.)
+    public void redPegIncrease( ){
+    	redPegsFound ++;
     }
-    //Should increase every round by how many white pegs has the player scored. (Resets every time the player starts a new game.)
-    public void AddWhitePegs(int found){
-    	whitePegsFound += found;
+    //Increases the number of white pegs found by 1. (Resets every time the player starts a new game.)
+    public void whitePegIncrease( ){
+    	whitePegsFound ++;
     }
     //Should increase every round by 1. (Resets every time the player starts a new game.)
     public void roundIncrease(){
@@ -177,7 +195,8 @@ class Player {
     }
     //Returning the user highscore at the end of the round. 
     public double returnHighScore(){
-    	return (redPegsFound * 10 + whitePegsFound * 5) * 1.25 - (0.05 * runningRounds);		//Placeholder values.
+    	this.highscore =  (redPegsFound * 10 + whitePegsFound * 5) * 1.25 - (0.05 * runningRounds);		//Placeholder values. If player wins, should get extra bonus points.
+    	return highscore;
     }
     
     

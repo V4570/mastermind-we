@@ -83,15 +83,23 @@ class Game {
     			PlayingPegs pp2 = code.get(i);
     			
     			if(pp1.getColour()==pp2.getColour()){
-    				if(i==j)
+    				if(i==j){
     					result.add(new ResultPegs(true));
-    				else
+    					p1.redPegIncrease();
+    				}
+    					
+    				else{
     					result.add(new ResultPegs(false));
+    					p1.whitePegIncrease();
+    				}
+    					
     			}
     		}			
     	}
     	
     	Collections.shuffle(result);
+    	p1.roundIncrease();
+    	p1.restoreGuessToDefault();
     	return result;
     }
 }
