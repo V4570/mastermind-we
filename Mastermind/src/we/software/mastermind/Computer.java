@@ -11,6 +11,9 @@ class Computer extends Player{
 	// Πινακας που περιεχει το Code 
     private ArrayList<PlayingPegs> CodeToBreak = new ArrayList<PlayingPegs>();
     
+    //Easy Difficulty : Code to crack for the player has 6 colours, no duplicates , no NULL colour.
+    //Medium Difficulty : Code to crack for the player has 6 colours, has duplicates , no NULL colour.
+    //Hard Difficulty : Code to crack for the player has 6 colours, has duplicates , has NULL colour.
     
     
 
@@ -99,7 +102,7 @@ class Computer extends Player{
     	
     	int[] ColorCombo = new int[4];
 		for (int i = 0; i <ColorCombo.length; i++) {
-			ColorCombo[i] =(int)(Math.random()*6);
+			ColorCombo[i] =(int)(Math.random()*7);
 	        
 	    }
     	
