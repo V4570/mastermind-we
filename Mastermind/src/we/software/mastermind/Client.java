@@ -22,9 +22,9 @@ public class Client extends Player{
 
 	public Client() {
 		super();
-		this.enemy = "";
-		this.username = "";
-		this.inGame = false;
+		enemy = "";
+		username = "";
+		inGame = false;
 	}
 
 	public boolean isInGame() {
