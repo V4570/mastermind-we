@@ -6,51 +6,33 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
-public class Client {
-	String username;
-	String enemy;
-	ClientServer cServer;
+public class Client extends Player{
+	private String username;
+	private String enemy;
+	ClientListener cServer;
 	Socket socket;
-	boolean addMeValue;
-	boolean isInGame = false;
+	boolean inGame;
 	String server = "-";
 	int PORT = 12498;
-	String response;
-	
-
-	
-	public String getResponse() {
-		return response;
-	}
-
-	public void setResponse(String response) {
-		this.response = response;
-	}
+	static boolean codeMaker;
+	static int rounds;
 
 	public Client() {
-		this.enemy = null;
-		this.username = null;
-		this.addMeValue = false;
-		this.response = null;
-		
+		super();
+		this.enemy = "";
+		this.username = "";
+		this.inGame = false;
 	}
 
 	public boolean isInGame() {
-		return isInGame;
+		return inGame;
 	}
 
-	public void setInGame(boolean isInGame) {
-		this.isInGame = isInGame;
-	}
-
-	public boolean getAddMeValue() {
-		return addMeValue;
-	}
-
-	public void setAddMeValue(boolean addMeValue) {
-		this.addMeValue = addMeValue;
+	public void setInGame(boolean inGame) {
+		this.inGame = inGame;
 	}
 
 	public String getUsername() {
@@ -61,9 +43,6 @@ public class Client {
 		this.username = username;
 	}
 
-	public String getEnemy() {
-		return enemy;
-	}
 
 	public void setEnemy(String enemy) {
 		this.enemy = enemy;
@@ -71,83 +50,111 @@ public class Client {
 	//Starts the client ServerThread 
 	public void startListening(MainMenu mainMenu) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientServer(this, socket, mainMenu);
+		cServer = new ClientListener(this, socket, mainMenu);
 		cServer.start();
 	}
 
-	// asks server's availability for current username
-	public void addMe(String name) throws IOException {
+	// add a new player with username and password
+	public void addMe(String name, String password) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("add:" + name + ": % ");
+		bw.write("add:" + name + ": %" + password);
 		bw.newLine();
 		bw.flush();
+		bw.close();
+
+	}
+	
+	// check credentials of user in order to log in
+	public void logMeIn(String name, String password) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("add:" + name + ": %" + password);
+		bw.newLine();
+		bw.flush();
+		bw.close();
 
 	}
 
 	// send a game request
-	public void SendGameRequest() throws IOException {
+	public void sendGameRequest(String someone) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("request:" + username + ":" + enemy + "%wannaplay");
+		bw.write("request:" + username + ":" + someone + "%wannaplay");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 	}
 
 	// accepts a game request
-	public void AcceptGameRequest() throws IOException {
+	public void acceptGameRequest(String someone) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("request:" + username + ":" + enemy + "%ok");
+		bw.write("request:" + username + ":" + someone + "%ok");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 		// game starts
 	}
 
 	// rejects a game request
-	public void RejectGameRequest() throws IOException {
+	public void rejectGameRequest(String someone) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("request:" + username + ":" + enemy + "%not");
+		bw.write("request:" + username + ":" + someone + "%not");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 	}
 
 	// it will change soon
-	public void SendGamePlay() throws IOException {
+	public void sendGamePlay() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("play:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 	}
 
 	// it will change soon
-	public void SendGameRoundScore() throws IOException {
+	public void sendGameRoundScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("score:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 	}
 
 	// it will change soon
-	public void SendFinalScore(String someone, String mes) throws IOException {
+	public void sendFinalScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("fscore:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
+		bw.close();
+		
+	}
+	
+	public void sendHighScore() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("hscore:" + username + ":server%" + "");
+		bw.newLine();
+		bw.flush();
+		bw.close();
 	}
 
 	// sends this message when the game closes to inform server
-	public void SendCloseMessage() throws IOException {
+	public void sendCloseMessage() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("close:" + username + ":" + "server" + "%close");
 		bw.newLine();
 		bw.flush();
+		bw.close();
 		
 	}
 
 	// sends a chat message
-	public void SendMessage(String someone, String mes) throws IOException {
+	public void sendMessage(String someone, String mes) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("message:" + username + ":" + someone + "%" + mes);
 		bw.newLine();
 		bw.flush();
+		bw.close();
 	}
 
 }

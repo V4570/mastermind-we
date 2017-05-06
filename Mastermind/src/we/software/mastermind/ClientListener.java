@@ -13,15 +13,18 @@ public class ClientListener extends Thread {
 	Socket socket;
 	MainMenu mainMenu;
 	GameGui gameGui;
-	public ClientListener(Client client, Socket socket, MainMenu mainMenu, GameGui gameGui) {
+	public ClientListener(Client client, Socket socket, MainMenu mainMenu) {
 		this.client = client;
 		this.socket = socket;
 		this.mainMenu = mainMenu;
+	}
+	
+	public void setGameGui(GameGui gameGui) {
 		this.gameGui = gameGui;
 	}
 
 	
-
+	@Override
 	public void run() {
 			
 		String transmitter;
@@ -47,11 +50,12 @@ public class ClientListener extends Thread {
 							if (!client.isInGame()) {
 								// asks for user permission to start the game
 								// if user accepts then:
-								client.acceptGameRequest();
-								client.setInGame(true);
+								/*client.acceptGameRequest(transmitter);
+								client.setEnemy(transmitter);
+								client.setInGame(true);*/
 								// if he rejects the client.RejectGameRequest();
 							} else {
-								client.rejectGameRequest();
+								client.rejectGameRequest(transmitter);
 							}
 						} else if (message.equals("ok")) {
 							// accepted and game starts
