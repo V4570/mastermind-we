@@ -5,20 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
-public class ClientServer extends Thread {
-	final static String fileScorePATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\Score.log");
-	final static String dirPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind");
-	final static String filePlayPATH = (System.getProperty("user.home") + "\\Appdata\\Roaming\\Mastermind\\game.log");
+public class ClientListener extends Thread {
 	Client client;
 	Socket socket;
 	MainMenu mainMenu;
-	public ClientServer(Client client, Socket socket, MainMenu mainMenu) {
+	GameGui gameGui;
+	public ClientListener(Client client, Socket socket, MainMenu mainMenu, GameGui gameGui) {
 		this.client = client;
 		this.socket = socket;
 		this.mainMenu = mainMenu;
-		
+		this.gameGui = gameGui;
 	}
 
 	
@@ -48,11 +47,11 @@ public class ClientServer extends Thread {
 							if (!client.isInGame()) {
 								// asks for user permission to start the game
 								// if user accepts then:
-								client.AcceptGameRequest();
+								client.acceptGameRequest();
 								client.setInGame(true);
 								// if he rejects the client.RejectGameRequest();
 							} else {
-								client.RejectGameRequest();
+								client.rejectGameRequest();
 							}
 						} else if (message.equals("ok")) {
 							// accepted and game starts
