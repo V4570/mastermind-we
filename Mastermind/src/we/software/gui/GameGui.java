@@ -2,6 +2,8 @@ package we.software.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,12 +25,14 @@ public class GameGui extends JFrame{
     private JTextArea chatHistory;
     private JPanel chat;
     private HistoryPanel turnHistory;
-
+    private ChatGui chatGui;
+    
     public GameGui(MainMenu previous){
 
         this.previous = previous;
         setUpButtons();
         initFrame();
+        
     }
 
     private void initFrame(){
@@ -44,6 +48,7 @@ public class GameGui extends JFrame{
 
         turnHistory = new HistoryPanel();
         //initChat();
+        chatGui = new ChatGui();
 
 
         add(exitButton);
@@ -51,7 +56,7 @@ public class GameGui extends JFrame{
         add(backButton);
         add(sendButton);
         add(turnHistory);
-        //add(chat);
+        add(chatGui.chat);
 
         setUndecorated(true);
         setSize(WIDTH, HEIGHT);
@@ -59,28 +64,60 @@ public class GameGui extends JFrame{
         setResizable(false);
         setVisible(true);
     }
+    public void hscores(){
+    	//Jpanel hscores
+    }
 
     /*private void initChat(){
-
+    	
         chat = new JPanel(new GridBagLayout());
-        chat.setBounds(0, 768-125, 623, 125);
-
-        chatInput = new JTextField(20);
-
-        chatHistory = new JTextArea(chat.getWidth(), 20);
+        chat.setBounds(1, 641, 623, 125);
+        chat.setOpaque(false);
+        
+        chatInput = new JTextField();
+        Font f1 = new Font("Dialog",Font.PLAIN ,15);
+        chatInput.setFont(f1);
+        chatInput.setForeground(Color.white);
+        chatInput.setOpaque(false);
+        
+        
+        Font f2 = new Font("Dialog",Font.ITALIC ,15);
+        chatHistory = new JTextArea(chat.getWidth(),0);
+        chatHistory.setFont(f2);
+        chatHistory.setForeground(Color.white);
+        chatHistory.setLineWrap(true);
         chatHistory.setEditable(false);
-        JScrollPane scroll = new JScrollPane(chatHistory);
-
+        chatHistory.setOpaque(false);
+        
+        DefaultCaret caret = (DefaultCaret)chatHistory.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        JScrollPane js = new JScrollPane(chatHistory);
+        js.getViewport().setOpaque(false);
+        js.setOpaque(false);
+        js.setVisible(true);
+        js.setAutoscrolls(true);
+       
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.REMAINDER;
-
+        
         c.fill = GridBagConstraints.HORIZONTAL;
-        chat.add(chatHistory, c);
-
-        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.ipady = 1;
+        //c.weightx = 0.0;
+        c.ipady = 70;
+        //c.weighty = 1.0;
+        chat.add(js, c);
+        
+        //c.gridheight = GridBagConstraints.REMAINDER;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        chat.add(scroll, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        chat.add(chatInput,c);
+        
     }*/
 
     private void setUpButtons(){
@@ -115,6 +152,11 @@ public class GameGui extends JFrame{
 
                 System.exit(0);
             }
+            else if(e.getSource() == sendButton){
+            	
+            	chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", Color.WHITE);
+            	chatGui.chatInput.setText("");
+            }
         }
     }
 
@@ -132,7 +174,7 @@ public class GameGui extends JFrame{
 
             loadImages();
 
-            for(int i = 0; i < 10; i ++){
+            for(int i = 0; i < 2; i ++){
                 test();
             }
 

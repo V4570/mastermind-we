@@ -132,9 +132,9 @@ public class Client extends Player{
 		
 	}
 	
-	public void sendHighScore() throws IOException {
+	public void sendHighScore(int highscore) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("hscore:" + username + ":server%" + "");
+		bw.write("hscore:" + username + ":server%" + highscore);
 		bw.newLine();
 		bw.flush();
 		bw.close();

@@ -67,7 +67,8 @@ public class ChatGui {
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE); 
 		JScrollPane js = new JScrollPane(chatHistory); 
 		js.getViewport().setOpaque(false);
-		js.setOpaque(false); js.setVisible(true); 
+		js.setOpaque(false); 
+		js.setVisible(true); 
 		js.setAutoscrolls(true);
 		
 

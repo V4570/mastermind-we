@@ -82,6 +82,11 @@ public class ClientListener extends Thread {
 						// do the scoreThing and saves progress
 					} else if (inmessage.startsWith("fscore")) {
 						// Shows the final score to user
+					}else if (inmessage.startsWith("hscore")) {
+						if(client.isInGame()){
+							
+						}
+						
 					}
 
 				} catch (ArrayIndexOutOfBoundsException aioe) {
