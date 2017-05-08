@@ -6,12 +6,13 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class Client extends Player{
 	private String username;
-	private String enemy;
+	public Player enemy;
 	ClientListener cServer;
 	Socket socket;
 	boolean inGame;
@@ -19,10 +20,11 @@ public class Client extends Player{
 	int PORT = 12498;
 	static boolean codeMaker;
 	static int rounds;
-
+	ChatGui chatGui;
+	
 	public Client() {
 		super();
-		enemy = "";
+		enemy = null;
 		username = "";
 		inGame = false;
 	}
@@ -44,13 +46,13 @@ public class Client extends Player{
 	}
 
 
-	public void setEnemy(String enemy) {
+	public void setEnemy(Player enemy) {
 		this.enemy = enemy;
 	}
 	//Starts the client ServerThread 
-	public void startListening(MainMenu mainMenu) throws UnknownHostException, IOException {
+	public void startListening(MainMenu mainMenu, ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientListener(this, socket, mainMenu);
+		cServer = new ClientListener(this, socket, mainMenu, chatGui);
 		cServer.start();
 	}
 
@@ -67,7 +69,7 @@ public class Client extends Player{
 	// check credentials of user in order to log in
 	public void logMeIn(String name, String password) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("add:" + name + ": %" + password);
+		bw.write("login:" + name + ": %" + password);
 		bw.newLine();
 		bw.flush();
 		bw.close();

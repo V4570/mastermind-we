@@ -5,20 +5,29 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import javafx.scene.paint.Color;
+import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class ClientListener extends Thread {
+	//private static final java.awt.Color Color.AQUA = null;
 	Client client;
 	Socket socket;
 	MainMenu mainMenu;
 	GameGui gameGui;
-	public ClientListener(Client client, Socket socket, MainMenu mainMenu) {
+	ChatGui chatGui;
+	
+	public ClientListener(Client client, Socket socket, MainMenu mainMenu, ChatGui chatGui) {
 		this.client = client;
 		this.socket = socket;
 		this.mainMenu = mainMenu;
+		this.chatGui = chatGui;
 	}
 	
+	public void setChatGui(ChatGui chatGui){
+		this.chatGui = chatGui;
+	}
 	public void setGameGui(GameGui gameGui) {
 		this.gameGui = gameGui;
 	}
@@ -65,7 +74,7 @@ public class ClientListener extends Thread {
 					} else if (inmessage.startsWith("play")) {
 						// do the playThing and saves the progress
 					} else if (inmessage.startsWith("message")) {
-						// System.out.println("From:"+transmitter+":
+						chatGui.appendToPane(transmitter+": "+message+"\n", java.awt.Color.CYAN);
 						// "+message);
 						// shows message to user
 
