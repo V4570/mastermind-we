@@ -4,6 +4,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.Connection;
 
 
@@ -89,6 +91,31 @@ public class Database {
 		ps.setString(1, date);
 		ps.setString(2, username);
 		ps.executeUpdate();
+	}
+	
+	public String getHighScores() throws SQLException{
+		ArrayList<String> hs = new ArrayList<String>();
+		int h;
+		String name;
+		String get = "SELECT username, highscore FROM players ORDER BY highscore DESC";
+		Statement s = con.createStatement();
+		s.executeQuery(get);
+		ResultSet rs = s.getResultSet ();
+		while(rs.next()){
+			name = rs.getString("username");
+			h = rs.getInt("highscore");
+			hs.add(name+" "+h);
+		}
+
+		String b="";
+		
+		for(int i=0;i<4;i++){
+			if(i!=0){
+				b=b+",";
+			}
+			b = b+hs.get(i);
+		}
+		return b;
 	}
 
 }
