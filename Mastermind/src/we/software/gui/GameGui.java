@@ -3,6 +3,8 @@ package we.software.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import we.software.mastermind.Client;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ public class GameGui extends JFrame{
     private HistoryPanel turnHistory;
     private ChatGui chatGui;
     private KeyInput kp;
+    Client client;
     
     public GameGui(MainMenu previous){
 
@@ -41,7 +44,7 @@ public class GameGui extends JFrame{
         catch (IOException exc) {
             exc.printStackTrace();
         }
-
+        client = new Client();
         kp = new KeyInput();
 
 
@@ -100,9 +103,21 @@ public class GameGui extends JFrame{
                 System.exit(0);
             }
             else if(e.getSource() == sendButton){
+            		try{
+            		if(client.sendMessage(chatGui.chatInput.getText())){
+            		chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", Color.WHITE);
+                	chatGui.chatInput.setText("");
+            	}
+            		else{
+            		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
+            		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
+            		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
+            		chatGui.chatInput.setText("");
+            	}
+            		}catch(IOException ie){
+            			System.out.println(ie.getStackTrace());
+            		}
             	
-            	chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", Color.WHITE);
-            	chatGui.chatInput.setText("");
             }
         }
     }

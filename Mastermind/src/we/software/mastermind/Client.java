@@ -151,12 +151,28 @@ public class Client extends Player{
 	}
 
 	// sends a chat message
-	public void sendMessage(String someone, String mes) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("message:" + username + ":" + someone + "%" + mes);
-		bw.newLine();
-		bw.flush();
-		bw.close();
-	}
+	public boolean sendMessage(String s) throws IOException{
+		if(s.contains(":") && socket.isConnected()){
+		String[] t = s.split(":");
+		String someone = t[0];
+		String mes = t[1];
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			bw.write("message:" + username + ":" + someone + "%" + mes);
+			bw.newLine();
+			bw.flush();
+			bw.close();
+		
+		
+		return true;
+		}
+		else{
+			
+			return false;
+			
+		}
+		
+		
+		}
+	
 
 }
