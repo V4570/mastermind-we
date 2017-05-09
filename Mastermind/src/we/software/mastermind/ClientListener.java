@@ -53,7 +53,7 @@ public class ClientListener extends Thread {
 							client.setUsername(reciever);
 						} else if(message.equals("taken")){
 							mainMenu.getUsername();
-						} 
+						}
 					} else if (inmessage.startsWith("request")) {
 						if (message.equals("wannaplay")) {
 							if (!client.isInGame()) {

@@ -33,13 +33,13 @@ public class MainMenu extends JFrame {
 
 	public MainMenu() {
 		
-		player = new Client();
+		/*player = new Client();
 		
 		try {
 			player.startListening(this);
 		} catch (IOException e1) {
 			System.out.println("Tsekare Server...");
-		}
+		}*/
 
 		l = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
@@ -53,7 +53,9 @@ public class MainMenu extends JFrame {
 
 	}
 
-
+    /**
+     * Initializes the frame. Moved from the constructor for cleaner code.
+     */
 	private void initFrame() {
 
 		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
@@ -98,7 +100,7 @@ public class MainMenu extends JFrame {
 		JPanel panel = new JPanel();
 		JLabel lbl = new JLabel("Enter Your username: ");
 		JTextField txt = new JTextField(10);
-		
+
 		boolean isOk = true;
 		int selectedOption = 0;
 
@@ -115,26 +117,25 @@ public class MainMenu extends JFrame {
 		//na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
 		//parakalw na min ginoun upload sto github gia logous asfaleias
 		//o server einai panw sxedon 24/7
-		
+
 
 		while ((selectedOption != 1 && txt.getText().equals(""))) {
 				selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				username = txt.getText();
-				
+
 		}
-		try {
+		/*try {
 			player.addMe(username);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
-	/**
-     * Μέθοδος που αρχικοποιεί τα κουμπιά για το μενού. Το posY αυξάνεται κατά 70
-     * κάθε φορά που προστίθεται ένα κουμπί ώστε να γίνεται σωστή κατακόρυφη
-     * στοίχιση.
+    /**
+     *
+     * Here the code initializes the buttons.
      */
 	private MenuButton addMenuButton(String path) {
 
@@ -146,8 +147,7 @@ public class MainMenu extends JFrame {
 	}
 
 	/**
-     * Εσωτερική κλάση τύπου JPanel η οποία χρησιμοποιείται για να εμφανίζεται
-     * το παραθυράκι επιλογής game mode αφού πατηθεί το κουμπί Play.
+     * This class handles the properties of the game mode panel.
      */
 	class GameMode extends JPanel {
 
@@ -236,9 +236,6 @@ public class MainMenu extends JFrame {
 			g.drawImage(background, 0, 0, null);
 		}
 
-		/**
-         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
-         */
 		public void setPanelVisible() {
 			if (!flag) {
 				setVisible(!flag);
@@ -246,9 +243,6 @@ public class MainMenu extends JFrame {
 			}
 		}
 
-		/**
-         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
-         */
 		public void setPanelInvisible() {
 			if (flag) {
 				setVisible(!flag);
@@ -256,9 +250,6 @@ public class MainMenu extends JFrame {
 			}
 		}
 
-		/**
-         * Θέτει το gameOptions Panel στην αρχική του κατάσταση.
-         */
 		public void panelRestart() {
 			pVsP.setVisible(true);
 			pVsAi.setVisible(true);
@@ -267,6 +258,9 @@ public class MainMenu extends JFrame {
 		}
 	}
 
+    /**
+     * This class handles the properties of the options panel.
+     */
 	class Options extends JPanel {
 
 		private Image background;
@@ -393,6 +387,9 @@ public class MainMenu extends JFrame {
 		}
 	}
 
+	/**
+	 * Handles the action after a button has been pressed.
+	 */
 	class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -402,7 +399,6 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					howToPlay.playSound();
 			}
-
 			else if (e.getSource() == play) {
 
 				optionsPanel.setPanelInvisible();
@@ -415,7 +411,6 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					play.playSound();
 			}
-
 			else if (e.getSource() == options) {
 
 				gameModePanel.setPanelInvisible();
@@ -429,12 +424,6 @@ public class MainMenu extends JFrame {
 					options.playSound();
 
 			}
-			/*
-             * Κλείνει το gameOptions Panel και καλεί την μέθοδο
-             * panelRestart() που θέτει το Panel στην αρχική του
-             * κατάσταση εφόσον έχει πατηθεί κάποιο κουμπί μέσα
-             * στο Panel και έχει αλλάξει η δομή του.
-             */
 			else if (e.getSource() == gameModePanel.exit) {
 
 				gameModePanel.setPanelInvisible();
@@ -447,11 +436,6 @@ public class MainMenu extends JFrame {
 					options.playSound();
 
 			}
-			/*
-             * Κάθε φορά που πατιέται το κουμπί Player vs Player εξαφανίζει τα υπάρχοντα κουμπιά
-             * και αλλάζει τον τίτλο του gameOptions Panel σε Player vs Player. Επίσης αλλάζει
-             * τα Bounds για να τοποθετείται σωστά μέσα στο panel.
-             */
 			else if (e.getSource() == gameModePanel.pVsP) {
 
 				gameModePanel.pVsP.setVisible(false);
@@ -465,11 +449,6 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					gameModePanel.pVsP.playSound();
 			}
-			/*
-            Κάθε φορά που πατιέται το κουμπί Player vs A.I εξαφανίζει τα υπάρχοντα κουμπιά
-            και αλλάζει τον τίτλο του gameOptions Panel σε Player vs A.I. Επίσης αλλάζει
-            τα Bounds για να τοποθετείται σωστά μέσα στο panel.
-           */
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
 				gameModePanel.pVsP.setVisible(false);
@@ -490,7 +469,6 @@ public class MainMenu extends JFrame {
 				if (musicOn)
 					l.closeClip();
 			}
-
 			else if (e.getSource() == optionsPanel.exit) {
 
 				optionsPanel.setPanelInvisible();
@@ -501,10 +479,9 @@ public class MainMenu extends JFrame {
 
 				if(soundfxOn) options.playSound();
 			}
-
 			else if (e.getSource() == optionsPanel.musicButton) {
 
-				optionsPanel.musicButton.setIcon("hredsquare.png");
+				optionsPanel.musicButton.setIcon("Buttons/hredsquare.png");
 				if (musicOn) {
 					musicOn = false;
 					l.closeClip();
@@ -513,16 +490,14 @@ public class MainMenu extends JFrame {
 					l.playMenuClip();
 				}
 			}
-
 			else if (e.getSource() == optionsPanel.soundFXButton) {
 
-				optionsPanel.soundFXButton.setIcon("hredsquare.png");
+				optionsPanel.soundFXButton.setIcon("Buttons/hredsquare.png");
 				if (soundfxOn)
 					soundfxOn = false;
 				else
 					soundfxOn = true;
 			}
-
 			else {
 
 				int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit",

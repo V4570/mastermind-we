@@ -2,7 +2,6 @@ package we.software.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,9 +20,6 @@ public class GameGui extends JFrame{
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
     private MenuButton exitButton, optionsButton, backButton, sendButton;
-    private JTextField chatInput;
-    private JTextArea chatHistory;
-    private JPanel chat;
     private HistoryPanel turnHistory;
     private ChatGui chatGui;
     
@@ -47,18 +43,17 @@ public class GameGui extends JFrame{
 
 
         turnHistory = new HistoryPanel();
-        //initChat();
-        chatGui = new ChatGui();
 
+        chatGui = new ChatGui();
+        chatGui.start();
 
         add(exitButton);
         add(optionsButton);
         add(backButton);
         add(sendButton);
         add(turnHistory);
-        add(chatGui.chat);
+        add(chatGui);
 
-        setUndecorated(true);
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -67,58 +62,6 @@ public class GameGui extends JFrame{
     public void hscores(){
     	//Jpanel hscores
     }
-
-    /*private void initChat(){
-    	
-        chat = new JPanel(new GridBagLayout());
-        chat.setBounds(1, 641, 623, 125);
-        chat.setOpaque(false);
-        
-        chatInput = new JTextField();
-        Font f1 = new Font("Dialog",Font.PLAIN ,15);
-        chatInput.setFont(f1);
-        chatInput.setForeground(Color.white);
-        chatInput.setOpaque(false);
-        
-        
-        Font f2 = new Font("Dialog",Font.ITALIC ,15);
-        chatHistory = new JTextArea(chat.getWidth(),0);
-        chatHistory.setFont(f2);
-        chatHistory.setForeground(Color.white);
-        chatHistory.setLineWrap(true);
-        chatHistory.setEditable(false);
-        chatHistory.setOpaque(false);
-        
-        DefaultCaret caret = (DefaultCaret)chatHistory.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        JScrollPane js = new JScrollPane(chatHistory);
-        js.getViewport().setOpaque(false);
-        js.setOpaque(false);
-        js.setVisible(true);
-        js.setAutoscrolls(true);
-       
-        
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.ipady = 1;
-        //c.weightx = 0.0;
-        c.ipady = 70;
-        //c.weighty = 1.0;
-        chat.add(js, c);
-        
-        //c.gridheight = GridBagConstraints.REMAINDER;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.gridx = 0;
-        c.gridy = 1;
-        chat.add(chatInput,c);
-        
-    }*/
 
     private void setUpButtons(){
 
@@ -145,7 +88,7 @@ public class GameGui extends JFrame{
             }
             else if(e.getSource() == backButton){
 
-                setVisible(false);      //Sets this frame as not visible
+                setVisible(false);              //Sets this frame as not visible
                 previous.setFrameVisible();     //Sets the previous as frame visible
             }
             else if(e.getSource() == exitButton){
@@ -160,6 +103,9 @@ public class GameGui extends JFrame{
         }
     }
 
+    /**
+     * Special panel that shows the guess and the corresponding evaluation for each turn.
+     */
     class HistoryPanel extends JPanel{
 
         private BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, evalLU, evalLD, evalRU, evalRD,
@@ -196,15 +142,21 @@ public class GameGui extends JFrame{
             rounds.add(bluePeg);
         }
 
+        /**
+         *  To show each turn in the special history panel, the code overrides paintComponent to paint the contents of
+         *  the two arrayLists, rounds and evaluation which hold the guess and evaluation of the guess for each turn.
+         *  Anytime a round is added to the arrayLists the code calls for the repaint method which repaints the content
+         *  of the arrayLists.
+         */
         @Override
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
 
             int counter = 0;        //Counts peg. Resets when it hits 4.
             int evalCounter = 0;    //Counts evaluation. Resets when it hits 4.
-            int round_X = 50;        //The horizontal position in the history panel. Updates up to 4 pegs then resets.
-            int eval_X = 175;
-            int round_Y = 391;       //The vertical position in the history panel. Updates for every line.
+            int round_X = 50;       //Represents the width value for the colors. Updates up to 4 colors then resets.
+            int eval_X = 175;       //Represents the width value for the evaluation. Updates up to 2 and then resets.
+            int round_Y = 391;
             int eval_Y = 385;
 
             for(BufferedImage img : rounds){

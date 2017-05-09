@@ -9,6 +9,8 @@ import java.net.URL;
 
 /**
  * Created by Bill on 30-Mar-17.
+ *
+ * MenuButton is a general class for all the menu buttons that share the same usability.
  */
 class MenuButton extends JButton {
 
@@ -18,6 +20,7 @@ class MenuButton extends JButton {
     private boolean isOn = false;
 
     public MenuButton(String imagePath, int xPos, int yPos, int displacement){
+        //The displacement variable is used when a hovered button changes size so it has to be placed differently.
 
         image = new ImageIcon(LoadAssets.load("Buttons/"+imagePath));
         imageHover = new ImageIcon(LoadAssets.load("Buttons/"+"h" +imagePath));
