@@ -16,7 +16,7 @@ public class Client extends Player{
 	ClientListener cServer;
 	Socket socket;
 	boolean inGame;
-	String server = "-";
+	String server = "";
 	int PORT = 12498;
 	static boolean codeMaker;
 	static int rounds;
