@@ -15,22 +15,22 @@ public class ClientListener extends Thread {
 	Client client;
 	Socket socket;
 	MainMenu mainMenu;
-	GameGui gameGui;
+	GameGui game;
 	ChatGui chatGui;
 	
-	public ClientListener(Client client, Socket socket, ChatGui chatGui) {
+	public ClientListener(Client client, Socket socket, ChatGui chatGui,GameGui game) {
 		this.client = client;
 		this.socket = socket;
-		//this.mainMenu = mainMenu;
+		this.game = game;
 		this.chatGui = chatGui;
 	}
 	
 	public void setChatGui(ChatGui chatGui){
 		this.chatGui = chatGui;
 	}
-	public void setGameGui(GameGui gameGui) {
+	/*public void setGameGui(GameGui gameGui) {
 		this.gameGui = gameGui;
-	}
+	}*/
 
 	
 	@Override
@@ -74,10 +74,14 @@ public class ClientListener extends Thread {
 					} else if (inmessage.startsWith("play")) {
 						// do the playThing and saves the progress
 					} else if (inmessage.startsWith("message")) {
+						if(transmitter.equals("Server")){
+							chatGui.appendToPane(transmitter+": "+message+"\n", java.awt.Color.PINK);
+						}
+						else{
 						chatGui.appendToPane(transmitter+": "+message+"\n", java.awt.Color.CYAN);
 						// "+message);
 						// shows message to user
-
+						}
 					} else if (inmessage.startsWith("score")) {
 						// do the scoreThing and saves progress
 					} else if (inmessage.startsWith("fscore")) {

@@ -3,11 +3,14 @@ package we.software.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import com.sun.glass.events.KeyEvent;
+
 import we.software.mastermind.Client;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +48,8 @@ public class GameGui extends JFrame{
             exc.printStackTrace();
         }
         client = new Client();
+        
+        
         kp = new KeyInput();
 
 
@@ -52,7 +57,10 @@ public class GameGui extends JFrame{
 
         chatGui = new ChatGui();
         chatGui.start();
-
+        
+        this.getRootPane().setDefaultButton(sendButton);
+        
+        
         add(exitButton);
         add(optionsButton);
         add(backButton);
@@ -65,10 +73,20 @@ public class GameGui extends JFrame{
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+        
+        try {
+        	client.startListening(chatGui,this);
+			client.logMeIn("test2", "test2");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     public void hscores(){
     	//Jpanel hscores
     }
+    
 
     private void setUpButtons(){
 
@@ -83,6 +101,7 @@ public class GameGui extends JFrame{
 
         sendButton = new MenuButton("send.png", 635, 722, 0);
         sendButton.addActionListener(btnListener);
+        
     }
 
     class ButtonListener implements ActionListener{
@@ -102,7 +121,7 @@ public class GameGui extends JFrame{
 
                 System.exit(0);
             }
-            else if(e.getSource() == sendButton){
+            else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
             		try{
             		if(client.sendMessage(chatGui.chatInput.getText())){
             		chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", Color.WHITE);

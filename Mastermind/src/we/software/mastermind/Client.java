@@ -50,9 +50,9 @@ public class Client extends Player{
 		this.enemy = enemy;
 	}
 	//Starts the client ServerThread 
-	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
+	public void startListening(ChatGui chatGui, GameGui game) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientListener(this, socket, chatGui);
+		cServer = new ClientListener(this, socket, chatGui, game);
 		cServer.start();
 	}
 
@@ -62,7 +62,6 @@ public class Client extends Player{
 		bw.write("add:" + name + ": %" + password);
 		bw.newLine();
 		bw.flush();
-		bw.close();
 
 	}
 	
@@ -72,7 +71,6 @@ public class Client extends Player{
 		bw.write("login:" + name + ": %" + password);
 		bw.newLine();
 		bw.flush();
-		//bw.close();
 
 	}
 
@@ -82,7 +80,6 @@ public class Client extends Player{
 		bw.write("request:" + username + ":" + someone + "%wannaplay");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 	}
 
 	// accepts a game request
@@ -91,7 +88,6 @@ public class Client extends Player{
 		bw.write("request:" + username + ":" + someone + "%ok");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 		// game starts
 	}
 
@@ -101,7 +97,6 @@ public class Client extends Player{
 		bw.write("request:" + username + ":" + someone + "%not");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 	}
 
 	// it will change soon
@@ -110,7 +105,6 @@ public class Client extends Player{
 		bw.write("play:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 	}
 
 	// it will change soon
@@ -119,7 +113,6 @@ public class Client extends Player{
 		bw.write("score:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 	}
 
 	// it will change soon
@@ -128,7 +121,6 @@ public class Client extends Player{
 		bw.write("fscore:" + username + ":" + enemy + "%" + "");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 		
 	}
 	
@@ -137,7 +129,6 @@ public class Client extends Player{
 		bw.write("hscore:" + username + ":server%" + highscore);
 		bw.newLine();
 		bw.flush();
-		bw.close();
 	}
 
 	// sends this message when the game closes to inform server
@@ -146,13 +137,12 @@ public class Client extends Player{
 		bw.write("close:" + username + ":" + "server" + "%close");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 		
 	}
 
 	// sends a chat message
 	public boolean sendMessage(String s) throws IOException{
-		if(s.contains(":") && socket.isConnected()){
+		if(s.contains(":")){
 		String[] t = s.split(":");
 		String someone = t[0];
 		String mes = t[1];
@@ -160,7 +150,6 @@ public class Client extends Player{
 			bw.write("message:" + username + ":" + someone + "%" + mes);
 			bw.newLine();
 			bw.flush();
-			bw.close();
 		
 		
 		return true;
