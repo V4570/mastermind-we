@@ -87,8 +87,7 @@ public class ChatGui extends JPanel implements Runnable{
         c.gridx = 0;
         c.gridy = 1;
         add(chatInput, c);
-        setFocusable(true);
-        addKeyListener(kp);
+        //addKeyListener(kp);
 	}
 
 	/*public void init(){
@@ -162,7 +161,6 @@ public class ChatGui extends JPanel implements Runnable{
 
         System.out.println("Chat started");
         while(chatRunning){
-            System.out.println(kp.send);
             if(kp.send){
                 appendToPane("You: "+ chatInput.getText() + "\n", Color.WHITE);
                 chatInput.setText("");

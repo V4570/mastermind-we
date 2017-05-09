@@ -22,6 +22,7 @@ public class GameGui extends JFrame{
     private MenuButton exitButton, optionsButton, backButton, sendButton;
     private HistoryPanel turnHistory;
     private ChatGui chatGui;
+    private KeyInput kp;
     
     public GameGui(MainMenu previous){
 
@@ -41,6 +42,8 @@ public class GameGui extends JFrame{
             exc.printStackTrace();
         }
 
+        kp = new KeyInput();
+
 
         turnHistory = new HistoryPanel();
 
@@ -55,6 +58,7 @@ public class GameGui extends JFrame{
         add(chatGui);
 
         setSize(WIDTH, HEIGHT);
+        setUndecorated(true);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
