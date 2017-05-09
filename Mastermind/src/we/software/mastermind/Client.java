@@ -16,7 +16,7 @@ public class Client extends Player{
 	ClientListener cServer;
 	Socket socket;
 	boolean inGame;
-	String server = "-";
+	String server = "83.212.99.117";
 	int PORT = 12498;
 	static boolean codeMaker;
 	static int rounds;
@@ -50,9 +50,9 @@ public class Client extends Player{
 		this.enemy = enemy;
 	}
 	//Starts the client ServerThread 
-	public void startListening(MainMenu mainMenu, ChatGui chatGui) throws UnknownHostException, IOException {
+	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientListener(this, socket, mainMenu, chatGui);
+		cServer = new ClientListener(this, socket, chatGui);
 		cServer.start();
 	}
 
@@ -72,7 +72,7 @@ public class Client extends Player{
 		bw.write("login:" + name + ": %" + password);
 		bw.newLine();
 		bw.flush();
-		bw.close();
+		//bw.close();
 
 	}
 
