@@ -141,7 +141,7 @@ public class Client extends Player{
 	}
 
 	// sends a chat message
-	public boolean sendMessage(String s) throws IOException{
+	public void sendMessage(String s) throws IOException{
 		if(s.contains(":")){
 		String[] t = s.split(":");
 		String someone = t[0];
@@ -152,11 +152,14 @@ public class Client extends Player{
 			bw.flush();
 		
 		
-		return true;
+		//return true;
 		}
 		else{
-			
-			return false;
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			bw.write("message:" + username + ": %" + s);
+			bw.newLine();
+			bw.flush();
+			//return false;
 			
 		}
 		
