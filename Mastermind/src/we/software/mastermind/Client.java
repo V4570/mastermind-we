@@ -16,7 +16,7 @@ public class Client extends Player{
 	ClientListener cServer;
 	Socket socket;
 	boolean inGame;
-	String server = "";
+	String server = "83.212.99.117";
 	int PORT = 12498;
 	static boolean codeMaker;
 	static int rounds;
@@ -156,7 +156,7 @@ public class Client extends Player{
 		}
 		else{
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bw.write("message:" + username + ": %" + s);
+			bw.write("allmessage:" + username + ": %" + s);
 			bw.newLine();
 			bw.flush();
 			//return false;
