@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class ServerThread extends Thread {
 	public Socket socket;
@@ -17,16 +18,18 @@ public class ServerThread extends Thread {
 	private Client transmitter;
 	private Database db;
 	private String inmessage;
-	private String reciever;
+	private String receiver;
 	private String message;
+	public LiveServerHandler lsh;
 
-	public ServerThread(Socket socket, Database db, HashMap<String, Client> clients) {
+	public ServerThread(Socket socket, Database db, HashMap<String, Client> clients,LiveServerHandler lsh) {
 		super();
 		this.socket = socket;
 		this.clients = clients;
 		this.username = null;
 		this.message = null;
 		this.db = db;
+		this.lsh =lsh;
 
 	}
 
@@ -40,64 +43,109 @@ public class ServerThread extends Thread {
 				try {
 					String[] info = inmessage.split("%", 2);
 					username = info[0].split(":")[1];
-					reciever = info[0].split(":")[2];
+					receiver = info[0].split(":")[2];
 					message = info[1];
 					if (inmessage.startsWith("add")) {
+						if(!lsh.hide) System.out.println(username + "--> send add user message to Server");
 						addJob(message);
 
 					} else if (inmessage.startsWith("close")) {
 						closeJob();
-						System.out.println(transmitter.getName() + " disconnected");
+						if(!lsh.hide)System.out.println(transmitter.getName() + " disconnected");
 						break;
 					} else if (inmessage.startsWith("message")) {
 						// Antispam restriction 1
 						if (!message.equals("") || !message.equals(" ")) {
+							if(!lsh.hide)System.out.println(
+									transmitter.getName() + "--> send message to " + receiver + ": " + message);
 							messageJob();
 						}
+					} else if (inmessage.startsWith("allmessage")) {
+						// Antispam restriction 1
+						if (!message.equals("") || !message.equals(" ")) {
+							if(!lsh.hide)System.out.println(transmitter.getName() + "--> send message to everyone: " + message);
+							messageAllJob();
+						}
 					} else if (inmessage.startsWith("request")) {
+						if(!lsh.hide)System.out.println(
+								transmitter.getName() + "--> send request message to " + receiver + ": " + message);
 						requestJob();
 					} else if (inmessage.startsWith("play")) {
+						if(!lsh.hide)System.out.println(
+								transmitter.getName() + "--> send play message to " + receiver + ": " + message);
 						playJob();
 					} else if (inmessage.startsWith("score")) {
+						if(!lsh.hide)System.out.println(
+								transmitter.getName() + "--> send score message to " + receiver + ": " + message);
 						scoreJob();
 					} else if (inmessage.startsWith("sethighscore")) {
+						if(!lsh.hide)System.out.println(transmitter.getName() + "--> send highscore message to Server: " + message);
 						setHighScoreJob(message);
 					} else if (inmessage.startsWith("login")) {
+						if(!lsh.hide)System.out.println(username + "--> send login message to Server ");
 						logInJob(message);
 					} else if (inmessage.startsWith("gethighscores")) {
-						setHighScoreJob(message);
+						if(!lsh.hide)System.out.println(transmitter.getName() + "--> asks for hisghscores to Server: " + message);
+						getHighScoresJob();
 					}
 
 				} catch (ArrayIndexOutOfBoundsException e) {
-					System.out.println("Mathe na grafeis");
+					System.out.println("Check message format");
 					// System.out.println(e.);
 					Thread.sleep(100);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Sql problem");
+					System.out.println(e.getMessage());
 				}
-				System.out.println(inmessage);
-				System.out.println(clients);
+				if(!lsh.hide){System.out.print("[");
+				int count = 0;
+				for (Entry<String, Client> entry : clients.entrySet()) {
+					count++;
+					String key = entry.getKey();
+					System.out.print(key);
+					if (!(count == clients.size())) {
+						System.out.print(", ");
+					}
 
+				}
+				System.out.print("]");
+				System.out.println();
+				System.out.println(clients.size());}
 			} // end of while
 		} catch (IOException | InterruptedException | NullPointerException e) {
 			if (transmitter != null) {
 				if (transmitter.getName() != null) {
-					System.out.println(transmitter.getName() + " disconnected");
+
+					try {
+						closeJob();
+					} catch (IOException e1) {
+						System.out.println("Socket is unclosable #thuglife");
+
+					}
+					if(!lsh.hide){System.out.println(transmitter.getName() + " disconnected");
+
+					if (!clients.isEmpty()) {
+						System.out.print("[");
+						int count = 0;
+						for (Entry<String, Client> entry : clients.entrySet()) {
+							count++;
+							String key = entry.getKey();
+							System.out.print(key);
+							if (!(count == clients.size())) {
+								System.out.print(", ");
+							}
+
+						}
+						System.out.print("]");
+						System.out.println();
+
+					}
+					System.out.println(clients.size());}
 				} else {
-					System.out.println("A user has disconnected");
+					if(!lsh.hide)System.out.println("A user has disconnected");
 				}
 			} else {
-				System.out.println("A user has disconnected");
-			}
-			try {
-				closeJob();
-			} catch (IOException e1) {
-				System.out.println("Socket is unclosable ;)");
-
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				if(!lsh.hide)System.out.println("A user has disconnected");
 			}
 
 		}
@@ -116,17 +164,12 @@ public class ServerThread extends Thread {
 			bw.write("add:server: %ok");
 			bw.newLine();
 			bw.flush();
-			bw.close();
-			System.out.println(clients.size());
-			System.out.println("Done");
 
 		} else {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("add:server: %taken");
 			bw.newLine();
 			bw.flush();
-			bw.close();
-			System.out.println("Taken");
 		}
 
 	}
@@ -135,103 +178,98 @@ public class ServerThread extends Thread {
 		if (db.passwordCheck(username, password)) {
 			transmitter.setName(username);
 			clients.put(transmitter.getName(), transmitter);
-			db.updateDate(password);
+			db.updateDate(transmitter.getName());
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("login:server:" + username + "%ok");
 			bw.newLine();
 			bw.flush();
-			bw.close();
 
 		} else {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("login:server:" + username + "%not");
 			bw.newLine();
 			bw.flush();
-			bw.close();
+
 		}
 
 	}
 
-	// O transmitter stelnei minima ston reciever an to onoma tou reciever einai
+	// O transmitter stelnei minima ston receiver an to onoma tou receiver einai
 	// kataxwrimeno sto HAshMap 'clients' tou server to minima prowtheite
 	// kanonika se diaforetiki periptwsi o transmitter pairnei minima apo ton
-	// server 'reciever notconnected'
+	// server 'receiver notconnected'
 	private void messageJob() throws UnknownHostException, IOException, InterruptedException {
-		if (!clients.isEmpty() && clients.containsKey(reciever)) {
-			clients.get(reciever).getThread().join(100);
+		if (!clients.isEmpty() && clients.containsKey(receiver)) {
+			clients.get(receiver).getThread().join(1);
 			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(reciever).getSocket().getOutputStream()));
-			bw.write("message:" + transmitter.getName() + ":" + reciever + "%" + message);
+					new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
+			bw.write("message:" + transmitter.getName() + ":" + receiver + "%" + message);
 			bw.newLine();
 			bw.flush();
-			bw.close();
-			System.out.println("Message sent!");
+
 		} else {
 			BufferedWriter bw = new BufferedWriter(
 					new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
-			bw.write("message:" + "server" + ":" + transmitter.getName() + "%" + reciever + " notconnected");
+			bw.write("message:" + "Server" + ":" + transmitter.getName() + "%User " + receiver + " is not online...");
 			bw.newLine();
 			bw.flush();
-			bw.close();
-			System.out.println(reciever + " disconnected");
+			if(!lsh.hide)System.out.println(receiver + " not online");
 
 		}
 	}
 
 	/*
-	 * O transmitter stelnei aitima ston reciever gia na paiksoun. An o reciever
+	 * O transmitter stelnei aitima ston receiver gia na paiksoun. An o receiver
 	 * einai online kai dexthei tote stelnei minima 'ok' an einai offline
 	 * stelnete minima 'notconnected', an den thelei stelnete minima
 	 * 'anotherday'
 	 */
 	private void requestJob() throws InterruptedException, IOException {
-		if (clients.containsKey(reciever)) {
-			clients.get(reciever).getThread().join(100);
+		if (clients.containsKey(receiver)) {
+			clients.get(receiver).getThread().join(1);
 			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(reciever).getSocket().getOutputStream()));
-			bw.write("request:" + transmitter.getName() + ":" + reciever + "%" + message);
+					new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
+			bw.write("request:" + transmitter.getName() + ":" + receiver + "%" + message);
 			bw.newLine();
 			bw.flush();
-			bw.close();
 
 		} else {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
-			bw.write("request:server:" + transmitter.getName() + "%" + reciever + " notconnected");
+			bw.write("request:server:" + transmitter.getName() + "%" + receiver + " notconnected");
 			bw.newLine();
 			bw.flush();
-			bw.close();
 
 		}
 	}
 
-	// H prospatheia(mantepsia) tou transmitter stelnete ston reciever gia na
+	// H prospatheia(mantepsia) tou transmitter stelnete ston receiver gia na
 	// elexthei
 	private void playJob() throws IOException, InterruptedException {
-		clients.get(reciever).getThread().join(100);
+		clients.get(receiver).getThread().join(1);
 		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(reciever).getSocket().getOutputStream()));
-		bw.write("play:" + transmitter.getName() + ":" + reciever + "%" + message);
+				new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
+		bw.write("play:" + transmitter.getName() + ":" + receiver + "%" + message);
 		bw.newLine();
 		bw.flush();
-		bw.close();
+
 	}
 
 	/*
 	 * To score tis prospatheias tou reciever afou elexthei apo ton transmitter
-	 * stelnete pisw ston reciever
+	 * stelnete pisw ston receiver
 	 */
 	private void scoreJob() throws InterruptedException, IOException {
-		clients.get(reciever).getThread().join(100);
+		clients.get(receiver).getThread().join(1);
 		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(reciever).getSocket().getOutputStream()));
-		bw.write("score:" + transmitter.getName() + ":" + reciever + "%" + message);
+				new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
+		bw.write("score:" + transmitter.getName() + ":" + receiver + "%" + message);
 		bw.newLine();
 		bw.flush();
-		bw.close();
+
 	}
 
 	// To teliko score kathe partidas apostelete apo ton transmitter ston
-	// reciever
+	// receiver
 	private void setHighScoreJob(String highscore)
 			throws InterruptedException, IOException, NumberFormatException, SQLException {
 		db.updateHighScore(transmitter.getName(), Integer.parseInt(highscore));
@@ -240,21 +278,45 @@ public class ServerThread extends Thread {
 		bw.write("sethighscore:server:" + transmitter.getName() + "%ok");
 		bw.newLine();
 		bw.flush();
-		bw.close();
 
 	}
 
-	private void getHighScoreJob() throws InterruptedException, IOException, NumberFormatException, SQLException {
+	private void getHighScoresJob() throws InterruptedException, IOException, NumberFormatException, SQLException {
 		BufferedWriter bw = new BufferedWriter(
 				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 		bw.write("gethighscores:server:" + transmitter.getName() + "%" + db.getHighScores());
 		bw.newLine();
 		bw.flush();
-		bw.close();
 
 	}
 
-	private void closeJob() throws IOException, SQLException {
+	private void messageAllJob() throws UnknownHostException, IOException, InterruptedException {
+		if (!clients.isEmpty() && clients.size() > 1) {
+			for (Entry<String, Client> entry : clients.entrySet()) {
+				Client value = entry.getValue();
+				if (!value.getName().equals(transmitter.getName())) {
+					value.getThread().join(1);
+
+					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(value.getSocket().getOutputStream()));
+					bw.write("message:" + transmitter.getName() + ":" + value.getName() + "%" + message);
+					bw.newLine();
+					bw.flush();
+				}
+			}
+
+			System.out.println("Message sent to everyone!");
+		} else {
+			BufferedWriter bw = new BufferedWriter(
+					new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
+			bw.write(
+					"message:" + "Server" + ":" + transmitter.getName() + "% there is nobody online at this moment...");
+			bw.newLine();
+			bw.flush();
+
+		}
+	}
+
+	private void closeJob() throws IOException {
 		if (transmitter != null) {
 			if (transmitter.getName() != null) {
 				clients.remove(transmitter.getName());

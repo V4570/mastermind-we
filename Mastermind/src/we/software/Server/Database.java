@@ -6,10 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -23,7 +22,6 @@ public class Database {
 	private String dbusername;
 	private String dbpassword;
 	private String tablename = "players";
-	private String date = "CURRENT_TIMESTAMP";
 
 	public Database() {
 		url = "jdbc:mysql://127.0.0.1:3306/mastermind";
@@ -104,8 +102,10 @@ public class Database {
 
 	public void updateDate(String username) throws SQLException {
 		String upd = "UPDATE players SET date = ? WHERE username = ? ";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		PreparedStatement ps = con.prepareStatement(upd);
-		ps.setString(1, date);
+		ps.setString(1, sdf.format(timestamp));
 		ps.setString(2, username);
 		ps.executeUpdate();
 	}
