@@ -75,10 +75,12 @@ public class ClientListener extends Thread {
 						// do the playThing and saves the progress
 					} else if (inmessage.startsWith("message")) {
 						if(transmitter.equals("Server")){
-							chatGui.appendToPane(transmitter+": "+message+"\n", java.awt.Color.PINK);
+							chatGui.appendToPane("From "+transmitter+": "+message+"\n", 3);
+						}else if(transmitter.equals("liveServer")){
+							chatGui.appendToPane("From Server: "+message+"\n", 4);
 						}
 						else{
-						chatGui.appendToPane(transmitter+": "+message+"\n", java.awt.Color.CYAN);
+						chatGui.appendToPane("From "+transmitter+": "+message+"\n", 2);
 						// "+message);
 						// shows message to user
 						}

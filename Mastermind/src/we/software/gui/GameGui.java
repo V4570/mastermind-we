@@ -76,7 +76,7 @@ public class GameGui extends JFrame{
         
         try {
         	client.startListening(chatGui,this);
-			client.logMeIn("test2", "test2");
+			client.logMeIn("test0", "test0");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -123,9 +123,18 @@ public class GameGui extends JFrame{
             }
             else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
             		try{
+            			if(chatGui.chatInput.getText().contains(":")){
+            				String mes = chatGui.chatInput.getText().split(":",2)[1];
+            				String dest = chatGui.chatInput.getText().split(":",2)[0];
             		client.sendMessage(chatGui.chatInput.getText());
-            		chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", Color.WHITE);
+            		chatGui.appendToPane("To "+dest+": "+mes+"\n", 0);
                 	chatGui.chatInput.setText("");
+            			}
+            			else{
+            				client.sendMessage(chatGui.chatInput.getText());
+                    		chatGui.appendToPane("To everyone: "+chatGui.chatInput.getText()+"\n", 1);
+                        	chatGui.chatInput.setText("");
+            			}
             	/*}
             		else{
             		chatGui.appendToPane("Message couldn t send...\n", Color.RED);

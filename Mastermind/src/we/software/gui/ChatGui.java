@@ -47,14 +47,14 @@ public class ChatGui extends JPanel implements Runnable{
         setLayout(new GridBagLayout());
 
         chatInput = new JTextField();
-        Font f1 = new Font("Dialog", Font.PLAIN, 15);
+        Font f1 = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
         chatInput.setFont(f1);
         chatInput.setForeground(Color.white);
         chatInput.setOpaque(false);
 
-        Font f2 = new Font("Dialog", Font.ITALIC, 15);
+        //Font f2 = new Font("Dialog", Font.ITALIC, 15);
         chatHistory = new JTextPane();
-        chatHistory.setFont(f2);
+        //chatHistory.setFont(f2);
         chatHistory.setAutoscrolls(true);
         chatHistory.setEditable(false);
         chatHistory.setOpaque(false);
@@ -141,12 +141,58 @@ public class ChatGui extends JPanel implements Runnable{
 
     }*/
 
-    public void appendToPane(String msg, Color c) {
+    public void appendToPane(String msg, int choise) {
         StyledDocument doc = chatHistory.getStyledDocument();
-
         Style style = chatHistory.addStyle("I'm a Style", null);
-
-        StyleConstants.setForeground(style,c);
+        switch(choise){
+        case 0:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, false);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.WHITE);
+            break;
+        }
+        case 1:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, false);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.orange);
+            break;
+        }
+        case 2:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, false);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.CYAN);
+            break;
+        }
+        case 3:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, true);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.PINK);
+            break;
+        }
+        case 4:{
+        	StyleConstants.setBold(style, true);
+            StyleConstants.setUnderline(style, true);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.RED);
+            break;
+        }
+        }
+        
+        
         try { doc.insertString(doc.getLength(), msg,style); }
         catch (BadLocationException e){
             System.out.println(e.getStackTrace());
@@ -162,8 +208,8 @@ public class ChatGui extends JPanel implements Runnable{
         System.out.println("Chat started");
         while(chatRunning){
             if(kp.send){
-                appendToPane("You: "+ chatInput.getText() + "\n", Color.WHITE);
-                chatInput.setText("");
+               // appendToPane("You: "+ chatInput.getText() + "\n", 0);
+                //chatInput.setText("");
             }
         }
 
