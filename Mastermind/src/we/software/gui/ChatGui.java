@@ -43,8 +43,9 @@ public class ChatGui extends JPanel implements Runnable{
 	public ChatGui() {
 
         setBounds(1, 641, 623, 125);
-        setOpaque(false);
+        //setOpaque(false);
         setLayout(new GridBagLayout());
+        this.setBackground(Color.BLACK);
 
         chatInput = new JTextField();
         Font f1 = new Font(Font.SANS_SERIF, Font.PLAIN, 15);

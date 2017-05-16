@@ -18,7 +18,7 @@ import java.net.UnknownHostException;
  */
 public class MainMenu extends JFrame {
 
-	private MenuButton howToPlay, play, options;
+	private MenuButton howToPlay, play, options,sendButton;
 	private GameMode gameModePanel;
 	private Options optionsPanel;
 	private final int WIDTH = 1024;
@@ -30,6 +30,8 @@ public class MainMenu extends JFrame {
 	private AudioLoad l;
 	private String username = null;
 	Client player = null;
+	Client client;
+	private ChatGui chatGui;
 
 	public MainMenu() {
 		
@@ -40,7 +42,9 @@ public class MainMenu extends JFrame {
 		} catch (IOException e1) {
 			System.out.println("Tsekare Server...");
 		}*/
-
+		
+		
+		
 		l = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
@@ -60,30 +64,43 @@ public class MainMenu extends JFrame {
 
 		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
 		exitButton.addActionListener(b);
-
+		
+		client = new Client();
+		chatGui = new ChatGui();
+        chatGui.start();
+		
+		
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-
+		
 		try {
 			setIconImage(ImageIO.read(LoadAssets.load("master.png")));
 			setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("Background.png")))));
 		} catch (IOException exc) {
 			exc.printStackTrace();
 		}
-
+		this.getRootPane().setDefaultButton(sendButton);
 		add(howToPlay);
 		add(play);
 		add(options);
 		add(gameModePanel);
 		add(optionsPanel);
 		add(exitButton);
-
+		add(sendButton);
+		add(chatGui);
 		setUndecorated(true);
 		setVisible(true);
 		if(musicOn) l.playMenuClip();
-
+		try {
+        	client.startListening(chatGui);
+			client.logMeIn("test0", "test0");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//getUsername();
 
 	}
@@ -92,6 +109,7 @@ public class MainMenu extends JFrame {
 	public void setFrameVisible() {
 		setVisible(true);
 		if(musicOn) l.playMenuClip();
+		add(chatGui);
 	}
 
 	public void getUsername() {
@@ -175,6 +193,9 @@ public class MainMenu extends JFrame {
 
 			pVsP = new MenuButton("pvp.png", 39, 98, 0);
 			pVsP.addActionListener(b);
+			
+			sendButton = new MenuButton("send.png", 635, 722, 0);
+	        sendButton.addActionListener(b);
 
 			readImages();
 			addExit();
@@ -461,7 +482,7 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-				new GameGui(MainMenu.this);
+				new GameGui(MainMenu.this,chatGui,client);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
@@ -497,7 +518,32 @@ public class MainMenu extends JFrame {
 					soundfxOn = false;
 				else
 					soundfxOn = true;
-			}
+			}else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
+        		try{
+        			if(chatGui.chatInput.getText().contains(":")){
+        				String mes = chatGui.chatInput.getText().split(":",2)[1];
+        				String dest = chatGui.chatInput.getText().split(":",2)[0];
+        		client.sendMessage(chatGui.chatInput.getText());
+        		chatGui.appendToPane("To "+dest+": "+mes+"\n", 0);
+            	chatGui.chatInput.setText("");
+        			}
+        			else{
+        				client.sendMessage(chatGui.chatInput.getText());
+                		chatGui.appendToPane("To everyone: "+chatGui.chatInput.getText()+"\n", 1);
+                    	chatGui.chatInput.setText("");
+        			}
+        	/*}
+        		else{
+        		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
+        		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
+        		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
+        		chatGui.chatInput.setText("");
+        	}*/
+        		}catch(IOException ie){
+        			System.out.println(ie.getStackTrace());
+        		}
+        	
+        }
 			else {
 
 				int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit",

@@ -50,9 +50,9 @@ public class Client extends Player{
 		this.enemy = enemy;
 	}
 	//Starts the client ServerThread 
-	public void startListening(ChatGui chatGui, GameGui game) throws UnknownHostException, IOException {
+	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientListener(this, socket, chatGui, game);
+		cServer = new ClientListener(this, socket, chatGui);
 		cServer.start();
 	}
 

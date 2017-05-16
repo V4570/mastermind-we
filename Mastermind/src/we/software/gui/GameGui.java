@@ -30,9 +30,11 @@ public class GameGui extends JFrame{
     private KeyInput kp;
     Client client;
     
-    public GameGui(MainMenu previous){
+    public GameGui(MainMenu previous,ChatGui chatGui,Client client){
 
         this.previous = previous;
+        this.chatGui = chatGui;
+        this.client = client;
         setUpButtons();
         initFrame();
         
@@ -47,7 +49,7 @@ public class GameGui extends JFrame{
         catch (IOException exc) {
             exc.printStackTrace();
         }
-        client = new Client();
+        //client = new Client();
         
         
         kp = new KeyInput();
@@ -55,8 +57,8 @@ public class GameGui extends JFrame{
 
         turnHistory = new HistoryPanel();
 
-        chatGui = new ChatGui();
-        chatGui.start();
+        /*chatGui = new ChatGui();
+        chatGui.start();*/
         
         this.getRootPane().setDefaultButton(sendButton);
         
@@ -74,14 +76,14 @@ public class GameGui extends JFrame{
         setResizable(false);
         setVisible(true);
         
-        try {
-        	client.startListening(chatGui,this);
+        /*try {
+        	client.startListening(chatGui);
 			client.logMeIn("test0", "test0");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
     }
     public void hscores(){
     	//Jpanel hscores
