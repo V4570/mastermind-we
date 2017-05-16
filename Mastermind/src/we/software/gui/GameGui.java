@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Bill on 06-Apr-17.
+ * This class is the frame that hosts each game.
  */
 public class GameGui extends JFrame{
 

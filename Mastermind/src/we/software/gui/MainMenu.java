@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 
 /**
  * Created by bill on 3/28/17.
+ * This class is the frame that hosts the menu of the game.
  */
 public class MainMenu extends JFrame {
 
@@ -112,6 +113,9 @@ public class MainMenu extends JFrame {
 		add(chatGui);
 	}
 
+    /**
+     * Prompts the user to enter a username and a password to enter the system.
+     */
 	public void getUsername() {
 
 		String[] options = { "OK" };
@@ -153,7 +157,7 @@ public class MainMenu extends JFrame {
 
     /**
      *
-     * Here the code initializes the buttons.
+     * Initializes and returns a menu button with the correct coordinates.
      */
 	private MenuButton addMenuButton(String path) {
 
@@ -380,7 +384,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         * Sets the panel visible after checking it is invisible.
          */
 		public void setPanelVisible() {
 			if (!flag) {
@@ -390,7 +394,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         * Sets the panel invisible after checking it is visible.
          */
 		public void setPanelInvisible() {
 			if (flag) {
@@ -400,7 +404,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Options Panel στην αρχική του κατάσταση.
+         * Restarts the panel to its initial state.
          */
 		public void panelRestart() {
 			title.setIcon(titleImage);

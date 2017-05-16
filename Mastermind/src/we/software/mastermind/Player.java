@@ -33,24 +33,10 @@ class Player {
     
     private boolean guessing = true;
     
-    
-    //Constructor
+
     public Player(String aName){
     	
-    	//Διάβασμα του ονόματος του παίκτη - !-Βάλτε το αλλού-!
-    	/*String aName;
-    	Scanner keyboard = new Scanner(System.in);
-    	
-    	System.out.println("Enter your name: ");
-    	aName = keyboard.nextLine();
-    	
-    	if(aName.toLowerCase().equals("mastermind")){
-    		System.out.println("Nice try!");
-    		System.out.println("Please enter your name again: ");
-    		aName = keyboard.nextLine();
-    	}*/
-    	
-    	//Διαβάζει το PlayerDatabase.txt, αν υπάρχει ο χρήστης ανακτάει τα στοιχεία του
+    	//Reads the PlayerDatabase.txt, if it find the player it recovers his data
     	boolean found = false;
     	String checkName;
     	
