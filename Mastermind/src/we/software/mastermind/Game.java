@@ -56,27 +56,25 @@ class Game {
     		return false;
     }
     
-    //Επιστροφή πίνακα ελέγχου
+    //Returns result table
     private ArrayList<ResultPegs> checkGuess(){
     	
-    	//Πίνακας Player1 (π1)
+    	//Player1 table (p1)
     	ArrayList<PlayingPegs> guess = p1.getCode();
     	
-    	//Πίνακας Player2 ή AI (π2)
+    	//Player2 or AI table (p2)
     	ArrayList<PlayingPegs> code = p2.getCode();  
     	
-    	//Αρχικοποίηση τελικού πίνακα (π3)
+    	//Initializing final table (p3)
     	ArrayList<ResultPegs> result = new ArrayList<ResultPegs>();
-    	
-    	/* Το i διαβαζει μία-μία τις εγγραφές του π1 και το j του π2.
-    	 * Ελέγχει κάθε φορά αν το χρώμα peg της θέσης i του π1 είναι
-    	 * ίδιο με κάποιο του π2, τότε καταχωρεί στο π3 peg χρώματος
-    	 * άσπρο. Αν ισχύει το παραπάνω + i==j τότε καταχωρεί στο π3 peg 
-    	 * χρώματος κόκκινο. 
-    	 * Κάνει shuffle τον π3 ώστε οι θέσεις των ResultPegs να μην αντιστοιχούν
-    	 * με τις θέσεις των Pegs του π1
-    	*/
-    	for(int i=0; i<4; i++){
+
+		/**
+         * 'i' reads the records of p1 and j of p2 one by one. It checks every time whether the peg color
+         * of position i of p1 is the same as one of p2's, then it registers in the p3 a White peg.
+         * If the above + i == j then registers a Red peg in p3.
+         * It shuffles p3 so that the positions of the ResultPegs do not match with the Pegs of p1.
+		 */
+		for(int i=0; i<4; i++){
     		PlayingPegs pp1 = guess.get(i);
     		
     		for(int j=0; j<4; j++){

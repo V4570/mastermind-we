@@ -11,25 +11,26 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 /**
  * Created by bill on 3/28/17.
+ * This class is the frame that hosts the menu of the game.
  */
 public class MainMenu extends JFrame {
 
-	private MenuButton howToPlay, play, options;
-	private GameMode gameModePanel;
-	private Options optionsPanel;
+	private MenuButton howToPlay, play, options;            //Main menu buttons for functionality
+	private GameMode gameModePanel;                         //The panel that appears for the user to select a game-mode
+	private Options optionsPanel;                           //The panel that appears for the user to select game options
 	private final int WIDTH = 1024;
 	private final int HEIGHT = WIDTH / 12 * 9;
-	private int posY = 230;
+	private int posY = 230;                                 //The starting vertical position of the menu buttons
 	private ButtonListener b = new ButtonListener();
-	public static boolean musicOn = false;
-	public static boolean soundfxOn = false;
-	private AudioLoad l;
+	public static boolean musicOn = false;                  //Variable that controls the music (on/off)
+	public static boolean soundfxOn = false;                //Variable that controls the sound effects (on/off)
+	private AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
 	private String username = null;
-	Client player = null;
+	private Client player = null;
+
 
 	public MainMenu() {
 		
@@ -41,7 +42,7 @@ public class MainMenu extends JFrame {
 			System.out.println("Tsekare Server...");
 		}*/
 
-		l = new AudioLoad("MainMenu.wav");
+		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
 
@@ -73,6 +74,7 @@ public class MainMenu extends JFrame {
 			exc.printStackTrace();
 		}
 
+
 		add(howToPlay);
 		add(play);
 		add(options);
@@ -82,7 +84,7 @@ public class MainMenu extends JFrame {
 
 		setUndecorated(true);
 		setVisible(true);
-		if(musicOn) l.playMenuClip();
+		if(musicOn) menuMusic.playMenuClip();
 
 		//getUsername();
 
@@ -91,9 +93,12 @@ public class MainMenu extends JFrame {
 
 	public void setFrameVisible() {
 		setVisible(true);
-		if(musicOn) l.playMenuClip();
+		if(musicOn) menuMusic.playMenuClip();
 	}
 
+    /**
+     * Prompts the user to enter a username and a password to enter the system.
+     */
 	public void getUsername() {
 
 		String[] options = { "OK" };
@@ -135,7 +140,7 @@ public class MainMenu extends JFrame {
 
     /**
      *
-     * Here the code initializes the buttons.
+     * Initializes and returns a menu button with the correct coordinates.
      */
 	private MenuButton addMenuButton(String path) {
 
@@ -263,8 +268,9 @@ public class MainMenu extends JFrame {
      */
 	class Options extends JPanel {
 
-		private Image background;
-		private ImageIcon exitIcon, exitIconHover, titleImage, musicTitle, soundFXTitle, optionsSquare;
+		private Image background;                                       //The background image of the panel
+		private ImageIcon exitIcon, exitIconHover,
+				titleImage, musicTitle, soundFXTitle, optionsSquare;    //The images for the buttons
 		private JLabel music;
 		private JLabel soundFX;
 		private MenuButton musicButton;
@@ -275,28 +281,6 @@ public class MainMenu extends JFrame {
 		private boolean flagOptions = true;
 
 		public Options() {
-
-			title = new JLabel();
-			music = new JLabel();
-			soundFX = new JLabel();
-
-			titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
-			musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
-			soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
-
-			title.setIcon(titleImage);
-			title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
-
-			music.setIcon(musicTitle);
-			music.setBounds(44, 60, musicTitle.getIconWidth(), musicTitle.getIconHeight());
-
-			soundFX.setIcon(soundFXTitle);
-			soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
-
-			musicButton = new MenuButton("redsquare.png", 250, 60, 0);
-			musicButton.addActionListener(b);
-			soundFXButton = new MenuButton("redsquare.png", 250, 110, 0);
-			soundFXButton.addActionListener(b);
 
 			readImages();
 			addExit();
@@ -316,6 +300,29 @@ public class MainMenu extends JFrame {
 		}
 
 		private void initPanel() {
+
+            title = new JLabel();
+            music = new JLabel();
+            soundFX = new JLabel();
+
+            titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
+            musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
+            soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
+
+            title.setIcon(titleImage);
+            title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+
+            music.setIcon(musicTitle);
+            music.setBounds(44, 60, musicTitle.getIconWidth(), musicTitle.getIconHeight());
+
+            soundFX.setIcon(soundFXTitle);
+            soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
+
+            musicButton = new MenuButton("redsquare.png", 250, 60, 0);
+            musicButton.addActionListener(b);
+            soundFXButton = new MenuButton("redsquare.png", 250, 110, 0);
+            soundFXButton.addActionListener(b);
+
 			setLayout(null);
 			add(exit);
 			add(title);
@@ -359,7 +366,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Panel visible εφόσον ελέγξει ότι είναι κλειστό.
+         * Sets the panel visible after checking it is invisible.
          */
 		public void setPanelVisible() {
 			if (!flag) {
@@ -369,7 +376,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Panel invisible εφόσον ελέγξει ότι είναι ανοιχτό.
+         * Sets the panel invisible after checking it is visible.
          */
 		public void setPanelInvisible() {
 			if (flag) {
@@ -379,7 +386,7 @@ public class MainMenu extends JFrame {
 		}
 
 		/**
-         * Θέτει το Options Panel στην αρχική του κατάσταση.
+         * Restarts the panel to its initial state.
          */
 		public void panelRestart() {
 			title.setIcon(titleImage);
@@ -461,13 +468,13 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-				new GameGui(MainMenu.this);
+				GameGui gameGui = new GameGui(MainMenu.this);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
-					l.closeClip();
+					menuMusic.closeClip();
 			}
 			else if (e.getSource() == optionsPanel.exit) {
 
@@ -484,10 +491,10 @@ public class MainMenu extends JFrame {
 				optionsPanel.musicButton.setIcon("Buttons/hredsquare.png");
 				if (musicOn) {
 					musicOn = false;
-					l.closeClip();
+					menuMusic.closeClip();
 				} else {
 					musicOn = true;
-					l.playMenuClip();
+					menuMusic.playMenuClip();
 				}
 			}
 			else if (e.getSource() == optionsPanel.soundFXButton) {

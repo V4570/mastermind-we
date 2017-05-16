@@ -141,10 +141,10 @@ public class ChatGui extends JPanel implements Runnable{
 
     }*/
 
-    public void appendToPane(String msg, int choise) {
+    public void appendToPane(String msg, int choice) {
         StyledDocument doc = chatHistory.getStyledDocument();
         Style style = chatHistory.addStyle("I'm a Style", null);
-        switch(choise){
+        switch(choice){
         case 0:{
         	StyleConstants.setBold(style, false);
             StyleConstants.setUnderline(style, false);

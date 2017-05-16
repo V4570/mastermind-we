@@ -18,7 +18,7 @@ public class ClientListener extends Thread {
 	GameGui game;
 	ChatGui chatGui;
 	
-	public ClientListener(Client client, Socket socket, ChatGui chatGui,GameGui game) {
+	public ClientListener(Client client, Socket socket, ChatGui chatGui, GameGui game) {
 		this.client = client;
 		this.socket = socket;
 		this.game = game;

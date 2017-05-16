@@ -2,21 +2,17 @@ package we.software.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import com.sun.glass.events.KeyEvent;
-
 import we.software.mastermind.Client;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by Bill on 06-Apr-17.
+ * This class is the frame that hosts each game.
  */
 public class GameGui extends JFrame{
 
@@ -24,11 +20,11 @@ public class GameGui extends JFrame{
     private final int WIDTH = 1024;
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
-    private MenuButton exitButton, optionsButton, backButton, sendButton;
-    private HistoryPanel turnHistory;
-    private ChatGui chatGui;
+    private MenuButton exitButton, optionsButton, backButton, sendButton;   //Funcionality buttons
+    private HistoryPanel turnHistory;                                       //The panel that holds all the turns of the game
+    private ChatGui chatGui;                                                //The chat
     private KeyInput kp;
-    Client client;
+    private Client client;
     
     public GameGui(MainMenu previous){
 
@@ -76,7 +72,7 @@ public class GameGui extends JFrame{
         
         try {
         	client.startListening(chatGui,this);
-			client.logMeIn("test0", "test0");
+			client.logMeIn("test2", "test2");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -102,52 +98,6 @@ public class GameGui extends JFrame{
         sendButton = new MenuButton("send.png", 635, 722, 0);
         sendButton.addActionListener(btnListener);
         
-    }
-
-    class ButtonListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            if(e.getSource() == optionsButton){
-
-            }
-            else if(e.getSource() == backButton){
-
-                setVisible(false);              //Sets this frame as not visible
-                previous.setFrameVisible();     //Sets the previous as frame visible
-            }
-            else if(e.getSource() == exitButton){
-
-                System.exit(0);
-            }
-            else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
-            		try{
-            			if(chatGui.chatInput.getText().contains(":")){
-            				String mes = chatGui.chatInput.getText().split(":",2)[1];
-            				String dest = chatGui.chatInput.getText().split(":",2)[0];
-            		client.sendMessage(chatGui.chatInput.getText());
-            		chatGui.appendToPane("To "+dest+": "+mes+"\n", 0);
-                	chatGui.chatInput.setText("");
-            			}
-            			else{
-            				client.sendMessage(chatGui.chatInput.getText());
-                    		chatGui.appendToPane("To everyone: "+chatGui.chatInput.getText()+"\n", 1);
-                        	chatGui.chatInput.setText("");
-            			}
-            	/*}
-            		else{
-            		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
-            		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
-            		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
-            		chatGui.chatInput.setText("");
-            	}*/
-            		}catch(IOException ie){
-            			System.out.println(ie.getStackTrace());
-            		}
-            	
-            }
-        }
     }
 
     /**
@@ -292,10 +242,52 @@ public class GameGui extends JFrame{
             }
         }
 
-        private void clearList(){
+        private void clearLists(){
+
             rounds.clear();
+            evaluation.clear();
         }
     }
 
+    public void restartFrame(){
 
+        turnHistory.clearLists();
+    }
+
+    class ButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if(e.getSource() == optionsButton){
+
+            }
+            else if(e.getSource() == backButton){
+
+                setVisible(false);              //Sets this frame as not visible
+                previous.setFrameVisible();     //Sets the previous as frame visible
+            }
+            else if(e.getSource() == exitButton){
+
+                System.exit(0);
+            }
+            else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
+                try{
+                    client.sendMessage(chatGui.chatInput.getText());
+                    chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", 0);
+                    chatGui.chatInput.setText("");
+            	/*}
+            		else{
+            		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
+            		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
+            		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
+            		chatGui.chatInput.setText("");
+            	}*/
+                }catch(IOException ie){
+                    System.out.println(ie.getStackTrace());
+                }
+
+            }
+        }
+    }
 }

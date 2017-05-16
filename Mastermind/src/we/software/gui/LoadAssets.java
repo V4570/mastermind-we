@@ -8,8 +8,7 @@ import java.net.URL;
 class LoadAssets {
 
     /**
-     * Μας βοηθάει στην καλύτερη φόρτωση των εικόνων και στην συμπερίληψή τους
-     * στο τελικό εκτελέσιμο αρχείο.
+     * Helps with loading the files
      */
     public static URL load(String path){
         return LoadAssets.class.getResource("/"+ path);
