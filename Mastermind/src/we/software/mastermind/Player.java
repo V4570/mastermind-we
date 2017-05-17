@@ -21,8 +21,7 @@ public class Player {
     //Current Game player information.
     
     
-    private ArrayList<Integer> guess;
-    protected ResultPegs[] result;
+    protected ArrayList<Integer> guess;
     
     //Game Info
     protected int numberOfPins = 4; 

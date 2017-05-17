@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
 import we.software.gui.ChatGui;
@@ -121,6 +122,11 @@ public class ClientListener extends Thread {
 							gameGui.numbersPanel.changeRound();
 							game.p2.restoreGuessToDefault();
 						}
+					} else if (inmessage.startsWith("playresult")) {
+						ArrayList<Integer> res = new ArrayList<Integer>();
+						for(String i : message.split(" ")){
+							res.add(Integer.parseInt(i));
+						}
 					} else if (inmessage.startsWith("message")) {
 						if (transmitter.equals("Server")) {
 							chatGui.appendToPane("From " + transmitter + ": " + message + "\n", 3);
@@ -135,11 +141,12 @@ public class ClientListener extends Thread {
 						// do the scoreThing and saves progress
 					} else if (inmessage.startsWith("fscore")) {
 						// Shows the final score to user
-					} else if (inmessage.startsWith("hscore")) {
-						if (client.isInGame()) {
-
+					} else if (inmessage.startsWith("gethighscores")) {
+						for(String str : message.split(",")){
+							//do something
 						}
-
+					} else if (inmessage.startsWith("sethighscore")) {
+						//ok
 					}
 
 				} catch (ArrayIndexOutOfBoundsException aioe) {
