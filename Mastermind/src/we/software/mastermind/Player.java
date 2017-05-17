@@ -24,7 +24,7 @@ class Player {
     protected ResultPegs[] result;
     
     //Game Info
-    private int numberOfPins = 4; 
+    protected int numberOfPins = 4; 
     
     private int runningRounds;
     private double highscore;
