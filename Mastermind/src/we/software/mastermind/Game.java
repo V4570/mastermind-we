@@ -60,10 +60,10 @@ class Game {
     private ArrayList<ResultPegs> checkGuess(){
     	
     	//Player1 table (p1)
-    	ArrayList<PlayingPegs> guess = p1.getCode();
+    	ArrayList<Integer> guess = p1.getCode();
     	
     	//Player2 or AI table (p2)
-    	ArrayList<PlayingPegs> code = p2.getCode();  
+    	ArrayList<Integer> code = p2.getCode();  
     	
     	//Initializing final table (p3)
     	ArrayList<ResultPegs> result = new ArrayList<ResultPegs>();
@@ -75,12 +75,12 @@ class Game {
          * It shuffles p3 so that the positions of the ResultPegs do not match with the Pegs of p1.
 		 */
 		for(int i=0; i<4; i++){
-    		PlayingPegs pp1 = guess.get(i);
+    		int pp1 = guess.get(i);
     		
     		for(int j=0; j<4; j++){
-    			PlayingPegs pp2 = code.get(i);
+    			int pp2 = code.get(i);
     			
-    			if(pp1.getColour()==pp2.getColour()){
+    			if(pp1==pp2){
     				if(i==j){
     					result.add(new ResultPegs(true));
     					p1.redPegIncrease();

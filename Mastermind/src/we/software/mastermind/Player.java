@@ -20,8 +20,8 @@ class Player {
     
     //Current Game player information.
     
-    private ArrayList<PlayingPegs> guess;
-    private ResultPegs[] result;
+    private ArrayList<Integer> guess;
+    private ArrayList<Integer> result;
     
     //Game Info
     private int numberOfPins = 4; 
@@ -36,98 +36,23 @@ class Player {
 
     public Player(String aName){
     	
-    	//Reads the PlayerDatabase.txt, if it find the player it recovers his data
-    	boolean found = false;
-    	String checkName;
+    	name = aName;
     	
-    	File file = new File("PlayerDatabase.txt");
-    	Scanner scanner = null;
-    	
-    	try {
-    		scanner = new Scanner(file);
-    		scanner.useDelimiter(", "); //Διαμόρφωση αρχείου
-		} 
-    	catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	//Έλεγχος αν υπάρχει το όνομα ως 1η λέξη στη σειρά
-    	while(scanner.hasNextLine() && !found){
-    		checkName = scanner.next();
-    		//Αν υπάρχει διάβασε και τα υπόλοιπα δεδομένα
-    		if(checkName.equals(aName)){
-    			found = true;
-    			name = aName;
-    			highScore = scanner.nextInt();
-    			leastTurns = scanner.nextInt();
-    		}
-    	}
-    	
-    	scanner.close();
-    
-    	//Αν δεν υπάρχει ο χρήστης, τότε τον δημιουργεί
-    	if(!found){
-    		BufferedWriter bw = null;
-    		FileWriter fw = null;
-    		
-    		try {
-
-    			String data = aName + ", 0, 0\n";
-
-    			fw = new FileWriter(file.getAbsoluteFile(), true);
-    			bw = new BufferedWriter(fw);
-
-    			try {
-					bw.write(data);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-    			System.out.println("Done");
-
-    		} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} finally {
-
-    			try {
-
-    				if (bw != null)
-    					bw.close();
-
-    				if (fw != null)
-    					fw.close();
-
-    			}catch (IOException ex) {
-
-    				ex.printStackTrace();
-
-    			}
-			 }
-    	}
-    	
-    	
-        guess = new ArrayList<PlayingPegs>();
-        result = new ResultPegs[numberOfPins];
+        guess = new ArrayList<Integer>(numberOfPins);
+        result = new ArrayList<Integer>(numberOfPins);
         
         
         //Restoring to 0 all highscore values.
         runningRounds = 0;
         redPegsFound =0;
         whitePegsFound =0;
-        
-        
-    	
+  	
     }
     
     public Player(){		//This is for calling the computer.
     		
     	name = "Mastemind";
-    	
-        guess = new ArrayList<PlayingPegs>();
-        result = new ResultPegs[numberOfPins];
+
     }
     
     
@@ -135,13 +60,8 @@ class Player {
     
     //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
     public void AddPin(int position , int colour){
-    	/* Αμα βγαλουμε τελειως τις κλασεις PlayingPegs / Result pegs
-    	 * 
-    	 * guess.add(position, colour);
-    	 * */
-    	PlayingPegs aPeg = new PlayingPegs(colour);
-    	guess.add(position, aPeg);
-    	
+       	
+    	guess.add(position, colour);  	
     	
     }
     
@@ -154,7 +74,7 @@ class Player {
     			
         		if (guess.get(i) == null){ // If there is no peg in this position, add the blank peg.
         			
-        			guess.add(i , new PlayingPegs(0));
+        			guess.add(i , 0);
         		}
         	}
     	}
@@ -194,8 +114,8 @@ class Player {
 		try {
 			String data = "";
 			
-			for(PlayingPegs aPeg: guess)
-				data += aPeg.getColour();
+			for(Integer aPin: guess)
+				data += aPin;
 
 			fw = new FileWriter(file.getAbsoluteFile(), true);
 			bw = new BufferedWriter(fw);
@@ -247,7 +167,7 @@ class Player {
      *στη κλάση Computer. 
     */
    
-    public ArrayList<PlayingPegs> getCode(){
+    public ArrayList<Integer> getCode(){
     	return guess;
     }
     
