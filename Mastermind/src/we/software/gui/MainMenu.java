@@ -364,6 +364,7 @@ public class MainMenu extends JFrame {
 
 				optionsPanel.setPanelInvisible();
 				gameModePanel.setPanelVisible();
+				//play.staySelected();
 
 				if (!optionsPanel.flagOptions) {
 					optionsPanel.panelRestart();

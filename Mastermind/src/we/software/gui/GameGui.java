@@ -24,7 +24,7 @@ public class GameGui extends JFrame{
     private HistoryPanel turnHistory;                                       //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                //The chat
     private KeyInput kp;
-    private Client client;
+    private Client client;                                                  //The client for the chat to work
     private SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn;
     private MenuButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
     private SelectionButton sBtn;
