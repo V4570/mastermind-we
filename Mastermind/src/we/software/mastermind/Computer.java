@@ -63,10 +63,12 @@ class Computer extends Player{
 	    }
 		
       //Βαζει τα Pegs στον πινακα που περιεχει το Code
-		CodeToBreak.add(ColorCombo[0]);
-    	CodeToBreak.add(ColorCombo[1]);
-    	CodeToBreak.add(ColorCombo[2]);
-    	CodeToBreak.add(ColorCombo[3]);
+		for(int i=0;i<NumberOfPegs;i++)
+		{
+			CodeToBreak.add(ColorCombo[i]);
+		}
+		
+    	
     	
 
     	
@@ -80,10 +82,11 @@ class Computer extends Player{
 	        
 	    }
 		//Βαζει τα Pegs στον πινακα που περιεχει το Code
-				CodeToBreak.add(ColorCombo[0]);
-		    	CodeToBreak.add(ColorCombo[1]);
-		    	CodeToBreak.add(ColorCombo[2]);
-		    	CodeToBreak.add(ColorCombo[3]);
+		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+				for(int i=0;i<NumberOfPegs;i++)
+				{
+					CodeToBreak.add(ColorCombo[i]);
+				}
     }
     
   //Γεμιζει τον πινακα με Pegs που μπορει να εχουν και ιδιο χρωμα πολλες φορες, και κενα
@@ -95,10 +98,11 @@ class Computer extends Player{
 	        
 	    }
 		//Βαζει τα Pegs στον πινακα που περιεχει το Code
-				CodeToBreak.add(ColorCombo[0]);
-		    	CodeToBreak.add(ColorCombo[1]);
-		    	CodeToBreak.add(ColorCombo[2]);
-		    	CodeToBreak.add(ColorCombo[3]);
+		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+				for(int i=0;i<NumberOfPegs;i++)
+				{
+					CodeToBreak.add(ColorCombo[i]);
+				}
 
     }
     
