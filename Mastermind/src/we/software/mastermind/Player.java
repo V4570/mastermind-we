@@ -20,8 +20,8 @@ class Player {
     
     //Current Game player information.
     
-    private ArrayList<Integer> guess;
-    private ArrayList<Integer> result;
+    protected ArrayList<Integer> guess;
+    protected ArrayList<Integer> result;
     
     //Game Info
     private int numberOfPins = 4; 
@@ -166,8 +166,14 @@ class Player {
      *Για να έχει το ίδιο όνομα με τη μέθοδο
      *στη κλάση Computer. 
     */
+    
+    /* Δεν κανουν το ιδιο με αυτην του computer,
+     *  το guess παιρνει τα χρωματα που εβαλε ο χρηστης 
+     *  το getCode στο computer επιστρεφει τον συνδιασμο χρωματων 
+     *  που πρεπει το παιχνιδι να συγκρινει με το guess
+     */
    
-    public ArrayList<Integer> getCode(){
+    public ArrayList<Integer> getGuess(){
     	return guess;
     }
     

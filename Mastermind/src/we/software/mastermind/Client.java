@@ -116,7 +116,7 @@ public class Client extends Player{
 
 	// it will change soon
 	public void sendGamePin(int position,int color) throws IOException {
-		super.getCode().set(position, color);
+		super.guess.set(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("play:" + username + ":" + enemy.getName() + "%" + position+" "+color);
 		bw.newLine();
