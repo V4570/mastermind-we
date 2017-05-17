@@ -81,7 +81,7 @@ class Computer extends Player{
 			ColorCombo[i] =1+ (int)(Math.random()*6);
 	        
 	    }
-		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+		
 		//Βαζει τα Pegs στον πινακα που περιεχει το Code
 				for(int i=0;i<NumberOfPegs;i++)
 				{
@@ -97,8 +97,7 @@ class Computer extends Player{
 			ColorCombo[i] =(int)(Math.random()*7);
 	        
 	    }
-		//Βαζει τα Pegs στον πινακα που περιεχει το Code
-		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+				//Βαζει τα Pegs στον πινακα που περιεχει το Code
 				for(int i=0;i<NumberOfPegs;i++)
 				{
 					CodeToBreak.add(ColorCombo[i]);
