@@ -8,10 +8,7 @@ import we.software.mastermind.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 /**
  * Created by bill on 3/28/17.
@@ -19,20 +16,20 @@ import java.net.UnknownHostException;
  */
 public class MainMenu extends JFrame {
 
-	private MenuButton howToPlay, play, options,sendButton;
-	private GameMode gameModePanel;
-	private Options optionsPanel;
+	private MenuButton howToPlay, play, options;            //Main menu buttons for functionality
+	private GameMode gameModePanel;                         //The panel that appears for the user to select a game-mode
+	private Options optionsPanel;                           //The panel that appears for the user to select game options
 	private final int WIDTH = 1024;
 	private final int HEIGHT = WIDTH / 12 * 9;
-	private int posY = 230;
+	private int posY = 230;                                 //The starting vertical position of the menu buttons
 	private ButtonListener b = new ButtonListener();
-	public static boolean musicOn = false;
-	public static boolean soundfxOn = false;
-	private AudioLoad l;
+	public static boolean musicOn = false;                  //Variable that controls the music (on/off)
+	public static boolean soundfxOn = false;                //Variable that controls the sound effects (on/off)
+	private AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
 	private String username = null;
-	Client player = null;
-	Client client;
-	private ChatGui chatGui;
+	private Client player = null;
+	private GameGui previous = null;
+
 
 	public MainMenu() {
 		
@@ -43,10 +40,8 @@ public class MainMenu extends JFrame {
 		} catch (IOException e1) {
 			System.out.println("Tsekare Server...");
 		}*/
-		
-		
-		
-		l = new AudioLoad("MainMenu.wav");
+
+		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
 
@@ -54,6 +49,7 @@ public class MainMenu extends JFrame {
 		play = addMenuButton("play.png");
 		options = addMenuButton("options.png");
 
+		PreloadImages.loadGlasses();
 		initFrame();
 
 	}
@@ -63,54 +59,43 @@ public class MainMenu extends JFrame {
      */
 	private void initFrame() {
 
-		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0);
+		JButton exitButton = new MenuButton("exit.png", 1001, 5, 0, 0);
 		exitButton.addActionListener(b);
-		
-		client = new Client();
-		chatGui = new ChatGui();
-        chatGui.start();
-		
-		
+
 		setSize(WIDTH, HEIGHT);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		try {
 			setIconImage(ImageIO.read(LoadAssets.load("master.png")));
 			setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("Background.png")))));
 		} catch (IOException exc) {
 			exc.printStackTrace();
 		}
-		this.getRootPane().setDefaultButton(sendButton);
+
+
 		add(howToPlay);
 		add(play);
 		add(options);
 		add(gameModePanel);
 		add(optionsPanel);
 		add(exitButton);
-		add(sendButton);
-		add(chatGui);
+
 		setUndecorated(true);
 		setVisible(true);
-		if(musicOn) l.playMenuClip();
-		try {
-        	client.startListening(chatGui);
-			client.logMeIn("test0", "test0");
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if(musicOn) menuMusic.playMenuClip();
+
 		//getUsername();
 
 	}
 
 
-	public void setFrameVisible() {
+	public void setFrameVisible(GameGui previous) {
+	    this.previous = previous;
+	    previous.setInvisible();
 		setVisible(true);
-		if(musicOn) l.playMenuClip();
-		add(chatGui);
+		if(musicOn) menuMusic.playMenuClip();
 	}
 
     /**
@@ -163,7 +148,7 @@ public class MainMenu extends JFrame {
 
 		posY += 70;
 		int posX = 130;
-		MenuButton button = new MenuButton(path, posX, posY, 51);
+		MenuButton button = new MenuButton(path, posX, posY, 51, 0);
 		button.addActionListener(b);
 		return button;
 	}
@@ -174,9 +159,8 @@ public class MainMenu extends JFrame {
 	class GameMode extends JPanel {
 
 		private Image background;
-		private ImageIcon exitIcon, exitIconHover, titleImage, pvaiTitle, pvpTitle;
-		private MenuButton pVsAi, pVsP;
-		private JButton exit;
+		private ImageIcon titleImage, pvaiTitle, pvpTitle;
+		private MenuButton pVsAi, pVsP, exit;
 		private JLabel title;
 		private boolean flag = false;
 		private boolean flagOptions = true;
@@ -192,17 +176,16 @@ public class MainMenu extends JFrame {
 			title.setIcon(titleImage);
 			title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
-			pVsAi = new MenuButton("pvai.png", 39, 46, 0);
+			pVsAi = new MenuButton("pvai.png", 39, 46, 0, 0);
 			pVsAi.addActionListener(b);
 
-			pVsP = new MenuButton("pvp.png", 39, 98, 0);
+			pVsP = new MenuButton("pvp.png", 39, 98, 0, 0);
 			pVsP.addActionListener(b);
-			
-			sendButton = new MenuButton("send.png", 635, 722, 0);
-	        sendButton.addActionListener(b);
+
+			exit = new MenuButton("exito.png",323, 13, 6, 6);
+			exit.addActionListener(b);
 
 			readImages();
-			addExit();
 			initPanel();
 
 		}
@@ -211,8 +194,6 @@ public class MainMenu extends JFrame {
 
 			try {
 				background = ImageIO.read(LoadAssets.load("gameoptions.png"));
-				exitIcon = new ImageIcon(ImageIO.read(LoadAssets.load("Buttons/exit.png")));
-				exitIconHover = new ImageIcon(ImageIO.read(LoadAssets.load("Buttons/sexit.png")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -229,30 +210,6 @@ public class MainMenu extends JFrame {
 			setBounds(420, 280, background.getWidth(null), background.getHeight(null));
 			setOpaque(false);
 			setVisible(flag);
-		}
-
-		private void addExit() {
-			exit = new JButton();
-			exit.setIcon(exitIcon);
-			exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-			exit.addActionListener(b);
-			exit.setOpaque(false);
-			exit.setContentAreaFilled(false);
-			exit.setBorderPainted(false);
-			exit.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
-					exit.setIcon(exitIconHover);
-				}
-
-				@Override
-				public void mouseExited(MouseEvent e) {
-					exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-					exit.setIcon(exitIcon);
-				}
-			});
-
 		}
 
 		@Override
@@ -288,43 +245,19 @@ public class MainMenu extends JFrame {
      */
 	class Options extends JPanel {
 
-		private Image background;
-		private ImageIcon exitIcon, exitIconHover, titleImage, musicTitle, soundFXTitle, optionsSquare;
+		private Image background;                                       //The background image of the panel
+		private ImageIcon exitIcon, exitIconHover,
+				titleImage, musicTitle, soundFXTitle, optionsSquare;    //The images for the buttons
 		private JLabel music;
 		private JLabel soundFX;
-		private MenuButton musicButton;
-		private MenuButton soundFXButton;
-		private JButton exit;
+		private MenuButton musicButton, soundFXButton, exit;
 		private JLabel title;
 		private boolean flag = false;
 		private boolean flagOptions = true;
 
 		public Options() {
 
-			title = new JLabel();
-			music = new JLabel();
-			soundFX = new JLabel();
-
-			titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
-			musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
-			soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
-
-			title.setIcon(titleImage);
-			title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
-
-			music.setIcon(musicTitle);
-			music.setBounds(44, 60, musicTitle.getIconWidth(), musicTitle.getIconHeight());
-
-			soundFX.setIcon(soundFXTitle);
-			soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
-
-			musicButton = new MenuButton("redsquare.png", 250, 60, 0);
-			musicButton.addActionListener(b);
-			soundFXButton = new MenuButton("redsquare.png", 250, 110, 0);
-			soundFXButton.addActionListener(b);
-
 			readImages();
-			addExit();
 			initPanel();
 		}
 
@@ -335,12 +268,37 @@ public class MainMenu extends JFrame {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			exitIcon = new ImageIcon(LoadAssets.load("Buttons/exit.png"));
-			exitIconHover = new ImageIcon(LoadAssets.load("Buttons/sexit.png"));
-			optionsSquare = new ImageIcon(LoadAssets.load("Buttons/redsquare.png"));
+			optionsSquare = new ImageIcon(LoadAssets.load("Buttons/hswitch.png"));
 		}
 
 		private void initPanel() {
+
+            title = new JLabel();
+            music = new JLabel();
+            soundFX = new JLabel();
+
+            titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
+            musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
+            soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
+
+            title.setIcon(titleImage);
+            title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
+
+            music.setIcon(musicTitle);
+            music.setBounds(44, 60, musicTitle.getIconWidth(), musicTitle.getIconHeight());
+
+            soundFX.setIcon(soundFXTitle);
+            soundFX.setBounds(44, 110, soundFXTitle.getIconWidth(), soundFXTitle.getIconHeight());
+
+            musicButton = new MenuButton("switch.png", 250, 60, 0, 0);
+            musicButton.addActionListener(b);
+
+            soundFXButton = new MenuButton("switch.png", 250, 110, 0, 0);
+            soundFXButton.addActionListener(b);
+
+            exit = new MenuButton("exito.png", 323, 13, 6, 6);
+            exit.addActionListener(b);
+
 			setLayout(null);
 			add(exit);
 			add(title);
@@ -352,28 +310,6 @@ public class MainMenu extends JFrame {
 			setBounds(420, 350, background.getWidth(null), background.getHeight(null));
 			setOpaque(false);
 			setVisible(flag);
-		}
-
-		private void addExit() {
-			exit = new JButton();
-			exit.setIcon(exitIcon);
-			exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-			exit.addActionListener(b);
-			exit.setOpaque(false);
-			exit.setContentAreaFilled(false);
-			exit.setBorderPainted(false);
-			exit.addMouseListener(new MouseAdapter() {
-
-				public void mouseEntered(MouseEvent e) {
-					exit.setBounds(316, 7, exitIconHover.getIconWidth(), exitIconHover.getIconHeight());
-					exit.setIcon(exitIconHover);
-				}
-
-				public void mouseExited(MouseEvent e) {
-					exit.setBounds(323, 13, exitIcon.getIconWidth(), exitIcon.getIconHeight());
-					exit.setIcon(exitIcon);
-				}
-			});
 		}
 
 		@Override
@@ -486,13 +422,18 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-				new GameGui(MainMenu.this,chatGui,client);
+				if(previous == null){
+				    GameGui gameGui = new GameGui(MainMenu.this);
+                }
+                else{
+				    previous.setVisible(true);
+                }
 				setVisible(false);
 
 				gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
-					l.closeClip();
+					menuMusic.closeClip();
 			}
 			else if (e.getSource() == optionsPanel.exit) {
 
@@ -506,48 +447,27 @@ public class MainMenu extends JFrame {
 			}
 			else if (e.getSource() == optionsPanel.musicButton) {
 
-				optionsPanel.musicButton.setIcon("Buttons/hredsquare.png");
 				if (musicOn) {
 					musicOn = false;
-					l.closeClip();
+					menuMusic.closeClip();
+					optionsPanel.musicButton.staySelected();
 				} else {
 					musicOn = true;
-					l.playMenuClip();
+					optionsPanel.musicButton.setUnselected();
+					menuMusic.playMenuClip();
 				}
 			}
 			else if (e.getSource() == optionsPanel.soundFXButton) {
 
-				optionsPanel.soundFXButton.setIcon("Buttons/hredsquare.png");
-				if (soundfxOn)
-					soundfxOn = false;
-				else
-					soundfxOn = true;
-			}else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
-        		try{
-        			if(chatGui.chatInput.getText().contains(":")){
-        				String mes = chatGui.chatInput.getText().split(":",2)[1];
-        				String dest = chatGui.chatInput.getText().split(":",2)[0];
-        		client.sendMessage(chatGui.chatInput.getText());
-        		chatGui.appendToPane("To "+dest+": "+mes+"\n", 0);
-            	chatGui.chatInput.setText("");
-        			}
-        			else{
-        				client.sendMessage(chatGui.chatInput.getText());
-                		chatGui.appendToPane("To everyone: "+chatGui.chatInput.getText()+"\n", 1);
-                    	chatGui.chatInput.setText("");
-        			}
-        	/*}
-        		else{
-        		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
-        		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
-        		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
-        		chatGui.chatInput.setText("");
-        	}*/
-        		}catch(IOException ie){
-        			System.out.println(ie.getStackTrace());
-        		}
-        	
-        }
+				if (soundfxOn) {
+                    soundfxOn = false;
+                    optionsPanel.soundFXButton.staySelected();
+                }
+				else {
+                    soundfxOn = true;
+                    optionsPanel.soundFXButton.setUnselected();
+                }
+			}
 			else {
 
 				int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit",

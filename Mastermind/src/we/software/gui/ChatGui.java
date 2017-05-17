@@ -88,7 +88,7 @@ public class ChatGui extends JPanel implements Runnable{
         c.gridx = 0;
         c.gridy = 1;
         add(chatInput, c);
-        //addKeyListener(kp);
+        addKeyListener(kp);
 	}
 
 	/*public void init(){
