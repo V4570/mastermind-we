@@ -5,99 +5,106 @@ import java.util.Collections;
 
 class Game {
 
-    private boolean started;
-    
-	private Player p1;
-    private Player p2; //Player or Computer
-    //private Computer c;
-    private int gameType;
-    private int difficulty; // 0-2 (Easy - Hard)
+	public Player p1;
+	public Player p2; // Player or Computer
+	public Client c;
+	private int gameType;
+	private int difficulty; // 0-2 (Easy - Hard)
+	private int games;
+	public int currentRound;
+	public int currentGame;
+	public int gameScore;
+	public int 	maxRounds=10;
 
-
-    public Game(int gameType){
-        this.gameType = gameType;
-        setGame();
-    }
-
-    private void setGame(){	//PvP / PvE selection
-
-        switch (gameType){
-            case 0:
-                p1 = new Player();
-                p2 = new Computer(difficulty);
-                break;
-            case 1:
-                p1 = new Player();
-                p2 = new Player();
-                break;
-        }
-    }
-    
-    public boolean isStarted() {
-		return started;
+	public Game(int gameType,int difficulty) {
+		this.gameType = gameType;
+		p1 = new Player();
+		p2 = new Computer(difficulty);
 	}
 
-	public void setStarted(boolean started) {
-		this.started = started;
-	}    
-    
-    private boolean checkIfWin(){
-    	
-    	ArrayList<ResultPegs> result = this.checkGuess();
-    	boolean allRed = true;
-    	
-    	for(ResultPegs aPeg: result)
-    		if(!aPeg.getColour())
-    			allRed = false;
-    	
-    	if(allRed && result.size() == 4)
-    		return true;
-    	else
-    		return false;
-    }
-    
-    //Returns result table
-    private ArrayList<ResultPegs> checkGuess(){
-    	
-    	//Player1 table (p1)
-    	ArrayList<Integer> guess = p1.getCode();
-    	
-    	//Player2 or AI table (p2)
-    	ArrayList<Integer> code = p2.getCode();  
-    	
-    	//Initializing final table (p3)
-    	ArrayList<ResultPegs> result = new ArrayList<ResultPegs>();
+	public Game(int gameType,int games,Client c,boolean isClientCodeMaker) { // PvP / PvE selection
+		this.gameType = gameType;
+		this.currentRound = 0;
+		this.games=games;
+		this.c = c;
+		this.gameScore=0;
+		c.setEnemy(new Player());
+		p2  = c.getEnemy();
+		if(isClientCodeMaker){
+			c.setCodeMaker(true);
+		}
+		else{
+			c.setCodeMaker(false);
+		}
+	}
 
-		/**
-         * 'i' reads the records of p1 and j of p2 one by one. It checks every time whether the peg color
-         * of position i of p1 is the same as one of p2's, then it registers in the p3 a White peg.
-         * If the above + i == j then registers a Red peg in p3.
-         * It shuffles p3 so that the positions of the ResultPegs do not match with the Pegs of p1.
-		 */
-		for(int i=0; i<4; i++){
-    		int pp1 = guess.get(i);
-    		
-    		for(int j=0; j<4; j++){
-    			int pp2 = code.get(i);
-    			
-    			if(pp1==pp2){
-    				if(i==j){
-    					result.add(new ResultPegs(true));
-    					p1.redPegIncrease();
-    				}
-    					
-    				else{
-    					result.add(new ResultPegs(false));
-    					p1.whitePegIncrease();
-    				}
-    					
-    			}
-    		}			
-    	}
-    	
-    	Collections.shuffle(result);
-    	p1.roundIncrease();
-    	p1.restoreGuessToDefault();
-    	return result;
-    }
+	public boolean checkIfAllRed(ArrayList<Integer> result) {
+
+		for (int aPeg : result)
+			if (aPeg != 2)
+				return false;
+		return true;
+	}
+	
+	private void setRoundScore(ArrayList<Integer> result){
+		
+		for(int resPeg : result){
+			if(resPeg==2){
+				gameScore = gameScore + 50;
+			}
+			else if(resPeg==1){
+				gameScore = gameScore+40;
+			}
+		}
+	}
+	
+	public int getGameScore(){
+		if(checkIfAllRed(checkGuess())){
+			return gameScore+(5000-(currentRound*150));
+		}
+		else{
+			return gameScore;
+		}
+	}
+	
+	// Returns result table
+	public ArrayList<Integer> checkGuess() {
+
+		// Player1 table (p1)
+		ArrayList<Integer> guess = p1.getCode();
+
+		// Player2 or AI table (p2)
+		ArrayList<Integer> code = p2.getCode();
+
+		// Initializing final table (p3)
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		
+		ArrayList<Integer> ex = new ArrayList<Integer>();
+
+		for (int i = 0; i < 4; i++) {
+			if (guess.get(i) == code.get(i)) {
+				result.add(2);
+				ex.add(i);
+			}
+		}
+		for (int i = 0; i < 4; i++) {
+			if (!ex.isEmpty()) {
+				if (ex.contains(i))
+					continue;
+			}
+			for (int j = 0; j < 4; j++) {
+				if (guess.get(i) == code.get(j)) {
+					result.add(1);
+					break;
+				}
+			}
+		}
+		
+		while (result.size() < 3) {
+			result.add(0);
+		}
+		setRoundScore(result);
+		return result;
+
+	}
 }

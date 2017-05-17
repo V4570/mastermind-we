@@ -118,14 +118,21 @@ public class Client extends Player{
 	public void sendGamePin(int position,int color) throws IOException {
 		super.guess.set(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("play:" + username + ":" + enemy.getName() + "%" + position+" "+color);
+		bw.write("playpin:" + username + ":" + enemy.getName() + "%" + position+" "+color);
+		bw.newLine();
+		bw.flush();
+	}
+	
+	public void sendGameCheck(int position,int color) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("playcheck:" + username + ":" + enemy.getName() + "%ok");
 		bw.newLine();
 		bw.flush();
 	}
 
 	
 	// it will change soon
-	public void sendGameRoundScore() throws IOException {
+	public void sendGameRoundResult() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("score:" + username + ":" + enemy.getName() + "%" + "");
 		bw.newLine();
