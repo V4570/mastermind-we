@@ -9,7 +9,7 @@ class Computer extends Player{
 	
     private int NumberOfPegs = 4;
 	// Πινακας που περιεχει το Code 
-    private ArrayList<PlayingPegs> CodeToBreak = new ArrayList<PlayingPegs>();
+    private ArrayList<Integer> CodeToBreak = new ArrayList<Integer>();
     
     //Easy Difficulty : Code to crack for the player has 6 colours, no duplicates , no NULL colour.
     //Medium Difficulty : Code to crack for the player has 6 colours, has duplicates , no NULL colour.
@@ -61,17 +61,12 @@ class Computer extends Player{
 	            }
 	        }   
 	    }
-		//Δημιουργει τα Pegs με τα χροματα που βγηκαν απο τον παραπανω αλγοριθμο
-		PlayingPegs a= new PlayingPegs(ColorCombo[0]);
-        PlayingPegs b= new PlayingPegs(ColorCombo[1]);
-        PlayingPegs c= new PlayingPegs(ColorCombo[2]);
-        PlayingPegs d= new PlayingPegs(ColorCombo[3]);
-        
+		
       //Βαζει τα Pegs στον πινακα που περιεχει το Code
-		CodeToBreak.add(a);
-    	CodeToBreak.add(b);
-    	CodeToBreak.add(c);
-    	CodeToBreak.add(d);
+		CodeToBreak.add(ColorCombo[0]);
+    	CodeToBreak.add(ColorCombo[1]);
+    	CodeToBreak.add(ColorCombo[2]);
+    	CodeToBreak.add(ColorCombo[3]);
     	
 
     	
@@ -84,17 +79,11 @@ class Computer extends Player{
 			ColorCombo[i] =1+ (int)(Math.random()*6);
 	        
 	    }
-    	
-    	PlayingPegs a= new PlayingPegs(ColorCombo[0]);
-        PlayingPegs b= new PlayingPegs(ColorCombo[1]);
-        PlayingPegs c= new PlayingPegs(ColorCombo[2]);
-        PlayingPegs d= new PlayingPegs(ColorCombo[3]);
-        
-        
-		CodeToBreak.add(a);
-    	CodeToBreak.add(b);
-    	CodeToBreak.add(c);
-    	CodeToBreak.add(d);
+		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+				CodeToBreak.add(ColorCombo[0]);
+		    	CodeToBreak.add(ColorCombo[1]);
+		    	CodeToBreak.add(ColorCombo[2]);
+		    	CodeToBreak.add(ColorCombo[3]);
     }
     
   //Γεμιζει τον πινακα με Pegs που μπορει να εχουν και ιδιο χρωμα πολλες φορες, και κενα
@@ -105,21 +94,15 @@ class Computer extends Player{
 			ColorCombo[i] =(int)(Math.random()*7);
 	        
 	    }
-    	
-    	PlayingPegs a= new PlayingPegs(ColorCombo[0]);
-        PlayingPegs b= new PlayingPegs(ColorCombo[1]);
-        PlayingPegs c= new PlayingPegs(ColorCombo[2]);
-        PlayingPegs d= new PlayingPegs(ColorCombo[3]);
-        
-        
-		CodeToBreak.add(a);
-    	CodeToBreak.add(b);
-    	CodeToBreak.add(c);
-    	CodeToBreak.add(d);
+		//Βαζει τα Pegs στον πινακα που περιεχει το Code
+				CodeToBreak.add(ColorCombo[0]);
+		    	CodeToBreak.add(ColorCombo[1]);
+		    	CodeToBreak.add(ColorCombo[2]);
+		    	CodeToBreak.add(ColorCombo[3]);
 
     }
     
-   public ArrayList<PlayingPegs> getCode(){
+   public ArrayList<Integer> getCode(){
 	   return CodeToBreak;
 	   
    }
