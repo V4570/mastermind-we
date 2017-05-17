@@ -3,12 +3,12 @@ package we.software.mastermind;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class Game {
+public class Game {
 
 	public Player p1;
 	public Player p2; // Player or Computer
 	public Client c;
-	private int gameType;
+	public int gameType;
 	private int difficulty; // 0-2 (Easy - Hard)
 	private int games;
 	public int currentRound;

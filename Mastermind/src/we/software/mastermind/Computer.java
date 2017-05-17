@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by bill on 3/24/17.
  */
-class Computer extends Player{
+public class Computer extends Player{
 	
     
 	// Πινακας που περιεχει το Code 

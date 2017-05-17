@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
@@ -16,7 +17,7 @@ public class Client extends Player{
 	public ClientListener cListener;
 	private Socket socket;
 	public boolean inGame;
-	private String server = "83.212.99.117";
+	private String server = "";
 	private int PORT = 12498;
 	public boolean codeMaker;
 	static int rounds;
@@ -116,7 +117,7 @@ public class Client extends Player{
 
 	// it will change soon
 	public void sendGamePin(int position,int color) throws IOException {
-		super.guess.set(position, color);
+		super.addPin(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playpin:" + username + ":" + enemy.getName() + "%" + position+" "+color);
 		bw.newLine();
@@ -132,9 +133,13 @@ public class Client extends Player{
 
 	
 	// it will change soon
-	public void sendGameRoundResult() throws IOException {
+	public void sendGameRoundResult(ArrayList<Integer> result) throws IOException {
+		String m = "";
+		for(int i : result){
+			m = m+" "+i;
+		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("score:" + username + ":" + enemy.getName() + "%" + "");
+		bw.write("playresult:" + username + ":" + enemy.getName() + "%" + m);
 		bw.newLine();
 		bw.flush();
 	}

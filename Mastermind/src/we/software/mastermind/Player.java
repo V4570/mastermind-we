@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Created by ralph on 3/24/17.
  */
-class Player {
+public class Player {
 
 	//General User Information
     private String name;

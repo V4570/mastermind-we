@@ -3,6 +3,8 @@ package we.software.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import we.software.mastermind.Client;
+import we.software.mastermind.Game;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,14 +23,15 @@ public class GameGui extends JFrame{
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
     private MenuButton exitButton, optionsButton, backButton, sendButton;   //Funcionality buttons
-    private HistoryPanel turnHistory;                                       //The panel that holds all the turns of the game
+    public HistoryPanel turnHistory;                                       //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                //The chat
     private KeyInput kp;
     private Client client;                                                  //The client for the chat to work
-    private SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn;
+    public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn;
     private MenuButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
     private SelectionButton sBtn;
-    private NumbersPanel numbersPanel;
+    public NumbersPanel numbersPanel;
+    public Game game;
 
     private int selectedBtn = -1;
     private int turn = 1;
@@ -36,7 +39,7 @@ public class GameGui extends JFrame{
     private boolean notValid = false;
     
     public GameGui(MainMenu previous){
-
+    	// edw tha prepei na dimiourgritai ena instance Game
         this.previous = previous;
         setUpButtons();
         initFrame();
@@ -65,7 +68,8 @@ public class GameGui extends JFrame{
         
         this.getRootPane().setDefaultButton(sendButton);
         
-        
+        selectionBtn1.setColored(1);
+        selectionBtn1.setUnselected();
         add(exitButton);
         add(optionsButton);
         add(backButton);
@@ -157,7 +161,7 @@ public class GameGui extends JFrame{
         
     }
 
-    class NumbersPanel extends JPanel{
+    public class NumbersPanel extends JPanel{
 
         private ArrayList<BufferedImage> numbers;
         private int round = 1;
@@ -187,7 +191,7 @@ public class GameGui extends JFrame{
     /**
      * Special panel that shows the guess and the corresponding evaluation for each turn.
      */
-    class HistoryPanel extends JPanel{
+    public class HistoryPanel extends JPanel{
 
         private BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, evalLU, evalLD, evalRU, evalRD,
                 bevalLU, bevalLD, bevalRU, bevalRD;
@@ -258,7 +262,7 @@ public class GameGui extends JFrame{
         }
 
 
-        private void addToRounds(int id){
+        public void addToRounds(int id){
 
             switch (id){
                 case 0:
@@ -412,6 +416,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(0);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 1;
+                    /*if(game.gameType==0){
+                    	game.p1.addPin(selectedBtn, 1);
+                    }
+                    else if(game.gameType==1){
+                    	if(!client.isCodeMaker()){
+                    	try {
+							client.sendGamePin(selectedBtn, 1);
+						} catch (IOException e1) {
+							System.out.println("Can t send game pin");
+						}
+                    	}
+                    	else{
+                    		client.addPin(selectedBtn, 1);
+                    	}
+                    }*/
                     sBtn = null;
                 }
             }
@@ -422,6 +441,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(1);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 2;
+                    /*if(game.gameType==0){
+                	game.p1.addPin(selectedBtn, 2);
+                }
+                else if(game.gameType==1){
+                	if(!client.isCodeMaker()){
+                	try {
+						client.sendGamePin(selectedBtn, 2);
+					} catch (IOException e1) {
+						System.out.println("Can t send game pin");
+					}
+                	}
+                	else{
+                		client.addPin(selectedBtn, 2);
+                	}
+                }*/
                     sBtn = null;
                 }
             }
@@ -432,6 +466,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(2);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 3;
+                    /*if(game.gameType==0){
+                	game.p1.addPin(selectedBtn, 3);
+                }
+                else if(game.gameType==1){
+                	if(!client.isCodeMaker()){
+                	try {
+						client.sendGamePin(selectedBtn, 3);
+					} catch (IOException e1) {
+						System.out.println("Can t send game pin");
+					}
+                	}
+                	else{
+                		client.addPin(selectedBtn, 3);
+                	}
+                }*/
                     sBtn = null;
                 }
             }
@@ -442,6 +491,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(3);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 4;
+                    /*if(game.gameType==0){
+                	game.p1.addPin(selectedBtn, 4);
+                }
+                else if(game.gameType==1){
+                	if(!client.isCodeMaker()){
+                	try {
+						client.sendGamePin(selectedBtn, 4);
+					} catch (IOException e1) {
+						System.out.println("Can t send game pin");
+					}
+                	}
+                	else{
+                		client.addPin(selectedBtn, 4);
+                	}
+                }*/
                     sBtn = null;
                 }
             }
@@ -452,6 +516,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(4);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 5;
+                    /*if(game.gameType==0){
+                	game.p1.addPin(selectedBtn, 5);
+                }
+                else if(game.gameType==1){
+                	if(!client.isCodeMaker()){
+                	try {
+						client.sendGamePin(selectedBtn, 5);
+					} catch (IOException e1) {
+						System.out.println("Can t send game pin");
+					}
+                	}
+                	else{
+                		client.addPin(selectedBtn, 5);
+                	}
+                }*/
                     sBtn = null;
                 }
             }
@@ -462,6 +541,21 @@ public class GameGui extends JFrame{
                     sBtn.setColored(5);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 6;
+                    /*if(game.gameType==0){
+                	game.p1.addPin(selectedBtn, 6);
+                }
+                else if(game.gameType==1){
+                	if(!client.isCodeMaker()){
+                	try {
+						client.sendGamePin(selectedBtn, 6);
+					} catch (IOException e1) {
+						System.out.println("Can t send game pin");
+					}
+                	}
+                	else{
+                		client.addPin(selectedBtn, 6);
+                	}
+                }*/
                     sBtn = null;
                 }
             }
