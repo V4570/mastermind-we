@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 class Computer extends Player{
 	
-    private int NumberOfPegs = 4;
+    
 	// Πινακας που περιεχει το Code 
     private ArrayList<Integer> CodeToBreak = new ArrayList<Integer>();
     
@@ -48,60 +48,40 @@ class Computer extends Player{
     public void easyAlgorithm(){
     	
     	
-    	int[] ColorCombo = new int[4];
-		for (int i = 0; i < ColorCombo.length; i++) {
+		for (int i = 0; i < super.numberOfPins; i++) {
 			//Τυχαιος αροιθμος απο το 1-6
-	        ColorCombo[i] =1+ (int)(Math.random()*6);
+	        CodeToBreak.add(1+ (int)(Math.random()*6));
             //ελεγχει για το εαν υπαρχει ειδη ο αροιθμος στον πινακα
 	        for (int j = 0; j < i; j++) {
-	            if (ColorCombo[i] == ColorCombo[j]) {
+	            if (CodeToBreak.get(i).equals(CodeToBreak.get(j))) {
 	            	//αν υπαρχει παει το i μια θεση πισω
 	                i--;
 	                break;
 	            }
 	        }   
-	    }
-		
-      //Βαζει τα Pegs στον πινακα που περιεχει το Code
-		for(int i=0;i<NumberOfPegs;i++)
-		{
-			CodeToBreak.add(ColorCombo[i]);
-		}
-		
-    	
-    	
-
-    	
-
+	    }	
     }
+    
+    
   //Γεμιζει τον πινακα με Pegs που μπορει να εχουν και ιδιο χρωμα πολλες φορες
     public void mediumAlgorithm(){
-    	int[] ColorCombo = new int[4];
-		for (int i = 0; i < ColorCombo.length; i++) {
-			ColorCombo[i] =1+ (int)(Math.random()*6);
+    	
+		for (int i = 0; i<super.numberOfPins; i++) {
+			CodeToBreak.add(1+ (int)(Math.random()*6));
 	        
 	    }
 		
-		//Βαζει τα Pegs στον πινακα που περιεχει το Code
-				for(int i=0;i<NumberOfPegs;i++)
-				{
-					CodeToBreak.add(ColorCombo[i]);
-				}
     }
     
   //Γεμιζει τον πινακα με Pegs που μπορει να εχουν και ιδιο χρωμα πολλες φορες, και κενα
     public void hardAlgorithm(){
     	
-    	int[] ColorCombo = new int[4];
-		for (int i = 0; i <ColorCombo.length; i++) {
-			ColorCombo[i] =(int)(Math.random()*7);
+    	
+		for (int i = 0; i < super.numberOfPins; i++) {
+			 CodeToBreak.add((int)(Math.random()*7));
 	        
 	    }
-				//Βαζει τα Pegs στον πινακα που περιεχει το Code
-				for(int i=0;i<NumberOfPegs;i++)
-				{
-					CodeToBreak.add(ColorCombo[i]);
-				}
+				
 
     }
     
