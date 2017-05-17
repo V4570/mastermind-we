@@ -20,6 +20,7 @@ public class Player {
     
     //Current Game player information.
     
+    
     private ArrayList<Integer> guess;
     protected ResultPegs[] result;
     
