@@ -11,14 +11,14 @@ import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class Client extends Player{
-	private String username;
+	public String username;
 	public Player enemy;
-	ClientListener cServer;
-	Socket socket;
-	boolean inGame;
-	String server = "";
-	int PORT = 12498;
-	static boolean codeMaker;
+	public ClientListener cListener;
+	private Socket socket;
+	public boolean inGame;
+	private String server = "83.212.99.117";
+	private int PORT = 12498;
+	public boolean codeMaker;
 	static int rounds;
 	ChatGui chatGui;
 	
@@ -28,6 +28,17 @@ public class Client extends Player{
 		username = "";
 		inGame = false;
 	}
+	
+
+	public boolean isCodeMaker() {
+		return codeMaker;
+	}
+
+
+	public void setCodeMaker(boolean codeMaker) {
+		this.codeMaker = codeMaker;
+	}
+
 
 	public boolean isInGame() {
 		return inGame;
@@ -49,11 +60,15 @@ public class Client extends Player{
 	public void setEnemy(Player enemy) {
 		this.enemy = enemy;
 	}
+	
+	public Player getEnemy() {
+		return enemy;
+	}
 	//Starts the client ServerThread 
 	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cServer = new ClientListener(this, socket, chatGui);
-		cServer.start();
+		cListener = new ClientListener(this, socket, chatGui);
+		cListener.start();
 	}
 
 	// add a new player with username and password
@@ -100,17 +115,19 @@ public class Client extends Player{
 	}
 
 	// it will change soon
-	public void sendGamePlay() throws IOException {
+	public void sendGamePin(int position,int color) throws IOException {
+		super.guess.set(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("play:" + username + ":" + enemy + "%" + "");
+		bw.write("play:" + username + ":" + enemy.getName() + "%" + position+" "+color);
 		bw.newLine();
 		bw.flush();
 	}
 
+	
 	// it will change soon
 	public void sendGameRoundScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("score:" + username + ":" + enemy + "%" + "");
+		bw.write("score:" + username + ":" + enemy.getName() + "%" + "");
 		bw.newLine();
 		bw.flush();
 	}
@@ -118,7 +135,7 @@ public class Client extends Player{
 	// it will change soon
 	public void sendFinalScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("fscore:" + username + ":" + enemy + "%" + "");
+		bw.write("fscore:" + username + ":" + enemy.getName() + "%" + "");
 		bw.newLine();
 		bw.flush();
 		
