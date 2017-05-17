@@ -139,6 +139,7 @@ public class Client extends Player{
 		bw.flush();
 	}
 
+	
 	// it will change soon
 	public void sendFinalScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
