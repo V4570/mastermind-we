@@ -12,25 +12,25 @@ import we.software.gui.MainMenu;
 
 public class ClientListener extends Thread {
 	//private static final java.awt.Color Color.AQUA = null;
-	Client client;
-	Socket socket;
-	MainMenu mainMenu;
-	GameGui game;
-	ChatGui chatGui;
+	private Client client;
+	private Socket socket;
+	private MainMenu mainMenu;
+	private GameGui gameGui;
+	private ChatGui chatGui;
+	private Game game;
 	
 	public ClientListener(Client client, Socket socket, ChatGui chatGui) {
 		this.client = client;
 		this.socket = socket;
-		this.game = game;
 		this.chatGui = chatGui;
 	}
 	
-	public void setChatGui(ChatGui chatGui){
-		this.chatGui = chatGui;
-	}
-	/*public void setGameGui(GameGui gameGui) {
+	public void setGameGui(GameGui gameGui) {
 		this.gameGui = gameGui;
-	}*/
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
 
 	
 	@Override
