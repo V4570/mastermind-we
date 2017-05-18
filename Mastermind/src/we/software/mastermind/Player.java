@@ -63,11 +63,7 @@ public class Player {
     	this.name = name;
     }
     
-    /*Επιστρέφει τον πίνακα "guess" 
-     *Το άλλαξα από getGuess -> getCode
-     *Για να έχει το ίδιο όνομα με τη μέθοδο
-     *στη κλάση Computer. 
-    */
+    //Return "guess" array
    
     public ArrayList<Integer> getCode(){
     	return guess;

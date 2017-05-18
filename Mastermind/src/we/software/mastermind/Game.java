@@ -38,6 +38,7 @@ public class Game {
 		}
 	}
 
+	//Checks right guesses
 	public boolean checkIfAllRed(ArrayList<Integer> result) {
 
 		for (int aPeg : result)
@@ -46,6 +47,7 @@ public class Game {
 		return true;
 	}
 	
+	//Calculates the score of current round
 	private void setRoundScore(ArrayList<Integer> result){
 		
 		for(int resPeg : result){
@@ -58,6 +60,7 @@ public class Game {
 		}
 	}
 	
+	//Returns current score
 	public int getGameScore(){
 		if(checkIfAllRed(checkGuess())){
 			return gameScore+(5000-(currentRound*150));
