@@ -23,13 +23,12 @@ public class GameGui extends JFrame{
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
     private MenuButton exitButton, optionsButton, backButton, sendButton;   //Funcionality buttons
-    public HistoryPanel turnHistory;                                       //The panel that holds all the turns of the game
+    public HistoryPanel turnHistory;                                        //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                //The chat
     private KeyInput kp;
     private Client client;                                                  //The client for the chat to work
-    public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn;
-    private MenuButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
-    private SelectionButton sBtn;
+    public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn, sBtn;
+    private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
     public NumbersPanel numbersPanel;
     public Game game;
 
@@ -37,9 +36,12 @@ public class GameGui extends JFrame{
     private int turn = 1;
     private int[] turnGuess = {0, 0, 0, 0};
     private boolean notValid = false;
+    private int gameMode = 0;
     
-    public GameGui(MainMenu previous){
+    public GameGui(MainMenu previous, int gM){
     	// edw tha prepei na dimiourgritai ena instance Game
+
+        gameMode = gM;
         this.previous = previous;
         setUpButtons();
         initFrame();
@@ -55,7 +57,7 @@ public class GameGui extends JFrame{
         catch (IOException exc) {
             exc.printStackTrace();
         }
-        client = new Client();
+        //client = new Client();
 
         kp = new KeyInput();
 
@@ -63,13 +65,12 @@ public class GameGui extends JFrame{
         turnHistory = new HistoryPanel();
         numbersPanel = new NumbersPanel();
 
-        chatGui = new ChatGui();
-        chatGui.start();
+        //chatGui = new ChatGui();
+        //chatGui.start();
         
         this.getRootPane().setDefaultButton(sendButton);
         
-        selectionBtn1.setColored(1);
-        selectionBtn1.setUnselected();
+
         add(exitButton);
         add(optionsButton);
         add(backButton);
@@ -87,7 +88,7 @@ public class GameGui extends JFrame{
         add(blueBtn);
         add(turnHistory);
         add(numbersPanel);
-        add(chatGui);
+        //add(chatGui);
 
         setSize(WIDTH, HEIGHT);
         setUndecorated(true);
@@ -104,6 +105,29 @@ public class GameGui extends JFrame{
 			e.printStackTrace();
 		}*/
     }
+
+    public void setInvisible(){
+
+        setVisible(false);
+        restartFrame();
+    }
+
+    public void restartFrame(){
+
+        if(sBtn != null){
+            sBtn.setUnselected();
+            sBtn = null;
+        }
+        selectionBtn1.setUncolored();
+        selectionBtn2.setUncolored();
+        selectionBtn3.setUncolored();
+        selectionBtn4.setUncolored();
+        turn = 1;
+        numbersPanel.round = 1;
+        numbersPanel.repaint();
+        turnHistory.clearLists();
+    }
+
     public void hscores(){
     	//Jpanel hscores
     }
@@ -141,22 +165,22 @@ public class GameGui extends JFrame{
         checkBtn = new SelectionButton("CheckButton.png", 15, 450);
         checkBtn.addActionListener(btnListener);
 
-        redBtn = new MenuButton("redbtn.png", 332, 365 , 0, 0);
+        redBtn = new SelectionButton("redbtn.png", 330, 365);
         redBtn.addActionListener(btnListener);
 
-        greenBtn = new MenuButton("greenbtn.png", 394, 365, 0, 0);
+        greenBtn = new SelectionButton("greenbtn.png", 392, 365);
         greenBtn.addActionListener(btnListener);
 
-        blueBtn = new MenuButton("bluebtn.png", 458, 365, 0, 0);
+        blueBtn = new SelectionButton("bluebtn.png", 456, 365);
         blueBtn.addActionListener(btnListener);
 
-        yellowBtn = new MenuButton("yellowbtn.png", 522, 365, 0, 0);
+        yellowBtn = new SelectionButton("yellowbtn.png", 520, 365);
         yellowBtn.addActionListener(btnListener);
 
-        whiteBtn = new MenuButton("whitebtn.png", 583, 365, 0, 0);
+        whiteBtn = new SelectionButton("whitebtn.png", 581, 365);
         whiteBtn.addActionListener(btnListener);
 
-        blackBtn = new MenuButton("blackbtn.png", 632, 365, 0, 0);
+        blackBtn = new SelectionButton("blackbtn.png", 632, 365);
         blackBtn.addActionListener(btnListener);
         
     }
@@ -168,7 +192,7 @@ public class GameGui extends JFrame{
 
         public NumbersPanel(){
 
-            numbers = (ArrayList<BufferedImage>) PreloadImages.getNumgers().clone();
+            numbers = (ArrayList<BufferedImage>) PreloadImages.getNumbers().clone();
 
             setBounds(240, 381, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
             setOpaque(false);
@@ -193,17 +217,14 @@ public class GameGui extends JFrame{
      */
     public class HistoryPanel extends JPanel{
 
-        private BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, evalLU, evalLD, evalRU, evalRD,
-                bevalLU, bevalLD, bevalRU, bevalRD;
-        private ArrayList<BufferedImage> rounds;
-        private ArrayList<BufferedImage> evaluation;
+        private ArrayList<BufferedImage> rounds, evaluation, pegs;
 
         public HistoryPanel(){
 
             rounds = new ArrayList();
             evaluation = new ArrayList();
 
-            loadImages();
+            pegs =(ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
 
             setBounds(785, 300, 250, 500);
             setOpaque(false);
@@ -269,77 +290,32 @@ public class GameGui extends JFrame{
                     rounds.add(null);
                     break;
                 case 1:
-                    rounds.add(redPeg);
+                    rounds.add(pegs.get(0));
                     break;
                 case 2:
-                    rounds.add(greenPeg);
+                    rounds.add(pegs.get(1));
                     break;
                 case 3:
-                    rounds.add(bluePeg);
+                    rounds.add(pegs.get(2));
                     break;
                 case 4:
-                    rounds.add(yellowPeg);
+                    rounds.add(pegs.get(3));
                     break;
                 case 5:
-                    rounds.add(whitePeg);
+                    rounds.add(pegs.get(4));
                     break;
                 case 6:
-                    rounds.add(blackPeg);
+                    rounds.add(pegs.get(5));
                     break;
             }
         }
 
-        private void loadImages(){
-
-            try {
-
-                whitePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/white.png"));
-                blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/black.png"));
-                greenPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/green.png"));
-                bluePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/blue.png"));
-                yellowPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/yellow.png"));
-                redPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/red.png"));
-                evalLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftup.png"));
-                bevalLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftup.png"));
-                evalLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftdown.png"));
-                bevalLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftdown.png"));
-                evalRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightup.png"));
-                bevalRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightup.png"));
-                evalRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightdown.png"));
-                bevalRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightdown.png"));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
         private void clearLists(){
 
             rounds.clear();
             evaluation.clear();
         }
-    }
-
-    public void setInvisible(){
-
-        setVisible(false);
-        restartFrame();
-    }
-
-    public void restartFrame(){
-
-        if(sBtn != null){
-            sBtn.setUnselected();
-            sBtn = null;
-        }
-        selectionBtn1.setUncolored();
-        selectionBtn2.setUncolored();
-        selectionBtn3.setUncolored();
-        selectionBtn4.setUncolored();
-        turn = 1;
-        numbersPanel.round = 1;
-        numbersPanel.repaint();
-        turnHistory.clearLists();
     }
 
 
@@ -383,9 +359,9 @@ public class GameGui extends JFrame{
                     sBtn = null;
                 }
 
-                for(int i=0; i<turnGuess.length; i++){
+                for (int guess : turnGuess) {
 
-                    if(turnGuess[i] == 0){
+                    if (guess == 0) {
                         notValid = true;
                         break;
                     }
@@ -561,7 +537,7 @@ public class GameGui extends JFrame{
             }
             else if(e.getSource() == backButton){
 
-                setVisible(false);                          //Sets this frame as not visible
+                dispose();
                 previous.setFrameVisible(GameGui.this);     //Sets the previous as frame visible
                 if(sBtn != null){
 

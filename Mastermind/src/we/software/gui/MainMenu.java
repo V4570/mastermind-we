@@ -49,7 +49,7 @@ public class MainMenu extends JFrame {
 		play = addMenuButton("play.png");
 		options = addMenuButton("options.png");
 
-		PreloadImages.loadGlasses();
+		PreloadImages.preloadImages();
 		initFrame();
 
 	}
@@ -364,7 +364,6 @@ public class MainMenu extends JFrame {
 
 				optionsPanel.setPanelInvisible();
 				gameModePanel.setPanelVisible();
-				//play.staySelected();
 
 				if (!optionsPanel.flagOptions) {
 					optionsPanel.panelRestart();
@@ -423,12 +422,13 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-				if(previous == null){
+				/*if(previous == null){
 				    GameGui gameGui = new GameGui(MainMenu.this);
                 }
                 else{
 				    previous.setVisible(true);
-                }
+                }*/
+				GameGui gameGui = new GameGui(MainMenu.this, 0);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
