@@ -8,9 +8,6 @@ import java.util.ArrayList;
 public class Computer extends Player{
 	
     
-	// Πινακας που περιεχει το Code 
-    private ArrayList<Integer> CodeToBreak = new ArrayList<Integer>();
-    
     //Easy Difficulty : Code to crack for the player has 6 colours, no duplicates , no NULL colour.
     //Medium Difficulty : Code to crack for the player has 6 colours, has duplicates , no NULL colour.
     //Hard Difficulty : Code to crack for the player has 6 colours, has duplicates , has NULL colour.
@@ -85,8 +82,5 @@ public class Computer extends Player{
 
     }
     
-   public ArrayList<Integer> getCode(){
-	   return CodeToBreak;
-	   
-   }
+  
 }

@@ -5,16 +5,16 @@ import java.util.Collections;
 
 public class Game {
 
-	public Player p1;
-	public Player p2; // Player or Computer
+	private Player p1;
+	public Player p2; // Player or Computer (CodeMaker)
 	public Client c;
-	public int gameType;
+	private int gameType;
 	private int difficulty; // 0-2 (Easy - Hard)
 	private int games;
-	public int currentRound;
-	public int currentGame;
-	public int gameScore;
-	public int 	maxRounds=10;
+	private int currentRound;
+	private int currentGame;
+	private int gameScore;
+	private int maxRounds=10;
 
 	public Game(int gameType,int difficulty) {
 		this.gameType = gameType;
@@ -74,7 +74,7 @@ public class Game {
 	public ArrayList<Integer> checkGuess() {
 
 		// Player1 table (p1)
-		ArrayList<Integer> guess = p1.getCode();
+		ArrayList<Integer> guess = p1.getGuess();
 
 		// Player2 or AI table (p2)
 		ArrayList<Integer> code = p2.getCode();
@@ -103,7 +103,7 @@ public class Game {
 			}
 		}
 		
-		while (result.size() < 3) {
+		while (result.size() < 4) {
 			result.add(0);
 		}
 		setRoundScore(result);

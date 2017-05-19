@@ -19,9 +19,9 @@ public class Player {
     private int leastTurns;
     
     //Current Game player information.
-    
-    
-    protected ArrayList<Integer> guess;
+    private boolean guessing = true;
+    protected ArrayList<Integer> CodeToBreak = new ArrayList<Integer>();
+    private ArrayList<Integer> guess;
     
     //Game Info
     protected int numberOfPins = 4; 
@@ -29,9 +29,21 @@ public class Player {
     private int runningRounds;
     private double highscore;
     
-    private boolean guessing = true;
+
         
     //Methods : 
+    
+    //CodeMaker
+    
+    public void createCode(int position , int colour){
+    	CodeToBreak.set(position, colour);
+    }
+    
+    public ArrayList<Integer> getCode(){
+ 	   return CodeToBreak;
+    }
+    
+    //CodeBreaker
     
     //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
     public void addPin(int position , int colour){
@@ -39,7 +51,6 @@ public class Player {
     }
     
     //Before checking the guess ArrayList, fill the position of the pegs that where not assigned a colour, with the default (blank) peg.
-    
     public void initializeGuessArray(){
     	for(int i=0;i<4;i++){
     		guess.add(0);
@@ -65,7 +76,7 @@ public class Player {
     
     //Return "guess" array
    
-    public ArrayList<Integer> getCode(){
+    public ArrayList<Integer> getGuess(){
     	return guess;
     }
     
