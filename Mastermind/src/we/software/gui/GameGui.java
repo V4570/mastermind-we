@@ -35,6 +35,7 @@ public class GameGui extends JFrame{
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
     private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
+    //private int[] code = {0, 0, 0, 0};
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
     private int gameMode = 0;                                                                //0 for pvsAi, 1 for pvsP
     
@@ -371,8 +372,10 @@ public class GameGui extends JFrame{
                 for (int guess : turnGuess) {
 
                     if (guess == 0) {
+
                         notValid = true;
-                        chatGui.appendToPane("System: Please select a color for each Peg\n", 2);
+                        chatGui.appendToPane("System: ", 2);
+                        chatGui.appendToPane("Please select a color for each Peg and then press check\n", 3);
                         break;
                     }
                 }
@@ -380,9 +383,11 @@ public class GameGui extends JFrame{
                 if(!notValid && turn <= 10){
 
                     for(int i=0; i<turnGuess.length; i++){
+
                         turnHistory.addToRounds(turnGuess[i]);
                         turnGuess[i] = 0;
                     }
+
                     selectionBtn1.setUncolored();
                     selectionBtn2.setUncolored();
                     selectionBtn3.setUncolored();
