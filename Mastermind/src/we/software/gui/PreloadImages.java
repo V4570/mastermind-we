@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 /**
  * Created by Bill on 17-May-17.
- * We use this class to load images that are going to be used multiple times so that they don't load everytime.
+ * This class is used to load images that are going to be used multiple times so that they don't load everytime.
+ * glassRed, glassGreen, etc. are the colored versions of the standard glass image that is used for the guess.
+ * glowRed, glowGreen, etc. are the highlighted versions of the above images.
+ * whitePeg, blackPeg, etc. are the images used in the history panel for each turn guess.
+ * evalLU, evalLD, etc. are the evaluation images for each turn. LU(left up), LD(left down), RU,RD accordingly.
  */
 public class PreloadImages {
 

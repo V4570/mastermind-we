@@ -24,6 +24,11 @@ class MenuButton extends Button {
 
         super(imagePath, xPos, yPos);
 
+        URL pressedUrl = LoadAssets.load("Select.wav");
+        pressed = Applet.newAudioClip(pressedUrl);
+        URL hoverUrl = LoadAssets.load("Hover.wav");
+        hover = Applet.newAudioClip(hoverUrl);
+
         this.addMouseListener(new MouseAdapter(){
 
             public void mouseEntered(MouseEvent e){
@@ -34,8 +39,6 @@ class MenuButton extends Button {
                 }
 
                 if(MainMenu.soundfxOn){
-                    URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
-                    hover = Applet.newAudioClip(hoverUrl);
                     hover.play();
                     isOn = true;
                 }
@@ -58,8 +61,6 @@ class MenuButton extends Button {
 
     public void playSound(){
 
-        URL pressedUrl = MenuButton.class.getResource("/Select.wav");
-        pressed = Applet.newAudioClip(pressedUrl);
         pressed.play();
     }
 

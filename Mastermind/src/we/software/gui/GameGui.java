@@ -22,21 +22,21 @@ public class GameGui extends JFrame{
     private final int WIDTH = 1024;
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
-    private MenuButton exitButton, optionsButton, backButton, sendButton;   //Funcionality buttons
-    public HistoryPanel turnHistory;                                        //The panel that holds all the turns of the game
-    private ChatGui chatGui;                                                //The chat
-    private KeyInput kp;
-    private Client client;                                                  //The client for the chat to work
-    public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4, checkBtn, sBtn;
-    private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
-    public NumbersPanel numbersPanel;
+    private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Funcionality buttons
+    public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
+    private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
+    private Client client;                                                                   //The client for the chat to work
+    public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;       //The buttons for the each place in the code.
+    private SelectionButton checkBtn, sBtn;                                                  //checkBtn to register each round. sBtn keeps the currently selected selectionBtn.
+    private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
+    public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
 
-    private int selectedBtn = -1;
-    private int turn = 1;
-    private int[] turnGuess = {0, 0, 0, 0};
-    private boolean notValid = false;
-    private int gameMode = 0;
+    private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
+    private int turn = 1;                                                                    //Integer that holds current turn.
+    private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
+    private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
+    private int gameMode = 0;                                                                //0 for pvsAi, 1 for pvsP
     
     public GameGui(MainMenu previous, int gM){
     	// edw tha prepei na dimiourgritai ena instance Game
@@ -48,6 +48,9 @@ public class GameGui extends JFrame{
 
     }
 
+    /**
+     * Initializes the frame and all of its components. All items added to the frame go here.
+     */
     private void initFrame(){
 
         try {
@@ -57,19 +60,9 @@ public class GameGui extends JFrame{
         catch (IOException exc) {
             exc.printStackTrace();
         }
-        //client = new Client();
-
-        kp = new KeyInput();
-
 
         turnHistory = new HistoryPanel();
         numbersPanel = new NumbersPanel();
-
-        //chatGui = new ChatGui();
-        //chatGui.start();
-        
-        this.getRootPane().setDefaultButton(sendButton);
-        
 
         add(exitButton);
         add(optionsButton);
@@ -88,48 +81,32 @@ public class GameGui extends JFrame{
         add(blueBtn);
         add(turnHistory);
         add(numbersPanel);
-        //add(chatGui);
 
+        //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
+        if(gameMode == 1) {
+            client = new Client();
+            chatGui = new ChatGui();
+            chatGui.start();
+            add(chatGui);
+
+            this.getRootPane().setDefaultButton(sendButton);
+
+            try {
+                client.startListening(chatGui);
+                client.logMeIn("test1", "test1");
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        setTitle("Mastermind WE - Pre Alpha 0.0.1");
         setSize(WIDTH, HEIGHT);
         setUndecorated(true);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        
-        /*try {
-        	client.startListening(chatGui);
-			client.logMeIn("test1", "test1");
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-    }
-
-    public void setInvisible(){
-
-        setVisible(false);
-        restartFrame();
-    }
-
-    public void restartFrame(){
-
-        if(sBtn != null){
-            sBtn.setUnselected();
-            sBtn = null;
-        }
-        selectionBtn1.setUncolored();
-        selectionBtn2.setUncolored();
-        selectionBtn3.setUncolored();
-        selectionBtn4.setUncolored();
-        turn = 1;
-        numbersPanel.round = 1;
-        numbersPanel.repaint();
-        turnHistory.clearLists();
-    }
-
-    public void hscores(){
-    	//Jpanel hscores
     }
 
     /**
@@ -185,6 +162,9 @@ public class GameGui extends JFrame{
         
     }
 
+    /**
+     * This panel shows up next to 'TURN" and displays the current turn.
+     */
     public class NumbersPanel extends JPanel{
 
         private ArrayList<BufferedImage> numbers;
@@ -218,17 +198,40 @@ public class GameGui extends JFrame{
     public class HistoryPanel extends JPanel{
 
         private ArrayList<BufferedImage> rounds, evaluation, pegs;
+        private ArrayList<HighScore> highScores;
 
         public HistoryPanel(){
 
-            rounds = new ArrayList();
-            evaluation = new ArrayList();
+            rounds = new ArrayList<>();
+            evaluation = new ArrayList<>();
+            highScores = new ArrayList<>();
+
+            int score = 9999;
+            for(int i = 0; i<4; i++){
+                highScores.add(new HighScore("Bill"+i, score));
+                score -= 1000;
+            }
 
             pegs =(ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
 
-            setBounds(785, 300, 250, 500);
+            setBounds(785, 116, 250, 684);
             setOpaque(false);
 
+        }
+
+        private class HighScore{
+            private String name;
+            private int score;
+            public HighScore(String n, int s){
+                name = n;
+                score = s;
+            }
+            public String getName(){
+                return name;
+            }
+            public int getScore(){
+                return score;
+            }
         }
 
         /**
@@ -243,10 +246,15 @@ public class GameGui extends JFrame{
 
             int counter = 0;        //Counts peg. Resets when it hits 4.
             int evalCounter = 0;    //Counts evaluation. Resets when it hits 4.
+
             int round_X = 50;       //Represents the width value for the colors. Updates up to 4 colors then resets.
+            int round_Y = 575;
+
             int eval_X = 175;       //Represents the width value for the evaluation. Updates up to 2 and then resets.
-            int round_Y = 391;
-            int eval_Y = 385;
+            int eval_Y = 569;
+
+            int hs_X = 32;
+            int hs_Y = 16;
 
             for(BufferedImage img : rounds){
 
@@ -280,6 +288,14 @@ public class GameGui extends JFrame{
                 evalCounter++;
                 eval_X += 19;
             }
+
+            g.setColor(Color.white);
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+            for(HighScore hs: highScores){
+
+                g.drawString(hs.getName()+": "+Integer.toString(hs.getScore())+" pts.", hs_X, hs_Y);
+                hs_Y += 23;
+            }
         }
 
 
@@ -310,12 +326,6 @@ public class GameGui extends JFrame{
             }
         }
 
-
-        private void clearLists(){
-
-            rounds.clear();
-            evaluation.clear();
-        }
     }
 
 

@@ -19,7 +19,8 @@ public class MainMenu extends JFrame {
 	private MenuButton howToPlay, play, options;            //Main menu buttons for functionality
 	private GameMode gameModePanel;                         //The panel that appears for the user to select a game-mode
 	private Options optionsPanel;                           //The panel that appears for the user to select game options
-	private final int WIDTH = 1024;
+	private HowToPlay howToPlayPanel;
+    private final int WIDTH = 1024;
 	private final int HEIGHT = WIDTH / 12 * 9;
 	private int posY = 230;                                 //The starting vertical position of the menu buttons
 	private ButtonListener b = new ButtonListener();
@@ -44,6 +45,7 @@ public class MainMenu extends JFrame {
 		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
+		howToPlayPanel = new HowToPlay();
 
 		howToPlay = addMenuButton("howtoplay.png");
 		play = addMenuButton("play.png");
@@ -79,9 +81,11 @@ public class MainMenu extends JFrame {
 		add(play);
 		add(options);
 		add(gameModePanel);
+		add(howToPlayPanel);
 		add(optionsPanel);
 		add(exitButton);
 
+		setTitle("Mastermind WE - Pre Alpha 0.0.1");
 		setUndecorated(true);
 		setVisible(true);
 		if(musicOn) menuMusic.playMenuClip();
@@ -93,7 +97,7 @@ public class MainMenu extends JFrame {
 
 	public void setFrameVisible(GameGui previous) {
 	    this.previous = previous;
-	    previous.setInvisible();
+	    previous.dispose();
 		setVisible(true);
 		if(musicOn) menuMusic.playMenuClip();
 	}
@@ -218,21 +222,21 @@ public class MainMenu extends JFrame {
 			g.drawImage(background, 0, 0, null);
 		}
 
-		public void setPanelVisible() {
+		private void setPanelVisible() {
 			if (!flag) {
 				setVisible(!flag);
 				flag = !flag;
 			}
 		}
 
-		public void setPanelInvisible() {
+		private void setPanelInvisible() {
 			if (flag) {
 				setVisible(!flag);
 				flag = !flag;
 			}
 		}
 
-		public void panelRestart() {
+		private void panelRestart() {
 			pVsP.setVisible(true);
 			pVsAi.setVisible(true);
 			title.setIcon(titleImage);
@@ -245,9 +249,8 @@ public class MainMenu extends JFrame {
      */
 	class Options extends JPanel {
 
-		private Image background;                                       //The background image of the panel
-		private ImageIcon exitIcon, exitIconHover,
-				titleImage, musicTitle, soundFXTitle, optionsSquare;    //The images for the buttons
+		private Image background;                                                 //The background image of the panel
+		private ImageIcon titleImage, musicTitle, soundFXTitle, optionsSquare;    //The images for the buttons
 		private JLabel music;
 		private JLabel soundFX;
 		private MenuButton musicButton, soundFXButton, exit;
@@ -268,7 +271,10 @@ public class MainMenu extends JFrame {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			optionsSquare = new ImageIcon(LoadAssets.load("Buttons/hswitch.png"));
+
+            titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
+            musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
+            soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
 		}
 
 		private void initPanel() {
@@ -276,10 +282,6 @@ public class MainMenu extends JFrame {
             title = new JLabel();
             music = new JLabel();
             soundFX = new JLabel();
-
-            titleImage = new ImageIcon(LoadAssets.load("Buttons/titleoptions.png"));
-            musicTitle = new ImageIcon(LoadAssets.load("Buttons/titlemusic.png"));
-            soundFXTitle = new ImageIcon(LoadAssets.load("Buttons/titlesoundfx.png"));
 
             title.setIcon(titleImage);
             title.setBounds(130, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
@@ -348,6 +350,63 @@ public class MainMenu extends JFrame {
 		}
 	}
 
+	class HowToPlay extends JPanel{
+
+        private Image background;                                       //The background image of the panel
+        private ImageIcon exitIcon, exitIconHover;
+        private MenuButton exit;
+        private boolean flag = false;
+
+        public HowToPlay(){
+
+            try{
+                background = ImageIO.read(LoadAssets.load("howToPlay.png"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            initPanel();
+        }
+
+        private void initPanel(){
+
+            exit = new MenuButton("exito.png", 477, 13, 6, 6);
+            exit.addActionListener(b);
+
+            setLayout(null);
+            add(exit);
+
+            setBounds(512, 190, background.getWidth(null), background.getHeight(null));
+            setOpaque(false);
+            setVisible(flag);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g){
+
+            super.paintComponent(g);
+            g.drawImage(background, 0, 0, null);
+        }
+
+        /**
+         * Sets the panel visible after checking it is invisible.
+         */
+        public void setPanelVisible() {
+            if (!flag) {
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+
+        /**
+         * Sets the panel invisible after checking it is visible.
+         */
+        public void setPanelInvisible() {
+            if (flag) {
+                setVisible(!flag);
+                flag = !flag;
+            }
+        }
+    }
 	/**
 	 * Handles the action after a button has been pressed.
 	 */
@@ -359,10 +418,15 @@ public class MainMenu extends JFrame {
 
 				if (soundfxOn)
 					howToPlay.playSound();
+
+				optionsPanel.setPanelInvisible();
+				gameModePanel.setPanelInvisible();
+				howToPlayPanel.setPanelVisible();
 			}
 			else if (e.getSource() == play) {
 
 				optionsPanel.setPanelInvisible();
+				howToPlayPanel.setPanelInvisible();
 				gameModePanel.setPanelVisible();
 
 				if (!optionsPanel.flagOptions) {
@@ -375,6 +439,7 @@ public class MainMenu extends JFrame {
 			else if (e.getSource() == options) {
 
 				gameModePanel.setPanelInvisible();
+				howToPlayPanel.setPanelInvisible();
 				optionsPanel.setPanelVisible();
 
 				if (!gameModePanel.flagOptions) {
@@ -409,6 +474,14 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsP.playSound();
+
+				GameGui gameGui = new GameGui(MainMenu.this, 1);
+				setVisible(false);
+
+				gameModePanel.panelRestart();
+				gameModePanel.setPanelInvisible();
+				if (musicOn)
+					menuMusic.closeClip();
 			}
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
@@ -422,12 +495,7 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-				/*if(previous == null){
-				    GameGui gameGui = new GameGui(MainMenu.this);
-                }
-                else{
-				    previous.setVisible(true);
-                }*/
+
 				GameGui gameGui = new GameGui(MainMenu.this, 0);
 				setVisible(false);
 
@@ -469,6 +537,15 @@ public class MainMenu extends JFrame {
                     optionsPanel.soundFXButton.setUnselected();
                 }
 			}
+			else if (e.getSource() == howToPlayPanel.exit){
+                howToPlayPanel.setPanelInvisible();
+
+                if (!optionsPanel.flagOptions) {
+                    optionsPanel.panelRestart();
+                }
+
+                if(soundfxOn) options.playSound();
+            }
 			else {
 
 				int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit",

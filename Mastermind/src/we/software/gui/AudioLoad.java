@@ -36,17 +36,14 @@ public class AudioLoad{
 
         audioClip.stop();
         audioClip.setFramePosition(0);
+
     }
 
 
-    public void playMenuClip(){
+    public synchronized void playMenuClip(){
 
-        new Thread(){
-            public void run(){
-                audioClip.start();
-                audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
-        }.start();
+        audioClip.start();
+        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 
     }
 }

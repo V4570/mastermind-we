@@ -26,6 +26,11 @@ public class SelectionButton extends Button{
 
         glasses = (ArrayList<ImageIcon>) PreloadImages.getGlasses().clone();
 
+        URL pressedUrl = MenuButton.class.getResource("/Select.wav");
+        pressed = Applet.newAudioClip(pressedUrl);
+        URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
+        hover = Applet.newAudioClip(hoverUrl);
+
         this.addMouseListener(new MouseAdapter(){
 
             public void mouseEntered(MouseEvent e){
@@ -40,8 +45,7 @@ public class SelectionButton extends Button{
                 }
 
                 if(MainMenu.soundfxOn){
-                    URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
-                    hover = Applet.newAudioClip(hoverUrl);
+
                     hover.play();
                     isOn = true;
                 }
@@ -70,8 +74,7 @@ public class SelectionButton extends Button{
 
     @Override
     public void playSound() {
-        URL pressedUrl = MenuButton.class.getResource("/Select.wav");
-        pressed = Applet.newAudioClip(pressedUrl);
+
         pressed.play();
     }
 
