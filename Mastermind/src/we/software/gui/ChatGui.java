@@ -143,8 +143,11 @@ public class ChatGui extends JPanel implements Runnable{
     }*/
 
     public void appendToPane(String msg, int choice) {
+
         StyledDocument doc = chatHistory.getStyledDocument();
+
         Style style = chatHistory.addStyle("I'm a Style", null);
+
         switch(choice){
         case 0:{
         	StyleConstants.setBold(style, false);
@@ -209,8 +212,8 @@ public class ChatGui extends JPanel implements Runnable{
         System.out.println("Chat started");
         while(chatRunning){
             if(kp.send){
-               // appendToPane("You: "+ chatInput.getText() + "\n", 0);
-                //chatInput.setText("");
+               appendToPane("You: "+ chatInput.getText() + "\n", 0);
+               chatInput.setText("");
             }
         }
 

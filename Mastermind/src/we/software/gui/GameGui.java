@@ -22,7 +22,7 @@ public class GameGui extends JFrame{
     private final int WIDTH = 1024;
     private final int HEIGHT = WIDTH / 12*9;
     private ButtonListener btnListener = new ButtonListener();
-    private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Funcionality buttons
+    private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
     private Client client;                                                                   //The client for the chat to work
@@ -82,15 +82,14 @@ public class GameGui extends JFrame{
         add(turnHistory);
         add(numbersPanel);
 
+        chatGui = new ChatGui();
+        chatGui.start();
+        add(chatGui);
+        this.getRootPane().setDefaultButton(sendButton);
+
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
         if(gameMode == 1) {
             client = new Client();
-            chatGui = new ChatGui();
-            chatGui.start();
-            add(chatGui);
-
-            this.getRootPane().setDefaultButton(sendButton);
-
             try {
                 client.startListening(chatGui);
                 client.logMeIn("test1", "test1");
@@ -373,6 +372,7 @@ public class GameGui extends JFrame{
 
                     if (guess == 0) {
                         notValid = true;
+                        chatGui.appendToPane("System: Please select a color for each Peg\n", 2);
                         break;
                     }
                 }
@@ -563,24 +563,18 @@ public class GameGui extends JFrame{
                     sBtn = null;
                 }
             }
-            else if(e.getSource() == exitButton) {
-
-                System.exit(0);
-            }
             else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
                 try{
+
                     client.sendMessage(chatGui.chatInput.getText());
                     chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", 0);
                     chatGui.chatInput.setText("");
-            	/*}
-            		else{
-            		chatGui.appendToPane("Message couldn t send...\n", Color.RED);
-            		chatGui.appendToPane("Either your message format isn t right(receiver:message)\n",Color.RED);
-            		chatGui.appendToPane("or you have lost connection with Server...\n", Color.RED);
-            		chatGui.chatInput.setText("");
-            	}*/
-                }catch(IOException ie){
-                    System.out.println(ie.getStackTrace());
+
+                }catch(Exception e1){
+                    chatGui.appendToPane("Message couldn't be sent...\n", 4);
+                    chatGui.appendToPane("Either your message format isn't right(receiver:message)\n",4);
+                    chatGui.appendToPane("or you have lost connection with the Server...\n", 4);
+                    chatGui.chatInput.setText("");
                 }
                 if(sBtn != null){
 
@@ -588,6 +582,10 @@ public class GameGui extends JFrame{
                     sBtn = null;
                 }
 
+            }
+            else if(e.getSource() == exitButton) {
+
+                System.exit(0);
             }
         }
     }
