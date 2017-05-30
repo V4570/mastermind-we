@@ -14,13 +14,13 @@ import java.util.Scanner;
 public class Player {
 
 	//General User Information
-    private String name;
+    protected String username;
     private int highScore;
     private int leastTurns;
     
     //Current Game player information.
     private boolean guessing = true;
-    protected ArrayList<Integer> CodeToBreak = new ArrayList<Integer>();
+    protected ArrayList<Integer> CodeToBreak;
     private ArrayList<Integer> guess;
     
     //Game Info
@@ -30,8 +30,13 @@ public class Player {
     private double highscore;
     
 
+    //---Constructor---
+    public Player(){
+    	CodeToBreak = new ArrayList<Integer>();
+    	guess = new ArrayList<Integer>();
+    }
         
-    //Methods : 
+    //---Methods---
     
     //CodeMaker
     
@@ -67,11 +72,11 @@ public class Player {
 
 
     public String getName(){
-        return name;
+        return username;
     }
     
     public void setName(String name){
-    	this.name = name;
+    	this.username = name;
     }
     
     //Return "guess" array

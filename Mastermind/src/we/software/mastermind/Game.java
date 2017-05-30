@@ -25,17 +25,12 @@ public class Game {
 	public Game(int gameType,int games,Client c,boolean isClientCodeMaker) { // PvP / PvE selection
 		this.gameType = gameType;
 		this.currentRound = 0;
-		this.games=games;
+		this.games = games;
 		this.c = c;
-		this.gameScore=0;
+		this.gameScore = 0;
 		c.setEnemy(new Player());
 		p2  = c.getEnemy();
-		if(isClientCodeMaker){
-			c.setCodeMaker(true);
-		}
-		else{
-			c.setCodeMaker(false);
-		}
+		c.setCodeMaker(isClientCodeMaker);
 	}
 
 	//Checks right guesses

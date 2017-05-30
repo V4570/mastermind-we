@@ -12,7 +12,6 @@ import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class Client extends Player{
-	public String username;
 	public Player enemy;
 	public ClientListener cListener;
 	private Socket socket;
