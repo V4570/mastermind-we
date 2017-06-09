@@ -27,6 +27,15 @@ public class Game {
 		p2.setName(enemyName);
 		c.setCodeMaker(isClientCodeMaker);
 	}
+	
+
+	public Player getP1() {
+		return p1;
+	}
+
+	public Player getP2() {
+		return p2;
+	}
 
 	//Checks right guesses
 	public boolean checkIfAllRed(ArrayList<Integer> result) {
