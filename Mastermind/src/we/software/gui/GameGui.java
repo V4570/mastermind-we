@@ -274,7 +274,7 @@ public class GameGui extends JFrame{
 
             for(BufferedImage img : clues){
 
-                if(img == null) continue;
+                //if(img == null) continue;
 
                 if(evalCounter > 3){
                     eval_X = 175;
