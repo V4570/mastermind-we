@@ -17,7 +17,7 @@ import java.sql.Connection;
 
 public class Database {
 
-	public Connection con = null;
+	private Connection con = null;
 	private String url;
 	private String dbusername;
 	private String dbpassword;

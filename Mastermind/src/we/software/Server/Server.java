@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class Server {
-	static final int PORT = 12498;
+	private static final int PORT = 12498;
 	public HashMap<String, Client> clients = new HashMap<String, Client>();
-	ServerSocket server;
-	Database db;
-	LiveServerHandler lsh = new LiveServerHandler(clients);
+	private ServerSocket server;
+	private Database db;
+	private LiveServerHandler lsh = new LiveServerHandler(clients);
 	
 	public static void main(String[] args) throws IOException {
 		new Server().runServer();

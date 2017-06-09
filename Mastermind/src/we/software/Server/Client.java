@@ -3,9 +3,9 @@ package we.software.Server;
 import java.net.Socket;
 
 public class Client {
-	public String name;
-	public Socket socket;
-	public Thread thread;
+	private String name;
+	private Socket socket;
+	private Thread thread;
 
 	public Client(Socket socket, Thread thread) {
 		this.socket = socket;

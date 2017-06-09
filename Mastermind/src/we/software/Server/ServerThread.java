@@ -46,46 +46,46 @@ public class ServerThread extends Thread {
 					receiver = info[0].split(":")[2];
 					message = info[1];
 					if (inmessage.startsWith("add")) {
-						if(!lsh.hide) System.out.println(username + "--> send add user message to Server");
+						if(!lsh.isHide()) System.out.println(username + "--> send add user message to Server");
 						addJob(message);
 
 					} else if (inmessage.startsWith("close")) {
 						closeJob();
-						if(!lsh.hide)System.out.println(transmitter.getName() + " disconnected");
+						if(!lsh.isHide())System.out.println(transmitter.getName() + " disconnected");
 						break;
 					} else if (inmessage.startsWith("message")) {
 						// Antispam restriction 1
 						if (!message.equals("") || !message.equals(" ")) {
-							if(!lsh.hide)System.out.println(
+							if(!lsh.isHide())System.out.println(
 									transmitter.getName() + "--> send message to " + receiver + ": " + message);
 							messageJob();
 						}
 					} else if (inmessage.startsWith("allmessage")) {
 						// Antispam restriction 1
 						if (!message.equals("") || !message.equals(" ")) {
-							if(!lsh.hide)System.out.println(transmitter.getName() + "--> send message to everyone: " + message);
+							if(!lsh.isHide())System.out.println(transmitter.getName() + "--> send message to everyone: " + message);
 							messageAllJob();
 						}
 					} else if (inmessage.startsWith("request")) {
-						if(!lsh.hide)System.out.println(
+						if(!lsh.isHide())System.out.println(
 								transmitter.getName() + "--> send request message to " + receiver + ": " + message);
 						requestJob();
 					} else if (inmessage.startsWith("play")) {
-						if(!lsh.hide)System.out.println(
+						if(!lsh.isHide())System.out.println(
 								transmitter.getName() + "--> send play message to " + receiver + ": " + message);
 						playJob();
 					} else if (inmessage.startsWith("score")) {
-						if(!lsh.hide)System.out.println(
+						if(!lsh.isHide())System.out.println(
 								transmitter.getName() + "--> send score message to " + receiver + ": " + message);
 						scoreJob();
 					} else if (inmessage.startsWith("sethighscore")) {
-						if(!lsh.hide)System.out.println(transmitter.getName() + "--> send highscore message to Server: " + message);
+						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> send highscore message to Server: " + message);
 						setHighScoreJob(message);
 					} else if (inmessage.startsWith("login")) {
-						if(!lsh.hide)System.out.println(username + "--> send login message to Server ");
+						if(!lsh.isHide())System.out.println(username + "--> send login message to Server ");
 						logInJob(message);
 					} else if (inmessage.startsWith("gethighscores")) {
-						if(!lsh.hide)System.out.println(transmitter.getName() + "--> asks for hisghscores to Server: " + message);
+						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> asks for hisghscores to Server: " + message);
 						getHighScoresJob();
 					}
 
@@ -97,7 +97,7 @@ public class ServerThread extends Thread {
 					System.out.println("Sql problem");
 					System.out.println(e.getMessage());
 				}
-				if(!lsh.hide){System.out.print("[");
+				if(!lsh.isHide()){System.out.print("[");
 				int count = 0;
 				for (Entry<String, Client> entry : clients.entrySet()) {
 					count++;
@@ -122,7 +122,7 @@ public class ServerThread extends Thread {
 						System.out.println("Socket is unclosable #thuglife");
 
 					}
-					if(!lsh.hide){System.out.println(transmitter.getName() + " disconnected");
+					if(!lsh.isHide()){System.out.println(transmitter.getName() + " disconnected");
 
 					if (!clients.isEmpty()) {
 						System.out.print("[");
@@ -142,10 +142,10 @@ public class ServerThread extends Thread {
 					}
 					System.out.println(clients.size());}
 				} else {
-					if(!lsh.hide)System.out.println("A user has disconnected");
+					if(!lsh.isHide())System.out.println("A user has disconnected");
 				}
 			} else {
-				if(!lsh.hide)System.out.println("A user has disconnected");
+				if(!lsh.isHide())System.out.println("A user has disconnected");
 			}
 
 		}
@@ -213,7 +213,7 @@ public class ServerThread extends Thread {
 			bw.write("message:" + "Server" + ":" + transmitter.getName() + "%User " + receiver + " is not online...");
 			bw.newLine();
 			bw.flush();
-			if(!lsh.hide)System.out.println(receiver + " not online");
+			if(!lsh.isHide())System.out.println(receiver + " not online");
 
 		}
 	}
@@ -314,6 +314,10 @@ public class ServerThread extends Thread {
 			bw.flush();
 
 		}
+	}
+	
+	private void getOnlinePlayersJob(){
+		
 	}
 
 	private void closeJob() throws IOException {

@@ -11,8 +11,16 @@ import java.util.Map.Entry;
 
 public class LiveServerHandler extends Thread{
 	private HashMap<String,Client> clients;
-	public boolean hide= false;
+	private boolean hide= false;
 	
+	public boolean isHide() {
+		return hide;
+	}
+
+	public void setHide(boolean hide) {
+		this.hide = hide;
+	}
+
 	public LiveServerHandler(HashMap<String,Client> clients) {
 		super();
 		this.clients = clients;
