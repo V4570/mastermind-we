@@ -149,6 +149,14 @@ public class ClientListener extends Thread {
 						}
 					} else if (inmessage.startsWith("sethighscore")) {
 						//ok
+					} else if(inmessage.startsWith("login")){
+						if(message.equals("ok")){
+							//join
+						} else if(message.equals("not")){
+							//shows relogin
+						}
+					} else if(inmessage.startsWith("getonlineplayers")){
+						//show players to user	
 					}
 
 				} catch (ArrayIndexOutOfBoundsException aioe) {

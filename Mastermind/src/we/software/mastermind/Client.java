@@ -166,6 +166,13 @@ public class Client extends Player{
 		bw.newLine();
 		bw.flush();
 	}
+	
+	public void getOnlinePlayers() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("getonlineplayers:" + username + ":server% ");
+		bw.newLine();
+		bw.flush();
+	}
 
 	// sends this message when the game closes to inform server
 	public void sendCloseMessage() throws IOException {

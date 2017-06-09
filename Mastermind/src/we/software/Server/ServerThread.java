@@ -87,6 +87,9 @@ public class ServerThread extends Thread {
 					} else if (inmessage.startsWith("gethighscores")) {
 						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> asks for hisghscores to Server: " + message);
 						getHighScoresJob();
+					} else if(inmessage.startsWith("getonloneplayers")){
+						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> asks for online players to Server: " + message);
+						getOnlinePlayersJob();
 					}
 
 				} catch (ArrayIndexOutOfBoundsException e) {
@@ -316,7 +319,16 @@ public class ServerThread extends Thread {
 		}
 	}
 	
-	private void getOnlinePlayersJob(){
+	private void getOnlinePlayersJob() throws IOException{
+		String names="";
+		for(Entry<String,Client> name : clients.entrySet()){
+			names += name.getKey()+",";
+		}
+		BufferedWriter bw = new BufferedWriter(
+				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
+		bw.write("getonlineplayers:server:" + transmitter.getName() + "%" + names);
+		bw.newLine();
+		bw.flush();
 		
 	}
 
