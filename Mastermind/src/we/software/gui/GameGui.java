@@ -43,7 +43,7 @@ public class GameGui extends JFrame{
     	// edw tha prepei na dimiourgritai ena instance Game
 
         this.gameMode = gM;
-        if(gM==1){
+        if(gM==0){
         	this.game = new Game(0);
         }
         

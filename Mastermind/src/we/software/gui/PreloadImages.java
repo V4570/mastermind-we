@@ -12,14 +12,14 @@ import java.util.ArrayList;
  * glassRed, glassGreen, etc. are the colored versions of the standard glass image that is used for the guess.
  * glowRed, glowGreen, etc. are the highlighted versions of the above images.
  * whitePeg, blackPeg, etc. are the images used in the history panel for each turn guess.
- * evalLU, evalLD, etc. are the evaluation images for each turn. LU(left up), LD(left down), RU,RD accordingly.
+ * wclueLU, wclueLD, etc. are the clue images for each turn. LU(left up), LD(left down), RU,RD accordingly.
  */
 public class PreloadImages {
 
     private static ImageIcon glassRed, glassGreen, glassBlue, glassYellow, glassWhite, glassBlack;
     private static ImageIcon glowRed, glowGreen, glowBlue, glowYellow, glowWhite, glowBlack;
-    private static BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, evalLU, evalLD, evalRU, evalRD,
-            bevalLU, bevalLD, bevalRU, bevalRD;
+    private static BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, wclueLU, wclueLD, wclueRU, wclueRD,
+            bclueLU, bclueLD, bclueRU, bclueRD;
 
     private static ArrayList<ImageIcon> glasses = new ArrayList();
     private static ArrayList<BufferedImage> numbers = new ArrayList();
@@ -94,22 +94,22 @@ public class PreloadImages {
             blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/black.png"));
             pegs.add(blackPeg);
 
-            evalLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftup.png"));
-            pegs.add(evalLU);
-            bevalLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftup.png"));
-            pegs.add(bevalLU);
-            evalLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftdown.png"));
-            pegs.add(evalLD);
-            bevalLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftdown.png"));
-            pegs.add(bevalLD);
-            evalRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightup.png"));
-            pegs.add(evalRU);
-            bevalRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightup.png"));
-            pegs.add(bevalRU);
-            evalRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightdown.png"));
-            pegs.add(evalRD);
-            bevalRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightdown.png"));
-            pegs.add(bevalRD);
+            wclueLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftup.png"));
+            pegs.add(wclueLU);
+            bclueLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftup.png"));
+            pegs.add(bclueLU);
+            wclueLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftdown.png"));
+            pegs.add(wclueLD);
+            bclueLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftdown.png"));
+            pegs.add(bclueLD);
+            wclueRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightup.png"));
+            pegs.add(wclueRU);
+            bclueRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightup.png"));
+            pegs.add(bclueRU);
+            wclueRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightdown.png"));
+            pegs.add(wclueRD);
+            bclueRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightdown.png"));
+            pegs.add(bclueRD);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -26,9 +26,9 @@ public class SelectionButton extends Button{
 
         glasses = (ArrayList<ImageIcon>) PreloadImages.getGlasses().clone();
 
-        URL pressedUrl = MenuButton.class.getResource("/Select.wav");
+        URL pressedUrl = MenuButton.class.getResource("/pegselect.wav");
         pressed = Applet.newAudioClip(pressedUrl);
-        URL hoverUrl = MenuButton.class.getResource("/Hover.wav");
+        URL hoverUrl = MenuButton.class.getResource("/selection.wav");
         hover = Applet.newAudioClip(hoverUrl);
 
         this.addMouseListener(new MouseAdapter(){

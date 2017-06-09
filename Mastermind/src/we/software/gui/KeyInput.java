@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 /**
  * Created by Bill on 09-May-17.
+ * Listens for when 'Enter' key is pressed in order to send a message in the chat.
  */
 public class KeyInput implements KeyListener {
 

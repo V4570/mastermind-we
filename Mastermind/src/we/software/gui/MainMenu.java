@@ -30,6 +30,7 @@ public class MainMenu extends JFrame {
 	private String username = null;
 	private Client player = null;
 	private GameGui previous = null;
+	private boolean modeSelected = false;
 
 
 	public MainMenu() {
@@ -76,6 +77,10 @@ public class MainMenu extends JFrame {
 			exc.printStackTrace();
 		}
 
+		while(!modeSelected){
+
+		    modeSelected = true;
+		}
 
 		add(howToPlay);
 		add(play);
@@ -124,10 +129,10 @@ public class MainMenu extends JFrame {
 		// ekeinh th stigmh einai kapoios me auto to onoma sundedemenos ston
 		// server an nai tote tou zitaei na
 		// ksanavalei onoma an oxi sunexizei kanonika
-		//gia na xrisimopoieisetai ton server tha anevasw ta stoixeia tou server pou prepei
-		//na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
-		//parakalw na min ginoun upload sto github gia logous asfaleias
-		//o server einai panw sxedon 24/7
+		// gia na xrisimopoieisetai ton server tha anevasw ta stoixeia tou server pou prepei
+		// na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
+		// parakalw na min ginoun upload sto github gia logous asfaleias
+		// o server einai panw sxedon 24/7
 
 
 		while ((selectedOption != 1 && txt.getText().equals(""))) {
@@ -147,6 +152,9 @@ public class MainMenu extends JFrame {
     /**
      *
      * Initializes and returns a menu button with the correct coordinates.
+	 * This is used so we can initialize many buttons at the same time
+	 * and put them in the correct position, without having to manually input
+	 * the coordinates.
      */
 	private MenuButton addMenuButton(String path) {
 
@@ -180,10 +188,10 @@ public class MainMenu extends JFrame {
 			title.setIcon(titleImage);
 			title.setBounds(60, 11, titleImage.getIconWidth(), titleImage.getIconHeight());
 
-			pVsAi = new MenuButton("pvai.png", 39, 46, 0, 0);
+			pVsAi = new MenuButton("pvai.png", 40, 46, 0, 0);
 			pVsAi.addActionListener(b);
 
-			pVsP = new MenuButton("pvp.png", 39, 98, 0, 0);
+			pVsP = new MenuButton("pvp.png", 40, 98, 0, 0);
 			pVsP.addActionListener(b);
 
 			exit = new MenuButton("exito.png",323, 13, 6, 6);
@@ -350,6 +358,10 @@ public class MainMenu extends JFrame {
 		}
 	}
 
+    /**
+     * The panel that appears after the users selects the "How to play" button.
+     * Explains the rules of the game and how to play it.
+     */
 	class HowToPlay extends JPanel{
 
         private Image background;                                       //The background image of the panel
@@ -407,7 +419,8 @@ public class MainMenu extends JFrame {
             }
         }
     }
-	/**
+
+    /**
 	 * Handles the action after a button has been pressed.
 	 */
 	class ButtonListener implements ActionListener {
@@ -548,7 +561,7 @@ public class MainMenu extends JFrame {
             }
 			else {
 
-				int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit",
+				int exit = JOptionPane.showConfirmDialog(MainMenu.this, "Are you sure you want to exit?", "Exit",
 						JOptionPane.YES_NO_OPTION);
 				if (exit == 0)
 					System.exit(0);

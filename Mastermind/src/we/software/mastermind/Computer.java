@@ -1,5 +1,7 @@
 package we.software.mastermind;
 
+import org.apache.xmlbeans.impl.xb.ltgfmt.Code;
+
 import java.util.ArrayList;
 
 /**
@@ -15,21 +17,19 @@ public class Computer extends Player{
     
 
     public Computer(int difficultyChoise) {
-
         super();
-        
-        
+
         switch (difficultyChoise){
-        case 0:
-            easyAlgorithm();
-            break;
-        case 1:
-        	mediumAlgorithm();
-            break;
-        case 2:
-        	hardAlgorithm();
+            case 0:
+                easyAlgorithm();
+                break;
+            case 1:
+        	    mediumAlgorithm();
+        	    break;
+            case 2:
+        	    hardAlgorithm();
+        	    break;
         }
-        	
     }
     
   //Colour - Numbers
@@ -43,20 +43,20 @@ public class Computer extends Player{
 
     //Γεμιζει τον πινακα με Pegs Διαφορετικων χροματων
     public void easyAlgorithm(){
-    	
-    	
-		for (int i = 0; i < super.numberOfPins; i++) {
-			//Τυχαιος αροιθμος απο το 1-6
-	        CodeToBreak.add(1+ (int)(Math.random()*6));
-            //ελεγχει για το εαν υπαρχει ειδη ο αροιθμος στον πινακα
-	        for (int j = 0; j < i; j++) {
-	            if (CodeToBreak.get(i).equals(CodeToBreak.get(j))) {
-	            	//αν υπαρχει παει το i μια θεση πισω
-	                i--;
-	                break;
-	            }
-	        }   
-	    }	
+
+		for(int i=0; i< super.numberOfPins; i++){
+
+		    int rand = 1+ (int)(Math.random()*6);
+
+		    if(!CodeToBreak.contains(rand)){
+
+		        CodeToBreak.add(rand);
+                System.out.println(rand);
+            }
+            else{
+		        i--;
+            }
+        }
     }
     
     
