@@ -85,5 +85,10 @@ public class Player {
     	return guess;
     }
     
-    
+    public void setGuess(int[] guess){
+
+        for(int i : guess){
+            this.guess.add(i);
+        }
+    }
 }

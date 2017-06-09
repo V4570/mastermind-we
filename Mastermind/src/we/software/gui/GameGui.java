@@ -35,7 +35,6 @@ public class GameGui extends JFrame{
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     public int turn = 1;                                                                    //Integer that holds current turn.
     private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
-    //private int[] code = {0, 0, 0, 0};
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
     private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
     
@@ -197,17 +196,17 @@ public class GameGui extends JFrame{
     }
 
     /**
-     * Special panel that shows the guess and the corresponding evaluation for each turn.
+     * Special panel that shows the guess and the corresponding clues for each turn.
      */
     public class HistoryPanel extends JPanel{
 
-        private ArrayList<BufferedImage> rounds, evaluation, pegs;
+        private ArrayList<BufferedImage> rounds, clues, pegs;
         private ArrayList<HighScore> highScores;
 
         public HistoryPanel(){
 
             rounds = new ArrayList<>();
-            evaluation = new ArrayList<>();
+            clues = new ArrayList<>();
             highScores = new ArrayList<>();
 
             int score = 9999;
@@ -240,7 +239,7 @@ public class GameGui extends JFrame{
 
         /**
          *  To show each turn in the special history panel, the code overrides paintComponent to paint the contents of
-         *  the two arrayLists, rounds and evaluation which hold the guess and evaluation of the guess for each turn.
+         *  the two arrayLists, rounds and clues which hold the guess and clues of the guess for each turn.
          *  Anytime a round is added to the arrayLists the code calls for the repaint method which repaints the content
          *  of the arrayLists.
          */
@@ -249,12 +248,12 @@ public class GameGui extends JFrame{
             super.paintComponent(g);
 
             int counter = 0;        //Counts peg. Resets when it hits 4.
-            int evalCounter = 0;    //Counts evaluation. Resets when it hits 4.
+            int evalCounter = 0;    //Counts clues. Resets when it hits 4.
 
             int round_X = 50;       //Represents the width value for the colors. Updates up to 4 colors then resets.
             int round_Y = 575;
 
-            int eval_X = 175;       //Represents the width value for the evaluation. Updates up to 2 and then resets.
+            int eval_X = 175;       //Represents the width value for the clues. Updates up to 2 and then resets.
             int eval_Y = 569;
 
             int hs_X = 32;
@@ -273,8 +272,9 @@ public class GameGui extends JFrame{
                 counter ++;
             }
 
-            for(BufferedImage img : evaluation){
+            for(BufferedImage img : clues){
 
+                if(img == null) continue;
 
                 if(evalCounter > 3){
                     eval_X = 175;
@@ -326,6 +326,48 @@ public class GameGui extends JFrame{
                     break;
                 case 6:
                     rounds.add(pegs.get(5));
+                    break;
+            }
+        }
+
+        int jj = 0;
+        public void addToClues(int clue){
+
+            if(jj == 4) jj = 0;
+            switch(clue){
+                case 0:
+                    clues.add(null);
+                    jj++;
+                    break;
+                case 1:
+                    if(jj == 0){
+                        clues.add(pegs.get(6));
+                    }
+                    else if(jj == 1){
+                        clues.add(pegs.get(10));
+                    }
+                    else if(jj == 2){
+                        clues.add(pegs.get(8));
+                    }
+                    else{
+                        clues.add(pegs.get(12));
+                    }
+                    jj++;
+                    break;
+                case 2:
+                    if(jj == 0){
+                        clues.add(pegs.get(7));
+                    }
+                    else if(jj == 1){
+                        clues.add(pegs.get(11));
+                    }
+                    else if(jj == 2){
+                        clues.add(pegs.get(9));
+                    }
+                    else{
+                        clues.add(pegs.get(13));
+                    }
+                    jj++;
                     break;
             }
         }
@@ -391,6 +433,11 @@ public class GameGui extends JFrame{
                         turnHistory.addToRounds(turnGuess[i]);
                         turnGuess[i] = 0;
                     }
+                    game.setGuess(turnGuess);
+
+                    for(Integer i : game.checkGuess()){
+                        turnHistory.addToClues(i);
+                    }
 
                     selectionBtn1.setUncolored();
                     selectionBtn2.setUncolored();
@@ -411,7 +458,7 @@ public class GameGui extends JFrame{
                     sBtn.setColored(0);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 1;
-                    /*if(game.gameType==0){
+                    /*if(gameMode == 0){
                     	game.p1.addPin(selectedBtn, 1);
                     }
                     else if(game.gameType==1){

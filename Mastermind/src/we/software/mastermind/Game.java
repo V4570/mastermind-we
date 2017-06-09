@@ -1,7 +1,6 @@
 package we.software.mastermind;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Game {
 
@@ -11,7 +10,7 @@ public class Game {
 	private int currentRound;
 	private int currentGame;
 	private int gameScore;
-	private int maxRounds=10;
+	private int maxRounds = 10;
 
 	public Game(int difficulty) {
 		p1 = new Player();
@@ -38,7 +37,7 @@ public class Game {
 	}
 
 	//Checks right guesses
-	public boolean checkIfAllRed(ArrayList<Integer> result) {
+	public boolean checkIfWin(ArrayList<Integer> result) {
 
 		for (int aPeg : result)
 			if (aPeg != 2)
@@ -61,7 +60,7 @@ public class Game {
 	
 	//Returns current score
 	public int getGameScore(){
-		if(checkIfAllRed(checkGuess())){
+		if(checkIfWin(checkGuess())){
 			return gameScore+(5000-(currentRound*150));
 		}
 		else{
@@ -74,6 +73,9 @@ public class Game {
 		currentRound++;
 		// Player1 table (p1)
 		ArrayList<Integer> guess = p1.getGuess();
+		for(int i : p1.getGuess()){
+		    System.out.print(p1.getGuess().get(i));
+        }
 
 		// Player2 or AI table (p2)
 		ArrayList<Integer> code = p2.getCode();
@@ -84,7 +86,7 @@ public class Game {
 		ArrayList<Integer> ex = new ArrayList<Integer>();
 
 		for (int i = 0; i < 4; i++) {
-			if (guess.get(i) == code.get(i)) {
+			if (guess.get(i).equals(code.get(i))) {
 				result.add(2);
 				ex.add(i);
 			}
@@ -95,7 +97,7 @@ public class Game {
 					continue;
 			}
 			for (int j = 0; j < 4; j++) {
-				if (guess.get(i) == code.get(j)) {
+				if (guess.get(i).equals(code.get(j))) {
 					result.add(1);
 					break;
 				}
@@ -109,4 +111,8 @@ public class Game {
 		return result;
 
 	}
+
+	public void setGuess(int[] guess){
+	    p1.setGuess(guess);
+    }
 }
