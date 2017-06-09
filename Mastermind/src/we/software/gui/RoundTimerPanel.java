@@ -1,10 +1,11 @@
 package we.software.gui;
 
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,15 +13,20 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class RoundTimerPanel extends JPanel implements Runnable{
-	Timer timer;
-	JLabel timerLabel;
-	int count;
+	private Timer timer;
+	private JLabel timerLabel;
+	private int count;
+	private ArrayList<BufferedImage> numbers;
+
 	public RoundTimerPanel(int count, int width , int height, int xPos, int yPos, boolean presetedText){
 		//BorderLayout borders = new BorderLayout();
+
+        numbers = (ArrayList<BufferedImage>) PreloadImages.getNumbers().clone();
 		this.count = count;
 		this.setSize(width, height);
 		this.setLocation(xPos, yPos);
 		this.setOpaque(false);
+
 		if(presetedText){
 		timerLabel = new JLabel(Integer.toString(count), SwingConstants.CENTER);
 		}else{
@@ -39,15 +45,17 @@ public class RoundTimerPanel extends JPanel implements Runnable{
 		timer = new Timer(1000, tc);
 		timer.start();
 		
-		
 	}
+
+	public void restart(){
+
+    }
 	
-	public class TimeClass implements ActionListener{
+	private class TimeClass implements ActionListener{
 		int counter;
 		
 		public TimeClass(int counter){
 			this.counter = counter;
-			
 			
 		}
 		
