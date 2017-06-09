@@ -167,7 +167,7 @@ public class GameGui extends JFrame{
     }
 
     /**
-     * This panel shows up next to 'TURN" and displays the current turn.
+     * This panel shows up next to 'TURN' and displays the current turn.
      */
     public class NumbersPanel extends JPanel{
 

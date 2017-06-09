@@ -14,7 +14,6 @@ public class Game {
 	private int maxRounds=10;
 
 	public Game(int difficulty) {
-		System.out.println("skata");
 		p1 = new Player();
 		p2 = new Computer(difficulty);
 	}

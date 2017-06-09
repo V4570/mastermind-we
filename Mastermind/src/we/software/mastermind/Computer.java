@@ -39,7 +39,7 @@ public class Computer extends Player{
   //5 - White 
   //6 - Black 
 
-    //Γεμιζει τον πινακα με Pegs Διαφορετικων χροματων
+    //Fill the arraylist with different colors
     public void easyAlgorithm(){
 
 		for(int i=0; i< super.numberOfPins; i++){
@@ -49,7 +49,6 @@ public class Computer extends Player{
 		    if(!CodeToBreak.contains(rand)){
 
 		        CodeToBreak.add(rand);
-                System.out.println(rand);
             }
             else{
 		        i--;
@@ -62,8 +61,9 @@ public class Computer extends Player{
     public void mediumAlgorithm(){
     	
 		for (int i = 0; i<super.numberOfPins; i++) {
-			CodeToBreak.add(1+ (int)(Math.random()*6));
-	        
+
+		    int rand = 1+ (int)(Math.random()*6);
+			CodeToBreak.add(rand);
 	    }
 		
     }
