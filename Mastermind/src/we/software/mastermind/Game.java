@@ -15,6 +15,7 @@ public class Game {
 	public Game(int difficulty) {
 		p1 = new Player();
 		p2 = new Computer(difficulty);
+		p1.initializeGuessArray();
 	}
 
 	public Game(Client c,boolean isClientCodeMaker,String enemyName) { // PvP / PvE selection
@@ -73,12 +74,11 @@ public class Game {
 		currentRound++;
 		// Player1 table (p1)
 		ArrayList<Integer> guess = p1.getGuess();
-		for(int i : p1.getGuess()){
-		    System.out.print(p1.getGuess().get(i));
-        }
+		System.out.println(guess);
 
 		// Player2 or AI table (p2)
 		ArrayList<Integer> code = p2.getCode();
+		System.out.println(code);
 
 		// Initializing final table (p3)
 		ArrayList<Integer> result = new ArrayList<Integer>();

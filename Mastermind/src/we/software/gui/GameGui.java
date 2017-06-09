@@ -433,7 +433,7 @@ public class GameGui extends JFrame{
                         turnHistory.addToRounds(turnGuess[i]);
                         turnGuess[i] = 0;
                     }
-                    game.setGuess(turnGuess);
+                    //game.setGuess(turnGuess);
 
                     for(Integer i : game.checkGuess()){
                         turnHistory.addToClues(i);
@@ -458,9 +458,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(0);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 1;
-                    /*if(gameMode == 0){
-                    	game.p1.addPin(selectedBtn, 1);
-                    }
+                    if(gameMode == 0){
+                    	game.getP1().addPin(selectedBtn, 1);
+                    }/*
                     else if(game.gameType==1){
                     	if(!client.isCodeMaker()){
                     	try {
@@ -483,9 +483,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(1);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 2;
-                    /*if(game.gameType==0){
-                	game.p1.addPin(selectedBtn, 2);
-                }
+                    if(gameMode == 0){
+                	game.getP1().addPin(selectedBtn, 2);
+                }/*
                 else if(game.gameType==1){
                 	if(!client.isCodeMaker()){
                 	try {
@@ -508,9 +508,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(2);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 3;
-                    /*if(game.gameType==0){
-                	game.p1.addPin(selectedBtn, 3);
-                }
+                    if(gameMode == 0){
+                	game.getP1().addPin(selectedBtn, 3);
+                }/*
                 else if(game.gameType==1){
                 	if(!client.isCodeMaker()){
                 	try {
@@ -533,9 +533,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(3);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 4;
-                    /*if(game.gameType==0){
-                	game.p1.addPin(selectedBtn, 4);
-                }
+                    if(gameMode==0){
+                	game.getP1().addPin(selectedBtn, 4);
+                }/*
                 else if(game.gameType==1){
                 	if(!client.isCodeMaker()){
                 	try {
@@ -558,9 +558,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(4);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 5;
-                    /*if(game.gameType==0){
-                	game.p1.addPin(selectedBtn, 5);
-                }
+                    if(gameMode==0){
+                	game.getP1().addPin(selectedBtn, 5);
+                }/*
                 else if(game.gameType==1){
                 	if(!client.isCodeMaker()){
                 	try {
@@ -583,9 +583,9 @@ public class GameGui extends JFrame{
                     sBtn.setColored(5);
                     sBtn.setUnselected();
                     turnGuess[selectedBtn] = 6;
-                    /*if(game.gameType==0){
-                	game.p1.addPin(selectedBtn, 6);
-                }
+                    if(gameMode==0){
+                	game.getP1().addPin(selectedBtn, 6);
+                }/*
                 else if(game.gameType==1){
                 	if(!client.isCodeMaker()){
                 	try {
