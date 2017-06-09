@@ -25,7 +25,7 @@ public class Client extends Player{
 	public Client() {
 		super();
 		enemy = null;
-		username = "";
+		username = null;
 		inGame = false;
 	}
 	

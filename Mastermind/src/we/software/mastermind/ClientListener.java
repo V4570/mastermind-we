@@ -109,7 +109,7 @@ public class ClientListener extends Thread {
 						}
 
 					} else if (inmessage.startsWith("playcheck")) {
-						if (client.isCodeMaker()) {
+						if (gameGui.turn!=10) {
 							for (int i = 0; i < game.p2.getCode().size(); i++) {
 								gameGui.turnHistory.addToRounds(game.p2.getCode().get(i));
 
@@ -121,6 +121,8 @@ public class ClientListener extends Thread {
 							gameGui.turnHistory.repaint();
 							gameGui.numbersPanel.changeRound();
 							game.p2.restoreGuessToDefault();
+						}else{
+							//game ends
 						}
 					} else if (inmessage.startsWith("playresult")) {
 						ArrayList<Integer> res = new ArrayList<Integer>();

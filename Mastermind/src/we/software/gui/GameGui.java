@@ -33,16 +33,20 @@ public class GameGui extends JFrame{
     public Game game;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
-    private int turn = 1;                                                                    //Integer that holds current turn.
+    public int turn = 1;                                                                    //Integer that holds current turn.
     private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
     //private int[] code = {0, 0, 0, 0};
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
-    private int gameMode = 0;                                                                //0 for pvsAi, 1 for pvsP
+    private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
     
     public GameGui(MainMenu previous, int gM){
     	// edw tha prepei na dimiourgritai ena instance Game
 
-        gameMode = gM;
+        this.gameMode = gM;
+        if(gM==1){
+        	this.game = new Game(0);
+        }
+        
         this.previous = previous;
         setUpButtons();
         initFrame();
@@ -577,8 +581,7 @@ public class GameGui extends JFrame{
 
                 }catch(Exception e1){
                     chatGui.appendToPane("Message couldn't be sent...\n", 4);
-                    chatGui.appendToPane("Either your message format isn't right(receiver:message)\n",4);
-                    chatGui.appendToPane("or you have lost connection with the Server...\n", 4);
+                    chatGui.appendToPane("You are not connected with the Server\n", 4);
                     chatGui.chatInput.setText("");
                 }
                 if(sBtn != null){

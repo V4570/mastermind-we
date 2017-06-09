@@ -7,29 +7,24 @@ public class Game {
 
 	private Player p1;
 	public Player p2; // Player or Computer (CodeMaker)
-	public Client c;
-	private int gameType;
-	private int difficulty; // 0-2 (Easy - Hard)
-	private int games;
+	
 	private int currentRound;
 	private int currentGame;
 	private int gameScore;
 	private int maxRounds=10;
 
-	public Game(int gameType,int difficulty) {
-		this.gameType = gameType;
+	public Game(int difficulty) {
 		p1 = new Player();
 		p2 = new Computer(difficulty);
 	}
 
-	public Game(int gameType,int games,Client c,boolean isClientCodeMaker) { // PvP / PvE selection
-		this.gameType = gameType;
+	public Game(Client c,boolean isClientCodeMaker,String enemyName) { // PvP / PvE selection
 		this.currentRound = 0;
-		this.games = games;
-		this.c = c;
+		this.p1 = c;
 		this.gameScore = 0;
 		c.setEnemy(new Player());
 		p2  = c.getEnemy();
+		p2.setName(enemyName);
 		c.setCodeMaker(isClientCodeMaker);
 	}
 
@@ -67,7 +62,7 @@ public class Game {
 	
 	// Returns result table
 	public ArrayList<Integer> checkGuess() {
-
+		currentRound++;
 		// Player1 table (p1)
 		ArrayList<Integer> guess = p1.getGuess();
 
@@ -97,7 +92,7 @@ public class Game {
 				}
 			}
 		}
-		
+
 		while (result.size() < 4) {
 			result.add(0);
 		}
