@@ -673,7 +673,7 @@ public class GameGui extends JFrame{
     		String[] msg = chatGui.chatInput.getText().split(":",3);
     		if(msg.length<3){
     			chatGui.appendToPane("System: ", 2);
-                chatGui.appendToPane("Check your syntax. If you need help just type '?'.\n", 0);
+                chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
                 chatGui.chatInput.setText("");
     		}
     		else{
@@ -724,6 +724,11 @@ public class GameGui extends JFrame{
     	else if(chatmsg.equals("highscores")){
     		client.getHighScore();
     		chatGui.chatInput.setText("");
+    	}
+    	else{
+    		chatGui.appendToPane("System: ", 2);
+            chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
+            chatGui.chatInput.setText("");
     	}
     }
 }
