@@ -694,7 +694,7 @@ public class GameGui extends JFrame{
     		chatGui.appendToPane("? or help -->get all option\n", 8);
     		chatGui.appendToPane("pm:name:message -->send pm message to a name\n", 8);
 			chatGui.appendToPane("all:message -->send global message\n", 8);
-			chatGui.appendToPane("invite:name -->invite a player to a game\n", 8);
+			chatGui.appendToPane("invite:name -->send a game invitation\n", 8);
 			chatGui.appendToPane("invite:accept:name -->accept an invitation\n", 8);
 			chatGui.appendToPane("invite:decline:name -->decline an invitation\n", 8);
 			chatGui.appendToPane("users -->get online users at current time\n", 8);
@@ -709,11 +709,25 @@ public class GameGui extends JFrame{
     		}
     		else if(msg.length==3){
     			if(msg[1].equals("accept")){
+    				if(client.getPending().contains(msg[2])){
     				client.acceptGameRequest(msg[2]);
     				chatGui.chatInput.setText("");
+    				}else{
+    					chatGui.appendToPane("System: ", 2);
+    	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
+    	                chatGui.chatInput.setText("");
+    				}
     			}else if(msg[1].equals("decline")){
+    				if(client.getPending().contains(msg[2])){
     				client.rejectGameRequest(msg[2]);
     				chatGui.chatInput.setText("");
+    				client.clearPending();
+    				}else{
+    					chatGui.appendToPane("System: ", 2);
+    	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
+    	                chatGui.chatInput.setText("");
+    	                client.clearPending();
+    				}
     			}
     		}
     	}

@@ -62,6 +62,8 @@ public class ClientListener extends Thread {
 					} else if (inmessage.startsWith("request")) {
 						if (message.equals("wannaplay")) {
 							if (!client.isInGame()) {
+								chatGui.appendToPane("Player "+transmitter+" send a game invitation. To accept invitation just type invite:accept:name.", 1);
+								client.addUserToPending(transmitter);
 								// asks for user permission to start the game
 								// if user accepts then:
 								/*
