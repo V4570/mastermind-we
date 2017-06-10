@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Server {
 	private static final int PORT = 12498;
-	public HashMap<String, Client> clients = new HashMap<String, Client>();
+	private HashMap<String, Client> clients = new HashMap<String, Client>();
 	private ServerSocket server;
 	private Database db;
 	private LiveServerHandler lsh = new LiveServerHandler(clients);

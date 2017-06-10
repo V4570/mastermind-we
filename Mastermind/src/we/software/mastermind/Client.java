@@ -12,14 +12,14 @@ import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class Client extends Player{
-	public Player enemy;
-	public ClientListener cListener;
+	private Player enemy;
+	private ClientListener cListener;
 	private Socket socket;
-	public boolean inGame;
+	private boolean inGame;
 	private String server = "";
 	private int PORT = 12498;
-	public boolean codeMaker;
-	static int rounds;
+	private boolean codeMaker;
+
 	ChatGui chatGui;
 	
 	public Client() {
@@ -64,6 +64,12 @@ public class Client extends Player{
 	public Player getEnemy() {
 		return enemy;
 	}
+	
+	public ClientListener getcListener() {
+		return cListener;
+	}
+
+
 	//Starts the client ServerThread 
 	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);

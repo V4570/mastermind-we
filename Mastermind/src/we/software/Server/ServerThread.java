@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class ServerThread extends Thread {
-	public Socket socket;
-	public HashMap<String, Client> clients;
+	private Socket socket;
+	private HashMap<String, Client> clients;
 	private String username;
 	private Client transmitter;
 	private Database db;
@@ -320,10 +320,7 @@ public class ServerThread extends Thread {
 	}
 	
 	private void getOnlinePlayersJob() throws IOException{
-		String names="";
-		for(Entry<String,Client> name : clients.entrySet()){
-			names += name.getKey()+",";
-		}
+		String names = String.join(",", clients.keySet());
 		BufferedWriter bw = new BufferedWriter(
 				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 		bw.write("getonlineplayers:server:" + transmitter.getName() + "%" + names);

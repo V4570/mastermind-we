@@ -5,12 +5,13 @@ import java.util.ArrayList;
 public class Game {
 
 	private Player p1;
-	public Player p2; // Player or Computer (CodeMaker)
+	private Player p2; // Player or Computer (CodeMaker)
 	
 	private int currentRound;
 	private int currentGame;
 	private int gameScore;
 	private int maxRounds = 10;
+	private ArrayList<Integer> result;
 
 	public Game(int difficulty) {
 		p1 = new Player();
@@ -36,9 +37,14 @@ public class Game {
 	public Player getP2() {
 		return p2;
 	}
+	
+
+	public void setP2(Player p2) {
+		this.p2 = p2;
+	}
 
 	//Checks right guesses
-	public boolean checkIfWin(ArrayList<Integer> result) {
+	public boolean checkIfWin() {
 
 		for (int aPeg : result)
 			if (aPeg != 2)
@@ -61,8 +67,8 @@ public class Game {
 	
 	//Returns current score
 	public int getGameScore(){
-		if(checkIfWin(checkGuess())){
-			return gameScore+(5000-(currentRound*150));
+		if(checkIfWin()){
+			return gameScore+(3000-(currentRound*200));
 		}
 		else{
 			return gameScore;
@@ -81,7 +87,7 @@ public class Game {
 		System.out.println(code);
 
 		// Initializing final table (p3)
-		ArrayList<Integer> result = new ArrayList<Integer>();
+		result = new ArrayList<Integer>();
 		
 		ArrayList<Integer> ex = new ArrayList<Integer>();
 

@@ -76,8 +76,8 @@ public class ClientListener extends Thread {
 						} else if (message.equals("ok")) {
 							
 							client.setEnemy(new Player());
-							client.enemy.setName(transmitter);
-							this.game.p2 = client.getEnemy();
+							client.getEnemy().setName(transmitter);
+							game.setP2(client.getEnemy());
 							// accepted and game starts
 						} else if (message.equals("not")) {
 							// rejected
@@ -109,21 +109,32 @@ public class ClientListener extends Thread {
 						}
 
 					} else if (inmessage.startsWith("playcheck")) {
-						if (gameGui.turn!=10) {
-							for (int i = 0; i < game.p2.getCode().size(); i++) {
-								gameGui.turnHistory.addToRounds(game.p2.getCode().get(i));
+						
+							for (int i = 0; i < game.getP2().getCode().size(); i++) {
+								gameGui.turnHistory.addToRounds(game.getP2().getCode().get(i));
 
 							}
+							for(Integer i : game.checkGuess()){
+		                        gameGui.turnHistory.addToClues(i);
+		                    }
 							gameGui.selectionBtn1.setUncolored();
 							gameGui.selectionBtn2.setUncolored();
 							gameGui.selectionBtn3.setUncolored();
 							gameGui.selectionBtn4.setUncolored();
 							gameGui.turnHistory.repaint();
-							gameGui.numbersPanel.changeRound();
-							game.p2.restoreGuessToDefault();
-						}else{
+							 if(game.checkIfWin() || gameGui.getTurn()==10){
+			                    	chatGui.appendToPane("Mastermind:", 2);
+			                    	chatGui.appendToPane(client.getEnemy().getName()+"'s score is: "+game.getGameScore()+" !\n", 5);
+			                    	//chatGui.appendToPane("System: ", 2);
+			                    	//chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu", 3);
+			                    }else{
+
+			                    gameGui.addTurn();
+			                    gameGui.numbersPanel.changeRound();
+			                    }
+						
 							//game ends
-						}
+						
 					} else if (inmessage.startsWith("playresult")) {
 						ArrayList<Integer> res = new ArrayList<Integer>();
 						for(String i : message.split(" ")){

@@ -194,6 +194,15 @@ public class ChatGui extends JPanel implements Runnable{
             StyleConstants.setForeground(style, Color.RED);
             break;
         }
+        case 5:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, false);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.MAGENTA);
+            break;
+        }
         }
         
         

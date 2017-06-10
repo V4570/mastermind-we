@@ -8,6 +8,7 @@ import we.software.mastermind.Game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,9 +32,11 @@ public class GameGui extends JFrame{
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private boolean esc=true;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
-    public int turn = 1;                                                                    //Integer that holds current turn.
+    private int turn = 1;                                                                    //Integer that holds current turn.
     private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
     private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
@@ -50,6 +53,12 @@ public class GameGui extends JFrame{
         setUpButtons();
         initFrame();
 
+    }
+    public int getTurn(){
+    	return turn;
+    }
+    public void addTurn(){
+    	turn++;
     }
 
     /**
@@ -89,6 +98,7 @@ public class GameGui extends JFrame{
         chatGui = new ChatGui();
         chatGui.start();
         add(chatGui);
+        KeyBindings(this.getRootPane());
         this.getRootPane().setDefaultButton(sendButton);
 
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
@@ -163,6 +173,14 @@ public class GameGui extends JFrame{
         blackBtn = new SelectionButton("blackbtn.png", 632, 365);
         blackBtn.addActionListener(btnListener);
         
+    }
+    
+    private void makeButtonsUnavailable(){
+    	selectionBtn1.setEnabled(false);
+    	selectionBtn2.setEnabled(false);
+    	selectionBtn3.setEnabled(false);
+    	selectionBtn4.setEnabled(false);
+    	checkBtn.setEnabled(false);
     }
 
     /**
@@ -373,6 +391,20 @@ public class GameGui extends JFrame{
         }
 
     }
+    private void KeyBindings(JRootPane panel) {
+		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "escPressed");
+		panel.getActionMap().put("escPressed", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if(esc){
+					//pause game
+					esc=false;
+				}else{
+					//unpause
+					esc=true;
+				}
+			}
+		});
+    }
 
 
     class ButtonListener implements ActionListener{
@@ -439,14 +471,22 @@ public class GameGui extends JFrame{
                         turnHistory.addToClues(i);
                     }
 
+                    
                     selectionBtn1.setUncolored();
                     selectionBtn2.setUncolored();
                     selectionBtn3.setUncolored();
                     selectionBtn4.setUncolored();
                     turnHistory.repaint();
+                    if(game.checkIfWin() || turn==10){
+                    	chatGui.appendToPane("Mastermind:", 2);
+                    	chatGui.appendToPane(" Not bad for a newbie... Your score is: "+game.getGameScore()+" !\n", 5);
+                    	chatGui.appendToPane("System: ", 2);
+                    	chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu", 3);
+                    	makeButtonsUnavailable();
+                    }else{
 
                     turn += 1;
-                    numbersPanel.changeRound();
+                    numbersPanel.changeRound();}
                 }
 
                 notValid = false;
@@ -460,8 +500,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 1;
                     if(gameMode == 0){
                     	game.getP1().addPin(selectedBtn, 1);
-                    }/*
-                    else if(game.gameType==1){
+                    }
+                    else if(gameMode==1){
                     	if(!client.isCodeMaker()){
                     	try {
 							client.sendGamePin(selectedBtn, 1);
@@ -472,7 +512,7 @@ public class GameGui extends JFrame{
                     	else{
                     		client.addPin(selectedBtn, 1);
                     	}
-                    }*/
+                    }
                     sBtn = null;
                 }
             }
@@ -485,8 +525,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 2;
                     if(gameMode == 0){
                 	game.getP1().addPin(selectedBtn, 2);
-                }/*
-                else if(game.gameType==1){
+                }
+                else if(gameMode==1){
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 2);
@@ -497,7 +537,7 @@ public class GameGui extends JFrame{
                 	else{
                 		client.addPin(selectedBtn, 2);
                 	}
-                }*/
+                }
                     sBtn = null;
                 }
             }
@@ -510,8 +550,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 3;
                     if(gameMode == 0){
                 	game.getP1().addPin(selectedBtn, 3);
-                }/*
-                else if(game.gameType==1){
+                }
+                else if(gameMode==1){
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 3);
@@ -522,7 +562,7 @@ public class GameGui extends JFrame{
                 	else{
                 		client.addPin(selectedBtn, 3);
                 	}
-                }*/
+                }
                     sBtn = null;
                 }
             }
@@ -535,8 +575,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 4;
                     if(gameMode==0){
                 	game.getP1().addPin(selectedBtn, 4);
-                }/*
-                else if(game.gameType==1){
+                }
+                else if(gameMode==1){
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 4);
@@ -547,7 +587,7 @@ public class GameGui extends JFrame{
                 	else{
                 		client.addPin(selectedBtn, 4);
                 	}
-                }*/
+                }
                     sBtn = null;
                 }
             }
@@ -560,8 +600,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 5;
                     if(gameMode==0){
                 	game.getP1().addPin(selectedBtn, 5);
-                }/*
-                else if(game.gameType==1){
+                }
+                else if(gameMode==1){
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 5);
@@ -572,7 +612,7 @@ public class GameGui extends JFrame{
                 	else{
                 		client.addPin(selectedBtn, 5);
                 	}
-                }*/
+                }
                     sBtn = null;
                 }
             }
@@ -585,8 +625,8 @@ public class GameGui extends JFrame{
                     turnGuess[selectedBtn] = 6;
                     if(gameMode==0){
                 	game.getP1().addPin(selectedBtn, 6);
-                }/*
-                else if(game.gameType==1){
+                }
+                else if(gameMode==1){
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 6);
@@ -597,7 +637,7 @@ public class GameGui extends JFrame{
                 	else{
                 		client.addPin(selectedBtn, 6);
                 	}
-                }*/
+                }
                     sBtn = null;
                 }
             }

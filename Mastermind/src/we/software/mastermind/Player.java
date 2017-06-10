@@ -15,8 +15,7 @@ public class Player {
 
 	//General User Information
     protected String username;
-    private int highScore;
-    private int leastTurns;
+    private int totalScore=0;
     
     //Current Game player information.
     private boolean guessing = true;
@@ -26,8 +25,6 @@ public class Player {
     //Game Info
     protected int numberOfPins = 4; 
     
-    private int runningRounds;
-    private double highscore;
     
 
     //---Constructor---
@@ -63,7 +60,15 @@ public class Player {
     			
     }
     
-    //When the turn has ended, restores the guessing ArrayList to the default state.
+    public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+
+	//When the turn has ended, restores the guessing ArrayList to the default state.
     public void restoreGuessToDefault(){
     	for(int i=0;i<guess.size();i++){
     		guess.set(i, 0);
