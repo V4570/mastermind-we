@@ -87,7 +87,7 @@ public class ServerThread extends Thread {
 					} else if (inmessage.startsWith("gethighscores")) {
 						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> asks for hisghscores to Server: " + message);
 						getHighScoresJob();
-					} else if(inmessage.startsWith("getonloneplayers")){
+					} else if(inmessage.startsWith("getonlineplayers")){
 						if(!lsh.isHide())System.out.println(transmitter.getName() + "--> asks for online players to Server: " + message);
 						getOnlinePlayersJob();
 					}
@@ -301,7 +301,7 @@ public class ServerThread extends Thread {
 					value.getThread().join(1);
 
 					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(value.getSocket().getOutputStream()));
-					bw.write("message:" + transmitter.getName() + ":" + value.getName() + "%" + message);
+					bw.write("messageall:" + transmitter.getName() + ":" + value.getName() + "%" + message);
 					bw.newLine();
 					bw.flush();
 				}

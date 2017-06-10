@@ -26,14 +26,12 @@ public class GameGui extends JFrame{
     private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
-    private Client client;                                                                   //The client for the chat to work
+    private Client client=null;                                                                   //The client for the chat to work
     public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;       //The buttons for the each place in the code.
     private SelectionButton checkBtn, sBtn;                                                  //checkBtn to register each round. sBtn keeps the currently selected selectionBtn.
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
-    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
-    private boolean esc=true;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
@@ -96,9 +94,7 @@ public class GameGui extends JFrame{
         add(numbersPanel);
 
         chatGui = new ChatGui();
-        chatGui.start();
         add(chatGui);
-        KeyBindings(this.getRootPane());
         this.getRootPane().setDefaultButton(sendButton);
 
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
@@ -106,7 +102,7 @@ public class GameGui extends JFrame{
             client = new Client();
             try {
                 client.startListening(chatGui);
-                client.logMeIn("test1", "test1");
+                client.logMeIn("test0", "test0");
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -120,6 +116,7 @@ public class GameGui extends JFrame{
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+        
     }
 
     /**
@@ -391,21 +388,6 @@ public class GameGui extends JFrame{
         }
 
     }
-    private void KeyBindings(JRootPane panel) {
-		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "escPressed");
-		panel.getActionMap().put("escPressed", new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				if(esc){
-					//pause game
-					esc=false;
-				}else{
-					//unpause
-					esc=true;
-				}
-			}
-		});
-    }
-
 
     class ButtonListener implements ActionListener{
 
@@ -453,7 +435,7 @@ public class GameGui extends JFrame{
 
                         notValid = true;
                         chatGui.appendToPane("System: ", 2);
-                        chatGui.appendToPane("Please select a color for each Peg and then press check\n", 3);
+                        chatGui.appendToPane("Please select a color for each Peg and then press check\n", 0);
                         break;
                     }
                 }
@@ -471,17 +453,16 @@ public class GameGui extends JFrame{
                         turnHistory.addToClues(i);
                     }
 
-                    
                     selectionBtn1.setUncolored();
                     selectionBtn2.setUncolored();
                     selectionBtn3.setUncolored();
                     selectionBtn4.setUncolored();
                     turnHistory.repaint();
                     if(game.checkIfWin() || turn==10){
-                    	chatGui.appendToPane("Mastermind:", 2);
-                    	chatGui.appendToPane(" Not bad for a newbie... Your score is: "+game.getGameScore()+" !\n", 5);
+                    	chatGui.appendToPane("Mastermind:", 5);
+                    	chatGui.appendToPane(" Not bad for a newbie... Your score is: "+game.getGameScore()+" !\n", 0);
                     	chatGui.appendToPane("System: ", 2);
-                    	chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu", 3);
+                    	chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu.\n", 0);
                     	makeButtonsUnavailable();
                     }else{
 
@@ -661,14 +642,17 @@ public class GameGui extends JFrame{
             }
             else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
                 try{
-
-                    client.sendMessage(chatGui.chatInput.getText());
-                    chatGui.appendToPane("You: "+chatGui.chatInput.getText()+"\n", 0);
-                    chatGui.chatInput.setText("");
-
+                	if(!client.equals(null)){ 	
+                	
+                    chatHandler((chatGui.chatInput.getText()));
+                	}else{
+                		chatGui.appendToPane("System: ", 2);
+                        chatGui.appendToPane("You are not connected to the server.\n", 0);
+                        chatGui.chatInput.setText("");
+                	}
                 }catch(Exception e1){
-                    chatGui.appendToPane("Message couldn't be sent...\n", 4);
-                    chatGui.appendToPane("You are not connected with the Server\n", 4);
+                    chatGui.appendToPane("System: ", 2);
+                    chatGui.appendToPane("You are not connected to the server.\n", 0);
                     chatGui.chatInput.setText("");
                 }
                 if(sBtn != null){
@@ -683,5 +667,63 @@ public class GameGui extends JFrame{
                 System.exit(0);
             }
         }
+    }
+    private void chatHandler(String chatmsg) throws IOException{
+    	if(chatmsg.startsWith("pm")){
+    		String[] msg = chatGui.chatInput.getText().split(":",3);
+    		if(msg.length<3){
+    			chatGui.appendToPane("System: ", 2);
+                chatGui.appendToPane("Check your syntax. If you need help just type '?'.\n", 0);
+                chatGui.chatInput.setText("");
+    		}
+    		else{
+    			client.sendMessage(msg[1],msg[2]);
+    			chatGui.appendToPane("To "+msg[1]+": ", 1);
+    			chatGui.appendToPane(msg[2]+"\n", 0);
+    			chatGui.chatInput.setText("");
+    		}
+    	}
+    	else if(chatmsg.startsWith("all")){
+    		String[] msg = chatGui.chatInput.getText().split(":",2);
+    		client.sendAllMessage(msg[1]);
+			chatGui.appendToPane("To everyone: ", 1);
+			chatGui.appendToPane(msg[1]+"\n", 0);
+			chatGui.chatInput.setText("");
+    	}
+    	else if(chatmsg.equals("?") || chatmsg.equals("help")){
+    		chatGui.appendToPane("? or help -->get all option\n", 8);
+    		chatGui.appendToPane("pm:name:message -->send pm message to a name\n", 8);
+			chatGui.appendToPane("all:message -->send global message\n", 8);
+			chatGui.appendToPane("invite:name -->invite a player to a game\n", 8);
+			chatGui.appendToPane("invite:accept:name -->accept an invitation\n", 8);
+			chatGui.appendToPane("invite:decline:name -->decline an invitation\n", 8);
+			chatGui.appendToPane("users -->get online users at current time\n", 8);
+			chatGui.appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
+			chatGui.chatInput.setText("");
+    	}
+    	else if(chatmsg.startsWith("invite")){
+    		String[] msg = chatGui.chatInput.getText().split(":",2);
+    		if(msg.length==2){
+    			client.sendGameRequest(msg[1]);
+    			chatGui.chatInput.setText("");
+    		}
+    		else if(msg.length==3){
+    			if(msg[1].equals("accept")){
+    				client.acceptGameRequest(msg[2]);
+    				chatGui.chatInput.setText("");
+    			}else if(msg[1].equals("decline")){
+    				client.rejectGameRequest(msg[2]);
+    				chatGui.chatInput.setText("");
+    			}
+    		}
+    	}
+    	else if(chatmsg.equals("users")){
+    		client.getOnlinePlayers();
+    		chatGui.chatInput.setText("");
+    	}
+    	else if(chatmsg.equals("highscores")){
+    		client.getHighScore();
+    		chatGui.chatInput.setText("");
+    	}
     }
 }

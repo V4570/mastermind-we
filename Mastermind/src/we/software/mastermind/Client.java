@@ -11,34 +11,31 @@ import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
-public class Client extends Player{
+public class Client extends Player {
 	private Player enemy;
 	private ClientListener cListener;
 	private Socket socket;
 	private boolean inGame;
-	private String server = "";
+	private String server = "83.212.99.117";
 	private int PORT = 12498;
 	private boolean codeMaker;
 
 	ChatGui chatGui;
-	
+
 	public Client() {
 		super();
 		enemy = null;
 		username = null;
 		inGame = false;
 	}
-	
 
 	public boolean isCodeMaker() {
 		return codeMaker;
 	}
 
-
 	public void setCodeMaker(boolean codeMaker) {
 		this.codeMaker = codeMaker;
 	}
-
 
 	public boolean isInGame() {
 		return inGame;
@@ -56,21 +53,19 @@ public class Client extends Player{
 		this.username = username;
 	}
 
-
 	public void setEnemy(Player enemy) {
 		this.enemy = enemy;
 	}
-	
+
 	public Player getEnemy() {
 		return enemy;
 	}
-	
+
 	public ClientListener getcListener() {
 		return cListener;
 	}
 
-
-	//Starts the client ServerThread 
+	// Starts the client ServerThread
 	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
 		cListener = new ClientListener(this, socket, chatGui);
@@ -85,7 +80,7 @@ public class Client extends Player{
 		bw.flush();
 
 	}
-	
+
 	// check credentials of user in order to log in
 	public void logMeIn(String name, String password) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -121,27 +116,26 @@ public class Client extends Player{
 	}
 
 	// it will change soon
-	public void sendGamePin(int position,int color) throws IOException {
+	public void sendGamePin(int position, int color) throws IOException {
 		addPin(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("playpin:" + username + ":" + enemy.getName() + "%" + position+" "+color);
+		bw.write("playpin:" + username + ":" + enemy.getName() + "%" + position + " " + color);
 		bw.newLine();
 		bw.flush();
 	}
-	
-	public void sendGameCheck(int position,int color) throws IOException {
+
+	public void sendGameCheck(int position, int color) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playcheck:" + username + ":" + enemy.getName() + "%ok");
 		bw.newLine();
 		bw.flush();
 	}
 
-	
 	// it will change soon
 	public void sendGameRoundResult(ArrayList<Integer> result) throws IOException {
 		String m = "";
-		for(int i : result){
-			m = m+" "+i;
+		for (int i : result) {
+			m = m + " " + i;
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playresult:" + username + ":" + enemy.getName() + "%" + m);
@@ -149,30 +143,29 @@ public class Client extends Player{
 		bw.flush();
 	}
 
-	
 	// it will change soon
 	public void sendFinalScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("fscore:" + username + ":" + enemy.getName() + "%" + "");
 		bw.newLine();
 		bw.flush();
-		
+
 	}
-	
+
 	public void sendHighScore(int highscore) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("sethighscore:" + username + ":server%" + highscore);
 		bw.newLine();
 		bw.flush();
 	}
-	
+
 	public void getHighScore() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("gethighscore:" + username + ":server% ");
+		bw.write("gethighscores:" + username + ":server% ");
 		bw.newLine();
 		bw.flush();
 	}
-	
+
 	public void getOnlinePlayers() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("getonlineplayers:" + username + ":server% ");
@@ -186,34 +179,25 @@ public class Client extends Player{
 		bw.write("close:" + username + ":" + "server" + "%close");
 		bw.newLine();
 		bw.flush();
-		
+
 	}
 
 	// sends a chat message
-	public void sendMessage(String s) throws IOException{
-		if(s.contains(":")){
-		String[] t = s.split(":");
-		String someone = t[0];
-		String mes = t[1];
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bw.write("message:" + username + ":" + someone + "%" + mes);
-			bw.newLine();
-			bw.flush();
-		
-		
-		//return true;
-		}
-		else{
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bw.write("allmessage:" + username + ": %" + s);
-			bw.newLine();
-			bw.flush();
-			//return false;
-			
-		}
-		
-		
-		}
-	
+	public void sendMessage(String someone, String mes) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("message:" + username + ":" + someone + "%" + mes);
+		bw.newLine();
+		bw.flush();
+	}
 
+
+	public void sendAllMessage(String mes) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("allmessage:" + username + ": %" + mes);
+		bw.newLine();
+		bw.flush();
+
+
+	}
 }
+

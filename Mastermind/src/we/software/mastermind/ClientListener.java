@@ -142,14 +142,20 @@ public class ClientListener extends Thread {
 						}
 					} else if (inmessage.startsWith("message")) {
 						if (transmitter.equals("Server")) {
-							chatGui.appendToPane("From " + transmitter + ": " + message + "\n", 3);
+							chatGui.appendToPane("From Server : ", 4);
+							chatGui.appendToPane(message+"\n", 0);
 						} else if (transmitter.equals("liveServer")) {
-							chatGui.appendToPane("From Server: " + message + "\n", 4);
+							chatGui.appendToPane("From Server: " , 4);
+							chatGui.appendToPane(message+"\n", 0);
 						} else {
-							chatGui.appendToPane("From " + transmitter + ": " + message + "\n", 2);
-							// "+message);
-							// shows message to user
+							chatGui.appendToPane("From " + transmitter + ": ", 3);
+							chatGui.appendToPane(message+"\n", 0);
 						}
+					
+					} else if (inmessage.startsWith("messageall")) {
+						chatGui.appendToPane("From " + transmitter + " to everyone: ", 7);
+						chatGui.appendToPane(message+"\n", 0);
+						
 					} else if (inmessage.startsWith("score")) {
 						// do the scoreThing and saves progress
 					} else if (inmessage.startsWith("fscore")) {
@@ -167,7 +173,8 @@ public class ClientListener extends Thread {
 							//shows relogin
 						}
 					} else if(inmessage.startsWith("getonlineplayers")){
-						//show players to user	
+						chatGui.appendToPane("Online players: ", 1);
+						chatGui.appendToPane(message+"\n", 0);
 					}
 
 				} catch (ArrayIndexOutOfBoundsException aioe) {
