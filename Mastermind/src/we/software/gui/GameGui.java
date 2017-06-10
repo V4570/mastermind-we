@@ -124,7 +124,7 @@ public class GameGui extends JFrame{
         makeButtonsAvailable();
         numbersPanel.resetRounds();
         turnHistory.resetHistoryPanel();
-
+        notValid = false;
     }
 
     /**
