@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 /**
  * Created by Bill on 06-Apr-17.
@@ -32,6 +33,7 @@ public class GameGui extends JFrame{
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
+    Timer timer;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
@@ -466,7 +468,8 @@ public class GameGui extends JFrame{
                 }
 
                 if(!notValid && turn <= 10){
-
+                	
+                	if(gameMode==0){
                     for(int i=0; i<turnGuess.length; i++){
 
                         turnHistory.addToRounds(turnGuess[i]);
@@ -489,10 +492,63 @@ public class GameGui extends JFrame{
                     	chatGui.appendToPane("System: ", 2);
                     	chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu.\n", 0);
                     	makeButtonsUnavailable();
+                    	chatGui.appendToPane("Game will exit in", 9);
+                    	new SimpleTimer(5).run();
+                    
+						
                     }else{
 
                     turn += 1;
                     numbersPanel.changeRound();}
+                }
+                	else{
+                    	if(client.isCodeMaker()){
+                    		try {
+    							client.sendGameCheck();
+    						} catch (IOException e1) {
+    							System.out.println("game check couldn t send");;
+    						}
+                    		
+                    		selectionBtn1.setUncolored();
+                            selectionBtn2.setUncolored();
+                            selectionBtn3.setUncolored();
+                            selectionBtn4.setUncolored();
+                            turnHistory.repaint();
+                            makeButtonsUnavailable();
+                            
+                            
+                    	}else{
+                    		for(int i=0; i<turnGuess.length; i++){
+
+                                turnHistory.addToRounds(turnGuess[i]);
+                                turnGuess[i] = 0;
+                            }
+                    		selectionBtn1.setUncolored();
+                            selectionBtn2.setUncolored();
+                            selectionBtn3.setUncolored();
+                            selectionBtn4.setUncolored();
+                            turnHistory.repaint();
+                    	}
+                    	if(game.checkIfWin() || turn==10){
+                    		game.addCurrentGame();
+                    		game.getP1().setTotalScore(game.getP1().getTotalScore()+game.getGameScore());
+                    		chatGui.appendToPane("Mastermind:", 5);
+                    		chatGui.appendToPane("Your ",6);
+                    		chatGui.appendToPane("score ",7);
+                    		chatGui.appendToPane("is: ",2);
+                    		chatGui.appendToPane(""+game.getGameScore(),1);
+                    		chatGui.appendToPane(" !\n", 0);
+                    		makeButtonsUnavailable();
+                    		if(game.getCurrentGame()<=4){
+                    		chatGui.appendToPane("Game will change in", 9);
+                        	new SimpleTimer(5).run();
+                    		}
+                    		else{
+                    			chatGui.appendToPane("Game will exit in", 9);
+                            	new SimpleTimer(5).run();
+                    		}
+                    	}
+                    }
                 }
 
                 notValid = false;
@@ -770,4 +826,61 @@ public class GameGui extends JFrame{
             chatGui.chatInput.setText("");
     	}
     }
+    
+    public class SimpleTimer implements Runnable{
+    	
+    	int count;
+    	public SimpleTimer(int count){
+    		this.count = count;
+    		
+    	}
+    	
+    	public void run(){
+    		chatGui.appendToPane(" "+count, 9);
+    		TimeClass tc = new TimeClass(count);
+    		timer = new Timer(1000, tc);
+    		timer.start();
+    		
+    		
+    	}
+    }
+    
+    public class TimeClass implements ActionListener{
+		int counter;
+		
+		public TimeClass(int counter){
+			this.counter = counter;
+			
+			
+		}
+		
+		public void actionPerformed(ActionEvent tc){
+			counter--;
+			if(counter >= 1){
+				chatGui.appendToPane(" "+counter, 9);
+			}else{
+				chatGui.appendToPane("\n", 9);
+				timer.stop();
+				if(gameMode==0){
+				dispose();
+				previous.setFrameVisible(GameGui.this);
+				}
+				else{
+					GameGui.this.clearGame();
+					game.clearGame();
+					if(game.getCurrentGame()<=4){
+					if(client.isCodeMaker()){
+						client.setCodeMaker(false);
+					}else{
+						client.setCodeMaker(true);
+					}
+					}else{
+						dispose();
+						previous.setFrameVisible(GameGui.this);
+					}
+				}
+			}
+			
+		}
+	}
 }

@@ -23,12 +23,26 @@ public class Game {
 		this.currentRound = 0;
 		this.p1 = c;
 		this.gameScore = 0;
+		this.currentGame =0;
 		c.setEnemy(new Player());
 		p2  = c.getEnemy();
 		p2.setName(enemyName);
 		c.setCodeMaker(isClientCodeMaker);
 	}
 	
+	
+	public int getCurrentGame() {
+		return currentGame;
+	}
+
+	public void addCurrentGame() {
+		this.currentGame++;
+	}
+
+	public void clearGame(){
+		p1.restoreGuessToDefault();
+		p2.restoreGuessToDefault();
+	}
 
 	public Player getP1() {
 		return p1;

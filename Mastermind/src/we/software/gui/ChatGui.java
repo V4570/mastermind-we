@@ -183,6 +183,15 @@ public class ChatGui extends JPanel{
             StyleConstants.setForeground(style, Color.GRAY);
             break;
         }
+        case 9:{
+        	StyleConstants.setBold(style, false);
+            StyleConstants.setUnderline(style, false);
+            StyleConstants.setFontSize(style, 15);
+            StyleConstants.setFontFamily(style, Font.DIALOG);
+            StyleConstants.setItalic(style, true);
+            StyleConstants.setForeground(style, Color.LIGHT_GRAY);
+            break;
+        }
         }
         
         

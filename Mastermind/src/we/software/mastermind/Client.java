@@ -137,7 +137,7 @@ public class Client extends Player {
 		bw.flush();
 	}
 
-	public void sendGameCheck(int position, int color) throws IOException {
+	public void sendGameCheck() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playcheck:" + username + ":" + enemy.getName() + "%ok");
 		bw.newLine();
@@ -148,7 +148,7 @@ public class Client extends Player {
 	public void sendGameRoundResult(ArrayList<Integer> result) throws IOException {
 		String m = "";
 		for (int i : result) {
-			m = m + " " + i;
+			m += " " + i;
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playresult:" + username + ":" + enemy.getName() + "%" + m);
