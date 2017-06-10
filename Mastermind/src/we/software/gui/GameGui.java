@@ -119,6 +119,14 @@ public class GameGui extends JFrame{
         
     }
 
+    public void clearGame(){
+
+        makeButtonsAvailable();
+        numbersPanel.resetRounds();
+        turnHistory.resetHistoryPanel();
+
+    }
+
     /**
      * In this method all buttons of the frame are initialized.
      * ~Great functionality comes with great responsibility.~
@@ -180,6 +188,14 @@ public class GameGui extends JFrame{
     	checkBtn.setEnabled(false);
     }
 
+    private void makeButtonsAvailable(){
+        selectionBtn1.setEnabled(true);
+        selectionBtn2.setEnabled(true);
+        selectionBtn3.setEnabled(true);
+        selectionBtn4.setEnabled(true);
+        checkBtn.setEnabled(true);
+    }
+
     /**
      * This panel shows up next to 'TURN' and displays the current turn.
      */
@@ -207,6 +223,10 @@ public class GameGui extends JFrame{
             if(round > 10) round = 10;
             setBounds(240, 381, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
             repaint();
+        }
+
+        public void resetRounds(){
+            round = 1;
         }
     }
 
@@ -387,6 +407,11 @@ public class GameGui extends JFrame{
             }
         }
 
+        public void resetHistoryPanel(){
+
+            rounds.clear();
+            clues.clear();
+        }
     }
 
     class ButtonListener implements ActionListener{
