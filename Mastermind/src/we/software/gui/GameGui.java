@@ -33,7 +33,7 @@ public class GameGui extends JFrame{
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
-    private Timer timer;
+    Timer timer;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
@@ -103,7 +103,7 @@ public class GameGui extends JFrame{
             client = new Client();
             try {
                 client.startListening(chatGui);
-                client.logMeIn("test1", "test1");
+                client.logMeIn("test0", "test0");
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -692,8 +692,7 @@ public class GameGui extends JFrame{
                 }
             }
             else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
-                chatGui.addCommandToList(chatGui.chatInput.getText());
-            	try{
+                try{
                 	if(!client.equals(null)){ 	
                 	
                     chatHandler((chatGui.chatInput.getText()));
@@ -721,8 +720,8 @@ public class GameGui extends JFrame{
         }
     }
     private void chatHandler(String chatmsg) throws IOException{
-    	if(chatmsg.split(":")[0].equals("pm")){
-    		String[] msg = chatmsg.split(":",3);
+    	if(chatmsg.startsWith("pm")){
+    		String[] msg = chatGui.chatInput.getText().split(":",3);
     		if(msg.length<3){
     			chatGui.appendToPane("System: ", 2);
                 chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
@@ -735,8 +734,8 @@ public class GameGui extends JFrame{
     			chatGui.chatInput.setText("");
     		}
     	}
-    	else if(chatmsg.split(":")[0].equals("all")){
-    		String[] msg = chatmsg.split(":",2);
+    	else if(chatmsg.startsWith("all")){
+    		String[] msg = chatGui.chatInput.getText().split(":",2);
     		client.sendAllMessage(msg[1]);
 			chatGui.appendToPane("To everyone: ", 1);
 			chatGui.appendToPane(msg[1]+"\n", 0);
@@ -753,11 +752,10 @@ public class GameGui extends JFrame{
 			chatGui.appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
 			chatGui.chatInput.setText("");
     	}
-    	else if(chatmsg.split(":")[0].equals("invite")){
-    		String[] msg = chatmsg.split(":",3);
+    	else if(chatmsg.startsWith("invite")){
+    		String[] msg = chatGui.chatInput.getText().split(":",2);
     		if(msg.length==2){
     			client.sendGameRequest(msg[1]);
-    			chatGui.appendToPane("A game request has been sent to "+msg[1]+".\n", 0);
     			chatGui.chatInput.setText("");
     		}
     		else if(msg.length==3){
@@ -765,12 +763,6 @@ public class GameGui extends JFrame{
     				if(client.getPending().contains(msg[2])){
     				client.acceptGameRequest(msg[2]);
     				chatGui.chatInput.setText("");
-    				chatGui.appendToPane("You accepted a game invitation.\n", 0);
-    				//starts a new gameGui
-    				//client.setInGame(true);
-    				//client.setCodeMaker(true);
-    				chatGui.appendToPane("System: ", 2);
-	                chatGui.appendToPane("You can start making your code.\n", 0);
     				}else{
     					chatGui.appendToPane("System: ", 2);
     	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
@@ -779,7 +771,6 @@ public class GameGui extends JFrame{
     			}else if(msg[1].equals("decline")){
     				if(client.getPending().contains(msg[2])){
     				client.rejectGameRequest(msg[2]);
-    				chatGui.appendToPane("You rejected a game invitation.\n", 0);
     				chatGui.chatInput.setText("");
     				client.clearPending();
     				}else{
@@ -788,11 +779,6 @@ public class GameGui extends JFrame{
     	                chatGui.chatInput.setText("");
     	                client.clearPending();
     				}
-    			}
-    			else{
-    				chatGui.appendToPane("System: ", 2);
-    	            chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
-    	            chatGui.chatInput.setText("");
     			}
     		}
     	}
