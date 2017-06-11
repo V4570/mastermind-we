@@ -22,7 +22,7 @@ public class Game {
 	}
 
 	public Game() { // PvP / PvE selection
-		this.currentRound = 1;
+		this.currentRound = 0;
 		this.gameScore = 0;
 		this.currentGame = 0;
 
@@ -68,7 +68,7 @@ public class Game {
 		p1.restoreCodeToDefault();
 		p2.restoreCodeToDefault();
 		gameScore = 0;
-		currentRound = 1;
+		currentRound = 0;
 	}
 
 	public Player getP1() {
