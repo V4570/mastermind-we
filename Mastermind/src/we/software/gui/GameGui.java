@@ -21,8 +21,8 @@ import javax.swing.Timer;
 public class GameGui extends JFrame{
 
     private MainMenu previous;
-    private final int WIDTH = 1024;
-    private final int HEIGHT = WIDTH / 12*9;
+    private final int WIDTH = 1280;
+    private final int HEIGHT = WIDTH / 16*9;
     private ButtonListener btnListener = new ButtonListener();
     private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
@@ -68,7 +68,7 @@ public class GameGui extends JFrame{
 
         try {
             setIconImage(ImageIO.read(LoadAssets.load("master.png")));
-            setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("GameGui.png")))));
+            setContentPane(new JLabel(new ImageIcon(ImageIO.read(LoadAssets.load("GameGuiv2.png")))));
         }
         catch (IOException exc) {
             exc.printStackTrace();
@@ -78,7 +78,6 @@ public class GameGui extends JFrame{
         numbersPanel = new NumbersPanel();
 
         add(exitButton);
-        add(optionsButton);
         add(backButton);
         add(sendButton);
         add(selectionBtn1);
@@ -135,49 +134,46 @@ public class GameGui extends JFrame{
      */
     private void setUpButtons(){
 
-        exitButton = new MenuButton("exit.png", 1001, 5, 0, 0);
+        exitButton = new MenuButton("exitv2.png", 1240, 5, 0, 0);
         exitButton.addActionListener(btnListener);
 
-        optionsButton = new MenuButton("ingameoptions.png", 885, 210, 0, 0);
-        optionsButton.addActionListener(btnListener);
-
-        backButton = new MenuButton("backtomenu.png", 947, 210, 0, 0);
+        backButton = new MenuButton("backtomenuv2.png", 969, 660, 0, 0);
         backButton.addActionListener(btnListener);
 
         sendButton = new MenuButton("send.png", 635, 722, 0, 0);
         sendButton.addActionListener(btnListener);
 
-        selectionBtn1 = new SelectionButton("glassButton.png", 263, 450);
+        selectionBtn1 = new SelectionButton("glassButton.png", 300, 350);
         selectionBtn1.addActionListener(btnListener);
 
-        selectionBtn2 = new SelectionButton("glassButton.png", 387, 450);
+        selectionBtn2 = new SelectionButton("glassButton.png", 400, 350);
         selectionBtn2.addActionListener(btnListener);
 
-        selectionBtn3 = new SelectionButton("glassButton.png", 510, 450);
+        selectionBtn3 = new SelectionButton("glassButton.png", 500, 350);
         selectionBtn3.addActionListener(btnListener);
 
-        selectionBtn4 = new SelectionButton("glassButton.png", 635, 450);
+        selectionBtn4 = new SelectionButton("glassButton.png", 600, 350);
         selectionBtn4.addActionListener(btnListener);
 
-        checkBtn = new SelectionButton("CheckButton.png", 15, 450);
+        checkBtn = new SelectionButton("CheckButton.png", 700, 380);
         checkBtn.addActionListener(btnListener);
 
-        redBtn = new SelectionButton("redbtn.png", 330, 365);
+        redBtn = new SelectionButton("redbtn.png", 300, 193);
         redBtn.addActionListener(btnListener);
 
-        greenBtn = new SelectionButton("greenbtn.png", 392, 365);
+        greenBtn = new SelectionButton("greenbtn.png", 400, 193);
         greenBtn.addActionListener(btnListener);
 
-        blueBtn = new SelectionButton("bluebtn.png", 456, 365);
+        blueBtn = new SelectionButton("bluebtn.png", 500, 193);
         blueBtn.addActionListener(btnListener);
 
-        yellowBtn = new SelectionButton("yellowbtn.png", 520, 365);
+        yellowBtn = new SelectionButton("yellowbtn.png", 600, 193);
         yellowBtn.addActionListener(btnListener);
 
-        whiteBtn = new SelectionButton("whitebtn.png", 581, 365);
+        whiteBtn = new SelectionButton("whitebtn.png", 700, 193);
         whiteBtn.addActionListener(btnListener);
 
-        blackBtn = new SelectionButton("blackbtn.png", 632, 365);
+        blackBtn = new SelectionButton("blackbtn.png", 800, 193);
         blackBtn.addActionListener(btnListener);
         
     }
@@ -210,7 +206,7 @@ public class GameGui extends JFrame{
 
             numbers = (ArrayList<BufferedImage>) PreloadImages.getNumbers().clone();
 
-            setBounds(240, 381, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
+            setBounds(850, 615, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
             setOpaque(false);
         }
 
@@ -223,7 +219,7 @@ public class GameGui extends JFrame{
 
             round++;
             if(round > 10) round = 10;
-            setBounds(240, 381, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
+            setBounds(850, 615, numbers.get(round-1).getWidth(), numbers.get(round-1).getHeight());
             repaint();
         }
 
@@ -254,7 +250,7 @@ public class GameGui extends JFrame{
 
             pegs =(ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
 
-            setBounds(785, 116, 250, 684);
+            setBounds(969, 35, 290, 538);
             setOpaque(false);
 
         }
@@ -287,11 +283,11 @@ public class GameGui extends JFrame{
             int counter = 0;        //Counts peg. Resets when it hits 4.
             int evalCounter = 0;    //Counts clues. Resets when it hits 4.
 
-            int round_X = 50;       //Represents the width value for the colors. Updates up to 4 colors then resets.
-            int round_Y = 575;
+            int round_X = 34;       //Represents the width value for the colors. Updates up to 4 colors then resets.
+            int round_Y = 480;
 
-            int eval_X = 175;       //Represents the width value for the clues. Updates up to 2 and then resets.
-            int eval_Y = 569;
+            int eval_X = 228;       //Represents the width value for the clues. Updates up to 2 and then resets.
+            int eval_Y = 478;
 
             int hs_X = 32;
             int hs_Y = 16;
@@ -299,13 +295,13 @@ public class GameGui extends JFrame{
             for(BufferedImage img : rounds){
 
                 if(counter > 3){        //Resets round_X to start of line, moves one line up and resets the counter.
-                    round_Y -= 38;
-                    round_X = 50;
+                    round_Y -= 50;
+                    round_X = 34;
                     counter = 0;
                 }
 
                 g.drawImage(img, round_X, round_Y, null);
-                round_X += 31;
+                round_X += 48;
                 counter ++;
             }
 
@@ -314,29 +310,29 @@ public class GameGui extends JFrame{
                 //if(img == null) continue;
 
                 if(evalCounter > 3){
-                    eval_X = 175;
-                    eval_Y -= 38;
+                    eval_X = 228;
+                    eval_Y -= 50;
                     evalCounter = 0;
                 }
                 if(evalCounter == 2){
-                    g.drawImage(img, 175, eval_Y +13, null);
+                    g.drawImage(img, 228, eval_Y + 17, null);
                 }
                 else if(evalCounter == 3){
-                    g.drawImage(img, 175+19, eval_Y + 13, null);
+                    g.drawImage(img, 228+18, eval_Y + 17, null);
                 }
                 else g.drawImage(img, eval_X, eval_Y, null);
 
                 evalCounter++;
-                eval_X += 19;
+                eval_X += 18;
             }
 
-            g.setColor(Color.white);
+            /*g.setColor(Color.white);
             g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
             for(HighScore hs: highScores){
 
                 g.drawString(hs.getName()+": "+Integer.toString(hs.getScore())+" pts.", hs_X, hs_Y);
                 hs_Y += 23;
-            }
+            }*/
         }
 
 
@@ -370,41 +366,15 @@ public class GameGui extends JFrame{
         int jj = 0;
         public void addToClues(int clue){
 
-            if(jj == 4) jj = 0;
             switch(clue){
                 case 0:
                     clues.add(null);
-                    jj++;
                     break;
                 case 1:
-                    if(jj == 0){
-                        clues.add(pegs.get(6));
-                    }
-                    else if(jj == 1){
-                        clues.add(pegs.get(10));
-                    }
-                    else if(jj == 2){
-                        clues.add(pegs.get(8));
-                    }
-                    else{
-                        clues.add(pegs.get(12));
-                    }
-                    jj++;
+                    clues.add(pegs.get(6));
                     break;
                 case 2:
-                    if(jj == 0){
-                        clues.add(pegs.get(7));
-                    }
-                    else if(jj == 1){
-                        clues.add(pegs.get(11));
-                    }
-                    else if(jj == 2){
-                        clues.add(pegs.get(9));
-                    }
-                    else{
-                        clues.add(pegs.get(13));
-                    }
-                    jj++;
+                    clues.add(pegs.get(7));
                     break;
             }
         }

@@ -37,7 +37,7 @@ public class ChatGui extends JPanel{
 
 	public ChatGui() {
 
-        setBounds(1, 641, 623, 125);
+        setBounds(1, 595, 640, 125);
         //setOpaque(false);
         setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);

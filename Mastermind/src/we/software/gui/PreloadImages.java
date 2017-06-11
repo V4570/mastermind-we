@@ -12,14 +12,12 @@ import java.util.ArrayList;
  * glassRed, glassGreen, etc. are the colored versions of the standard glass image that is used for the guess.
  * glowRed, glowGreen, etc. are the highlighted versions of the above images.
  * whitePeg, blackPeg, etc. are the images used in the history panel for each turn guess.
- * wclueLU, wclueLD, etc. are the clue images for each turn. LU(left up), LD(left down), RU,RD accordingly.
  */
 public class PreloadImages {
 
     private static ImageIcon glassRed, glassGreen, glassBlue, glassYellow, glassWhite, glassBlack;
     private static ImageIcon glowRed, glowGreen, glowBlue, glowYellow, glowWhite, glowBlack;
-    private static BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, wclueLU, wclueLD, wclueRU, wclueRD,
-            bclueLU, bclueLD, bclueRU, bclueRD;
+    private static BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, whiteClue, redClue;
 
     private static ArrayList<ImageIcon> glasses = new ArrayList();
     private static ArrayList<BufferedImage> numbers = new ArrayList();
@@ -81,35 +79,23 @@ public class PreloadImages {
 
         try {
 
-            redPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/red.png"));
+            redPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/redv2.png"));
             pegs.add(redPeg);
-            greenPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/green.png"));
+            greenPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/greenv2.png"));
             pegs.add(greenPeg);
-            bluePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/blue.png"));
+            bluePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bluev2.png"));
             pegs.add(bluePeg);
-            yellowPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/yellow.png"));
+            yellowPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/yellowv2.png"));
             pegs.add(yellowPeg);
-            whitePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/white.png"));
+            whitePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/whitev2.png"));
             pegs.add(whitePeg);
-            blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/black.png"));
+            blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/magentav2.png"));
             pegs.add(blackPeg);
 
-            wclueLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftup.png"));
-            pegs.add(wclueLU);
-            bclueLU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftup.png"));
-            pegs.add(bclueLU);
-            wclueLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkleftdown.png"));
-            pegs.add(wclueLD);
-            bclueLD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckleftdown.png"));
-            pegs.add(bclueLD);
-            wclueRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightup.png"));
-            pegs.add(wclueRU);
-            bclueRU = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightup.png"));
-            pegs.add(bclueRU);
-            wclueRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/checkrightdown.png"));
-            pegs.add(wclueRD);
-            bclueRD = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bcheckrightdown.png"));
-            pegs.add(bclueRD);
+            whiteClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueWhite.png"));
+            pegs.add(whiteClue);
+            redClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueRed.png"));
+            pegs.add(redClue);
 
         } catch (IOException e) {
             e.printStackTrace();
