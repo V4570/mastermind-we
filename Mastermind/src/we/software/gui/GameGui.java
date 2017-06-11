@@ -140,6 +140,7 @@ public class GameGui extends JFrame{
         numbersPanel.resetRounds();
         turnHistory.resetHistoryPanel();
         notValid = false;
+        turn=1;
         repaint();
     }
 
