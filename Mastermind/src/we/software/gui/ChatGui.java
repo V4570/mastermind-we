@@ -91,29 +91,7 @@ public class ChatGui extends JPanel{
         add(chatInput, c);
         KeyBindings(this);
 
-        chatInput.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e){
-
-                if(!(chatInput.getText().equals("") || chatInput.getText().equals(" "))) {
-                    try {
-                        if (!client.equals(null)) {
-
-                            chatHandler((chatInput.getText()));
-                        } else {
-                            appendToPane("System: ", 2);
-                            appendToPane("You are not connected to the server.\n", 0);
-                            chatInput.setText("");
-                        }
-                    } catch (Exception e1) {
-                        appendToPane("System: ", 2);
-                        appendToPane("You are not connected to the server.\n", 0);
-                        chatInput.setText("");
-                    }
-                }
-            }
-        });
+        
 	}
 
 	public void setBoundsForMainMenu(){
@@ -153,6 +131,30 @@ public class ChatGui extends JPanel{
 					chatInput.setText("");
 				}
 			}
+		});
+		
+		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "enterPressed");
+		panel.getActionMap().put("enterPressed", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if(!(chatInput.getText().equals("") || chatInput.getText().equals(" "))) {
+					addCommandToList(chatInput.getText());
+                    try {
+                        if (!client.equals(null)) {
+
+                            chatHandler((chatInput.getText()));
+                        } else {
+                            appendToPane("System: ", 2);
+                            appendToPane("You are not connected to the server.\n", 0);
+                            chatInput.setText("");
+                        }
+                    } catch (Exception e1) {
+                        appendToPane("System: ", 2);
+                        appendToPane("You are not connected to the server.\n", 0);
+                        chatInput.setText("");
+                    }
+                }
+            }
+			
 		});
     }
 	
