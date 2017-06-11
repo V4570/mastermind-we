@@ -37,23 +37,16 @@ public class MainMenu extends JFrame {
 
 
 	public MainMenu() {
-		
-		/*player = new Client();
-		
-		try {
-			player.startListening(this);
-		} catch (IOException e1) {
-			System.out.println("Tsekare Server...");
-		}*/
-		
+			
         try {
         	client = new Client();
-            client.logMeIn("test0", "test0");
+            client.logMeIn("test1", "test1");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-		
+		client.getcListener().setMainMenu(this);
+        
 		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
@@ -62,6 +55,7 @@ public class MainMenu extends JFrame {
 		chatGui.setBoundsForMainMenu();
 		client.getcListener().setChatGui(chatGui);
 		chatGui.setClient(client);
+		chatGui.setMainMenu(this);
 
 		howToPlay = addMenuButton("howtoplayv2.png");
 		play = addMenuButton("playv2.png");
