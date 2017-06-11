@@ -33,7 +33,7 @@ public class MainMenu extends JFrame {
 	private GameGui previous = null;
 	private boolean modeSelected = false;
 	private MenuButton selected = null;
-	private ChatGui chatGui;
+	//private ChatGui chatGui;
 
 
 	public MainMenu() {
@@ -50,7 +50,7 @@ public class MainMenu extends JFrame {
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
 		howToPlayPanel = new HowToPlay();
-		chatGui = new ChatGui();
+		//chatGui = new ChatGui();
 
 		howToPlay = addMenuButton("howtoplayv2.png");
 		play = addMenuButton("playv2.png");
@@ -96,6 +96,7 @@ public class MainMenu extends JFrame {
 		add(optionsPanel);
 		add(exitButton);
 		add(minimizeButton);
+		//add(chatGui);
 
 		setTitle("Mastermind WE - Pre Alpha 0.0.1");
 		setUndecorated(true);
@@ -430,7 +431,7 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					gameModePanel.pVsP.playSound();
 
-				GameGui gameGui = new GameGui(MainMenu.this, 1, chatGui);
+				GameGui gameGui = new GameGui(MainMenu.this, 1);//, chatGui);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
@@ -447,7 +448,7 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
 
-				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
+				GameGui gameGui = new GameGui(MainMenu.this, 0);//, chatGui);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
