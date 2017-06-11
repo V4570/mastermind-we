@@ -41,7 +41,7 @@ public class GameGui extends JFrame{
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
     private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
     
-    public GameGui(MainMenu previous, int gM){
+    public GameGui(MainMenu previous, int gM, ChatGui chat){
     	// edw tha prepei na dimiourgritai ena instance Game
 
         this.gameMode = gM;
@@ -49,7 +49,7 @@ public class GameGui extends JFrame{
         	this.game = new Game(0);
         }
 
-        chatGui = new ChatGui();
+        chatGui = chat;
 
         this.previous = previous;
         setUpButtons();
