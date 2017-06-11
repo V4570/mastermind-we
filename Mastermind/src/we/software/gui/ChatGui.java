@@ -28,6 +28,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import we.software.mastermind.Client;
+
 public class ChatGui extends JPanel{
 
 	public JTextField chatInput;
@@ -38,6 +40,7 @@ public class ChatGui extends JPanel{
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
 	private ArrayList<String> commands = new ArrayList<String>();
 	private int previousCommand=-1;
+	private Client client;
 
 	public ChatGui() {
 
@@ -120,6 +123,10 @@ public class ChatGui extends JPanel{
     public void setBoundsForGameGui(){
         setBounds(1, 595, 640, 125);
     }
+
+	public void setClient(Client client){
+		this.client = client;
+	}
 
 	private void KeyBindings(JPanel panel) {
 		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "upPressed");
@@ -273,7 +280,7 @@ public class ChatGui extends JPanel{
                 chatInput.setText("");
             }
             else{
-                GameGui.client.sendMessage(msg[1],msg[2]);
+                client.sendMessage(msg[1],msg[2]);
                 appendToPane("To "+msg[1]+": ", 1);
                 appendToPane(msg[2]+"\n", 0);
                 chatInput.setText("");
@@ -281,7 +288,7 @@ public class ChatGui extends JPanel{
         }
         else if(chatmsg.startsWith("all")){
             String[] msg = chatInput.getText().split(":",2);
-            GameGui.client.sendAllMessage(msg[1]);
+            client.sendAllMessage(msg[1]);
             appendToPane("To everyone: ", 1);
             appendToPane(msg[1]+"\n", 0);
             chatInput.setText("");
@@ -300,13 +307,13 @@ public class ChatGui extends JPanel{
         else if(chatmsg.startsWith("invite")){
             String[] msg = chatInput.getText().split(":",2);
             if(msg.length==2){
-                GameGui.client.sendGameRequest(msg[1]);
+                client.sendGameRequest(msg[1]);
                 chatInput.setText("");
             }
             else if(msg.length==3){
                 if(msg[1].equals("accept")){
-                    if(GameGui.client.getPending().contains(msg[2])){
-                        GameGui.client.acceptGameRequest(msg[2]);
+                    if(client.getPending().contains(msg[2])){
+                        client.acceptGameRequest(msg[2]);
                         chatInput.setText("");
                     }else{
                         appendToPane("System: ", 2);
@@ -314,25 +321,25 @@ public class ChatGui extends JPanel{
                         chatInput.setText("");
                     }
                 }else if(msg[1].equals("decline")){
-                    if(GameGui.client.getPending().contains(msg[2])){
-                        GameGui.client.rejectGameRequest(msg[2]);
+                    if(client.getPending().contains(msg[2])){
+                        client.rejectGameRequest(msg[2]);
                         chatInput.setText("");
-                        GameGui.client.clearPending();
+                        client.clearPending();
                     }else{
                         appendToPane("System: ", 2);
                         appendToPane("There is no invitation from this player.\n", 0);
                         chatInput.setText("");
-                        GameGui.client.clearPending();
+                        client.clearPending();
                     }
                 }
             }
         }
         else if(chatmsg.equals("users")){
-            GameGui.client.getOnlinePlayers();
+            client.getOnlinePlayers();
             chatInput.setText("");
         }
         else if(chatmsg.equals("highscores")){
-            GameGui.client.getHighScore();
+            client.getHighScore();
             chatInput.setText("");
         }
         else{
