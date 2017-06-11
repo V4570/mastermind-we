@@ -80,8 +80,15 @@ public class ClientListener extends Thread {
 							client.setEnemy(new Player());
 							client.getEnemy().setName(transmitter);
 							game.setP2(client.getEnemy());
+							chatGui.appendToPane(transmitter+" accepted game invitation.\n", 1);
+							client.setInGame(true);
+							client.setCodeMaker(false);
+							gameGui.makeButtonsUnavailable();
+							chatGui.appendToPane(transmitter+": ", 1);
+	                    	chatGui.appendToPane("I'm setting my code!\n", 0);
 							// accepted and game starts
 						} else if (message.equals("not")) {
+							chatGui.appendToPane(transmitter+" rejected game invitation.\n", 1);
 							// rejected
 						}
 					} else if (inmessage.startsWith("playpin")) {
@@ -89,21 +96,25 @@ public class ClientListener extends Thread {
 						int color = Integer.parseInt(message.split(" ")[1]);
 						switch (pos) {
 						case 0: {
+							game.getP2().addPin(0, color);
 							gameGui.selectionBtn1.setColored(color-1);
 							gameGui.selectionBtn1.setUnselected();
 							break;
 						}
 						case 1: {
+							game.getP2().addPin(1, color);
 							gameGui.selectionBtn2.setColored(color-1);
 							gameGui.selectionBtn2.setUnselected();
 							break;
 						}
 						case 2: {
+							game.getP2().addPin(2, color);
 							gameGui.selectionBtn3.setColored(color-1);
 							gameGui.selectionBtn3.setUnselected();
 							break;
 						}
 						case 3: {
+							game.getP2().addPin(3, color);
 							gameGui.selectionBtn3.setColored(color-1);
 							gameGui.selectionBtn3.setUnselected();
 							break;
@@ -112,6 +123,7 @@ public class ClientListener extends Thread {
 
 					} else if (inmessage.startsWith("playcheck")) {
 						
+						if(client.isCodeMaker()){
 							for (int i = 0; i < game.getP2().getCode().size(); i++) {
 								gameGui.turnHistory.addToRounds(game.getP2().getCode().get(i));
 
@@ -119,6 +131,7 @@ public class ClientListener extends Thread {
 							for(Integer i : game.checkGuess()){
 		                        gameGui.turnHistory.addToClues(i);
 		                    }
+							client.sendGameRoundResult(game.checkGuess());
 							gameGui.selectionBtn1.setUncolored();
 							gameGui.selectionBtn2.setUncolored();
 							gameGui.selectionBtn3.setUncolored();
@@ -126,22 +139,27 @@ public class ClientListener extends Thread {
 							gameGui.turnHistory.repaint();
 							 if(game.checkIfWin() || gameGui.getTurn()==10){
 			                    	chatGui.appendToPane("Mastermind:", 2);
-			                    	chatGui.appendToPane(client.getEnemy().getName()+"'s score is: "+game.getGameScore()+" !\n", 5);
-			                    	//chatGui.appendToPane("System: ", 2);
-			                    	//chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu", 3);
+			                    	chatGui.appendToPane(client.getEnemy().getName()+"'s score is: "+game.getGameScore()+" !\n", 0);
+			                    	
 			                    }else{
 
 			                    gameGui.addTurn();
 			                    gameGui.numbersPanel.changeRound();
 			                    }
+						}else{
+							//gameGui.makeButtonsAvailable();
+							chatGui.appendToPane(transmitter+": ", 1);
+	                    	chatGui.appendToPane("My code is ready. You can start breaking it!\n", 0);
+	                    	gameGui.makeButtonsAvailable();
+						}
 						
 							//game ends
 						
 					} else if (inmessage.startsWith("playresult")) {
-						ArrayList<Integer> res = new ArrayList<Integer>();
-						for(String i : message.split(" ")){
-							res.add(Integer.parseInt(i));
+						for(String val : message.split(" ")){
+							gameGui.turnHistory.addToClues(Integer.parseInt(val));
 						}
+						gameGui.turnHistory.repaint();
 					} else if (inmessage.startsWith("message")) {
 						if (transmitter.equals("Server")) {
 							chatGui.appendToPane("From Server : ", 4);
@@ -158,9 +176,8 @@ public class ClientListener extends Thread {
 						chatGui.appendToPane("From " + transmitter + " to everyone: ", 7);
 						chatGui.appendToPane(message+"\n", 0);
 						
-					} else if (inmessage.startsWith("score")) {
-						// do the scoreThing and saves progress
 					} else if (inmessage.startsWith("fscore")) {
+						game.getP2().setTotalScore(game.getP2().getTotalScore()+Integer.parseInt(message));
 						// Shows the final score to user
 					} else if (inmessage.startsWith("gethighscores")) {
 						for(String str : message.split(",")){

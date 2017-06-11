@@ -146,10 +146,12 @@ public class Client extends Player {
 
 	// it will change soon
 	public void sendGameRoundResult(ArrayList<Integer> result) throws IOException {
-		String m = "";
-		for (int i : result) {
-			m += " " + i;
+		String[] res= new String[result.size()];
+		for(int i=0;i<result.size();i++){
+			res[i] = Integer.toString(result.get(i));
 		}
+		
+		String m = String.join(" ", res);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playresult:" + username + ":" + enemy.getName() + "%" + m);
 		bw.newLine();

@@ -178,7 +178,7 @@ public class GameGui extends JFrame{
         
     }
     
-    private void makeButtonsUnavailable(){
+    public void makeButtonsUnavailable(){
     	selectionBtn1.setEnabled(false);
     	selectionBtn2.setEnabled(false);
     	selectionBtn3.setEnabled(false);
@@ -186,7 +186,7 @@ public class GameGui extends JFrame{
     	checkBtn.setEnabled(false);
     }
 
-    private void makeButtonsAvailable(){
+    public void makeButtonsAvailable(){
         selectionBtn1.setEnabled(true);
         selectionBtn2.setEnabled(true);
         selectionBtn3.setEnabled(true);
@@ -763,6 +763,11 @@ public class GameGui extends JFrame{
     				if(client.getPending().contains(msg[2])){
     				client.acceptGameRequest(msg[2]);
     				chatGui.chatInput.setText("");
+    				//starts a new game
+    				client.setInGame(true);
+    				client.setCodeMaker(true);
+    				chatGui.appendToPane("System: ", 2);
+	                chatGui.appendToPane("You can start making your code.\n", 0);
     				}else{
     					chatGui.appendToPane("System: ", 2);
     	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
