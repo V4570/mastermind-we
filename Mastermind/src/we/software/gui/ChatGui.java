@@ -335,8 +335,8 @@ public class ChatGui extends JPanel{
         				gameGui.setClient(client);
         				gameGui.getGame().initializeArrays();
         				appendToPane("You accepted a game invitation.\n", 0);
-        				appendToPane("System: ", 2);
-    	                appendToPane("You can start making your code.\n", 0);
+						appendToPane("System: ", 2);
+						appendToPane("You are playing as CodeMaker. You can start making your code.\n", 0);
                         chatInput.setText("");
                     }else{
                         appendToPane("System: ", 2);

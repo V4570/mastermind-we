@@ -90,6 +90,12 @@ public class Player {
     		guess.set(i, 0);
     	}
     }
+    
+    public void restoreCodeToDefault(){
+    	for(int i=0;i<codeToBreak.size();i++){
+    		codeToBreak.set(i, 0);
+    	}
+    }
 
 
     public String getName(){

@@ -129,7 +129,6 @@ public class Client extends Player {
 
 	// it will change soon
 	public void sendGamePin(int position, int color) throws IOException {
-		addPin(position, color);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("playpin:" + username + ":" + enemy.getName() + "%" + position + " " + color);
 		bw.newLine();

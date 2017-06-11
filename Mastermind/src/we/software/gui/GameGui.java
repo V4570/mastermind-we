@@ -138,10 +138,10 @@ public class GameGui extends JFrame{
 
     public void clearGame(){
 
-        makeButtonsAvailable();
         numbersPanel.resetRounds();
         turnHistory.resetHistoryPanel();
         notValid = false;
+        repaint();
     }
 
     /**
@@ -208,7 +208,6 @@ public class GameGui extends JFrame{
         selectionBtn3.setEnabled(true);
         selectionBtn4.setEnabled(true);
         checkBtn.setEnabled(true);
-        repaint();
     }
 
     /**
@@ -462,7 +461,6 @@ public class GameGui extends JFrame{
                         turnHistory.addToRounds(turnGuess[i]);
                         turnGuess[i] = 0;
                     }
-                    //game.setGuess(turnGuess);
 
                     for(Integer i : game.checkGuess()){
                         turnHistory.addToClues(i);
@@ -515,26 +513,14 @@ public class GameGui extends JFrame{
                             selectionBtn3.setUncolored();
                             selectionBtn4.setUncolored();
                             turnHistory.repaint();
-                            
-                            if(game.checkIfWin() || turn==10){
-                        		game.addCurrentGame();
-                        		game.getP1().setTotalScore(game.getP1().getTotalScore()+game.getGameScore());
-                        		chatGui.appendToPane("Mastermind:", 5);
-                        		chatGui.appendToPane("Your ",6);
-                        		chatGui.appendToPane("score ",7);
-                        		chatGui.appendToPane("is: ",2);
-                        		chatGui.appendToPane(""+game.getGameScore(),1);
-                        		chatGui.appendToPane(" !\n", 0);
-                        		makeButtonsUnavailable();
-                        		if(game.getCurrentGame()<=4){
-                        		chatGui.appendToPane("Game will change in", 9);
-                            	new SimpleTimer(5).run();
-                        		}
-                        		else{
-                        			chatGui.appendToPane("Game will exit in", 9);
-                                	new SimpleTimer(5).run();
-                        		}
-                        	}
+                            try {
+								client.sendGameCheck();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+                            game.addCurrentRound();
+                            turn += 1;
+                            numbersPanel.changeRound();
                     	}
                     	
                     }
@@ -556,6 +542,7 @@ public class GameGui extends JFrame{
                     	if(!client.isCodeMaker()){
                     	try {
 							client.sendGamePin(selectedBtn, 1);
+							game.getP1().addPin(selectedBtn, 1);
 						} catch (IOException e1) {
 							System.out.println("Can t send game pin");
 						}
@@ -581,6 +568,7 @@ public class GameGui extends JFrame{
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 2);
+						game.getP1().addPin(selectedBtn, 1);
 					} catch (IOException e1) {
 						System.out.println("Can t send game pin");
 					}
@@ -606,6 +594,7 @@ public class GameGui extends JFrame{
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 3);
+						game.getP1().addPin(selectedBtn, 3);
 					} catch (IOException e1) {
 						System.out.println("Can t send game pin");
 					}
@@ -631,6 +620,7 @@ public class GameGui extends JFrame{
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 4);
+						game.getP1().addPin(selectedBtn, 4);
 					} catch (IOException e1) {
 						System.out.println("Can t send game pin");
 					}
@@ -656,6 +646,7 @@ public class GameGui extends JFrame{
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 5);
+						game.getP1().addPin(selectedBtn, 5);
 					} catch (IOException e1) {
 						System.out.println("Can t send game pin");
 					}
@@ -681,6 +672,7 @@ public class GameGui extends JFrame{
                 	if(!client.isCodeMaker()){
                 	try {
 						client.sendGamePin(selectedBtn, 6);
+						game.getP1().addPin(selectedBtn, 6);
 					} catch (IOException e1) {
 						System.out.println("Can t send game pin");
 					}
