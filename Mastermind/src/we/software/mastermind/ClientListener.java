@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
+import we.software.gui.GameGui.SimpleTimer;
 
 public class ClientListener extends Thread {
 	// private static final java.awt.Color Color.AQUA = null;
@@ -75,8 +76,11 @@ public class ClientListener extends Thread {
 							} else {
 								client.rejectGameRequest(transmitter);
 							}
-						} else if (message.equals("ok")) {
-							
+						} else if(message.equals("ingame")){
+							chatGui.appendToPane(transmitter+" is in game.\n", 1);
+						}
+						else if (message.equals("ok")) {
+						
 							client.setEnemy(new Player());
 							client.getEnemy().setName(transmitter);
 							game.setP2(client.getEnemy());
@@ -172,7 +176,7 @@ public class ClientListener extends Thread {
 							chatGui.appendToPane(message+"\n", 0);
 						}
 					
-					} else if (inmessage.startsWith("messageall")) {
+					} else if (inmessage.startsWith("allmessage")) {
 						chatGui.appendToPane("From " + transmitter + " to everyone: ", 7);
 						chatGui.appendToPane(message+"\n", 0);
 						

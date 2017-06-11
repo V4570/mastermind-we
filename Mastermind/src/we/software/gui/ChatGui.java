@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -34,6 +35,8 @@ public class ChatGui extends JPanel{
 	public boolean chatRunning = false;
 	//private KeyInput kp;
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+	private ArrayList<String> commands = new ArrayList<String>();
+	private int previousCommand=-1;
 
 	public ChatGui() {
 
@@ -90,10 +93,37 @@ public class ChatGui extends JPanel{
 		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "upPressed");
 		panel.getActionMap().put("upPressed", new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				appendToPane("skata",1);
+				if(previousCommand>0){
+					previousCommand--;
+					chatInput.setText(commands.get(previousCommand));
+					
+				}else if(previousCommand==0){
+					chatInput.setText(commands.get(previousCommand));
+				}
+			}
+		});
+		
+		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "downPressed");
+		panel.getActionMap().put("downPressed", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				if(previousCommand<commands.size()-1){
+					previousCommand++;
+					chatInput.setText(commands.get(previousCommand));
+					
+				}else if(previousCommand==commands.size()-1){
+					chatInput.setText("");
+				}
 			}
 		});
     }
+	
+	public void addCommandToList(String command){
+		commands.add(command);
+		previousCommand=commands.size();
+		if(commands.size()>=40){
+			commands.remove(0);
+		}
+	}
 
     public void appendToPane(String msg, int choice) {
 

@@ -127,6 +127,13 @@ public class Client extends Player {
 		bw.newLine();
 		bw.flush();
 	}
+	
+	public void rejectInGameRequest(String someone) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("request:" + username + ":" + someone + "%ingame");
+		bw.newLine();
+		bw.flush();
+	}
 
 	// it will change soon
 	public void sendGamePin(int position, int color) throws IOException {

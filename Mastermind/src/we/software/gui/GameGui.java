@@ -33,7 +33,7 @@ public class GameGui extends JFrame{
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
-    Timer timer;
+    private Timer timer;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
@@ -692,7 +692,8 @@ public class GameGui extends JFrame{
                 }
             }
             else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
-                try{
+                chatGui.addCommandToList(chatGui.chatInput.getText());
+            	try{
                 	if(!client.equals(null)){ 	
                 	
                     chatHandler((chatGui.chatInput.getText()));
@@ -720,8 +721,8 @@ public class GameGui extends JFrame{
         }
     }
     private void chatHandler(String chatmsg) throws IOException{
-    	if(chatmsg.startsWith("pm")){
-    		String[] msg = chatGui.chatInput.getText().split(":",3);
+    	if(chatmsg.split(":")[0].equals("pm")){
+    		String[] msg = chatmsg.split(":",3);
     		if(msg.length<3){
     			chatGui.appendToPane("System: ", 2);
                 chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
@@ -734,8 +735,8 @@ public class GameGui extends JFrame{
     			chatGui.chatInput.setText("");
     		}
     	}
-    	else if(chatmsg.startsWith("all")){
-    		String[] msg = chatGui.chatInput.getText().split(":",2);
+    	else if(chatmsg.split(":")[0].equals("all")){
+    		String[] msg = chatmsg.split(":",2);
     		client.sendAllMessage(msg[1]);
 			chatGui.appendToPane("To everyone: ", 1);
 			chatGui.appendToPane(msg[1]+"\n", 0);
@@ -752,8 +753,8 @@ public class GameGui extends JFrame{
 			chatGui.appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
 			chatGui.chatInput.setText("");
     	}
-    	else if(chatmsg.startsWith("invite")){
-    		String[] msg = chatGui.chatInput.getText().split(":",2);
+    	else if(chatmsg.split(":")[0].equals("invite")){
+    		String[] msg = chatmsg.split(":",2);
     		if(msg.length==2){
     			client.sendGameRequest(msg[1]);
     			chatGui.chatInput.setText("");
