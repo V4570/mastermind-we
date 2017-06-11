@@ -66,20 +66,20 @@ public class ClientListener extends Thread {
 							mainMenu.getUsername();
 						}
 					} else if (inmessage.startsWith("request")) {
-						
+						requestHandler();
 					} else if (inmessage.startsWith("playpin")) {
-						
+						playPinHandler();
 
 					} else if (inmessage.startsWith("playcheck")) {
-						
+						playCheckHandler();
 						
 						
 							//game ends
 						
 					} else if (inmessage.startsWith("playresult")) {
-						
+						playResultHandler();
 					} else if (inmessage.startsWith("message")) {
-						
+						messageHandler();
 						
 					} else if (inmessage.startsWith("allmessage")) {
 						chatGui.appendToPane("From " + transmitter + " to everyone: ", 7);
