@@ -41,7 +41,6 @@ public class ChatGui extends JPanel{
 
 	public ChatGui() {
 
-        setBounds(1, 595, 640, 125);
         //setOpaque(false);
         setLayout(new GridBagLayout());
         this.setBackground(Color.BLACK);
@@ -113,6 +112,14 @@ public class ChatGui extends JPanel{
             }
         });
 	}
+
+	public void setBoundsForMainMenu(){
+	    setBounds(680, 595, 600, 125);
+    }
+
+    public void setBoundsForGameGui(){
+        setBounds(1, 595, 640, 125);
+    }
 
 	private void KeyBindings(JPanel panel) {
 		panel.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "upPressed");

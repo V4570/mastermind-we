@@ -51,6 +51,7 @@ public class MainMenu extends JFrame {
 		optionsPanel = new Options();
 		howToPlayPanel = new HowToPlay();
 		chatGui = new ChatGui();
+		chatGui.setBoundsForMainMenu();
 
 		howToPlay = addMenuButton("howtoplayv2.png");
 		play = addMenuButton("playv2.png");
@@ -115,6 +116,8 @@ public class MainMenu extends JFrame {
 		if(musicOn) menuMusic.playMenuClip();
 		selected.setUnselected();
 		selected = null;
+		chatGui.setBoundsForMainMenu();
+		add(chatGui);
 	}
 
     /**

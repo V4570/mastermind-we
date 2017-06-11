@@ -50,6 +50,7 @@ public class GameGui extends JFrame{
         }
 
         chatGui = chat;
+        chatGui.setBoundsForGameGui();
 
         this.previous = previous;
         setUpButtons();
