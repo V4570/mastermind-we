@@ -121,7 +121,6 @@ public class GameGui extends JFrame{
                 client.logMeIn("test0", "test0");
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }*/
@@ -264,7 +263,7 @@ public class GameGui extends JFrame{
                 score -= 1000;
             }
 
-            pegs =(ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
+            pegs = (ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
 
             setBounds(969, 35, 290, 538);
             setOpaque(false);

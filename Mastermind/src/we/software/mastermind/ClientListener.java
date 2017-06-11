@@ -112,9 +112,9 @@ public class ClientListener extends Thread {
 						// ok
 					} else if (inmessage.startsWith("login")) {
 						if (message.equals("ok")) {
-							mainMenu.setCorrect(true);
+							//
 						} else if (message.equals("not")) {
-							mainMenu.setCorrect(false);
+							//
 						}
 					} else if (inmessage.startsWith("getonlineplayers")) {
 						chatGui.appendToPane("Online players: ", 1);

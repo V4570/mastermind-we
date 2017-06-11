@@ -40,7 +40,6 @@ public class MainMenu extends JFrame {
 	private LogIn loginPanel;
 	private boolean ready = false;
 	private int gameMode = 0;
-	private boolean correctCredentials = false;
 
 
 	public MainMenu() {
@@ -156,12 +155,11 @@ public class MainMenu extends JFrame {
 
 	class LogIn extends JPanel {
 
-	    private BufferedImage background, signupBackground, loginBackground, offlineBackground, serverOfflineBackground, modeSelect;
-	    private BufferedImage currentBackground;
+	    private BufferedImage background, signupBackground, loginBackground, offlineBackground, serverOfflineBackground,
+                modeSelect, currentBackground, wrongUserIcon, wrongPasswordIcon, userExistsIcon, error1;
 	    private MenuButton login, signup, playOffline, online, offline, noAccount, backArrow;
 	    private JTextField username, password;
-	    private JLabel wrongUser, wrongPassword, userExists;
-	    private ImageIcon wrongUserIcon, wrongPasswordIcon, userExistsIcon;
+	    private int errorX, errorY;
 	    private int mode = 0;
         private MenuButton previous1 = null;
         private MenuButton previous2 = null;
@@ -200,13 +198,12 @@ public class MainMenu extends JFrame {
 	            loginBackground = ImageIO.read(LoadAssets.load("Layers/login.png"));
 	            offlineBackground = ImageIO.read(LoadAssets.load("Layers/selectUsername.png"));
 	            serverOfflineBackground = ImageIO.read(LoadAssets.load("Layers/serverOffline.png"));
+                wrongPasswordIcon = ImageIO.read(LoadAssets.load("Layers/wrongPass.png"));
+                wrongUserIcon = ImageIO.read(LoadAssets.load("Layers/wrongUsername.png"));
+                userExistsIcon = ImageIO.read(LoadAssets.load("Layers/userExists.png"));
             }catch(IOException e){
 	            e.printStackTrace();
             }
-
-            wrongPasswordIcon = new ImageIcon(LoadAssets.load("Layers/wrongUsername.png"));
-            wrongUserIcon = new ImageIcon(LoadAssets.load("Layers/wrongPass.png"));
-            userExistsIcon = new ImageIcon(LoadAssets.load("Layers/userExists.png"));
 
         }
 
@@ -215,6 +212,7 @@ public class MainMenu extends JFrame {
 
             g.drawImage(background, 0, 0, null);
             g.drawImage(currentBackground, 487+35, 244+25, null);
+            g.drawImage(error1, errorX, errorY, null);
         }
 
         private void setupButtons(){
@@ -274,6 +272,7 @@ public class MainMenu extends JFrame {
         private void hidePrevious(){
             if(!(previous1 == null)) previous1.setVisible(false);
             if(!(previous2 == null)) previous2.setVisible(false);
+            error1 = null;
             repaint();
         }
 
@@ -346,10 +345,26 @@ public class MainMenu extends JFrame {
 
         public void giveError(int errorCode){
 
-            /*switch (errorCode){
+            switch (errorCode){
                 case 0:
-
-            }*/
+                    error1 = wrongUserIcon;
+                    errorX = 487+41;
+                    errorY = 244+153;
+                    repaint();
+                    break;
+                case 1:
+                    error1 = wrongPasswordIcon;
+                    errorX = 487 + 41;
+                    errorY = 244 + 250;
+                    repaint();
+                    break;
+                case 2:
+                	error1 = userExistsIcon;
+                	errorX = 487+41;
+                    errorY = 244+153;
+                    repaint();
+                    break;
+            }
         }
     }
 
@@ -551,11 +566,11 @@ public class MainMenu extends JFrame {
         }
     }
 
-    public void setCorrect(boolean b){
 
-	    correctCredentials = b;
+    public void checkError(int errorCode){
+
+	    loginPanel.giveError(errorCode);
     }
-
 
     /**
 	 * Handles the action after a button has been pressed.
@@ -711,17 +726,9 @@ public class MainMenu extends JFrame {
             else if (e.getSource() == loginPanel.login){
 
                 try {
+
                     client = new Client();
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
-                    if(correctCredentials){
-                        loginPanel.setVisible(false);
-                        gameMode = 1;
-                        addMenu();
-                    }
-                    else{
-                        System.out.println("WROOOONG");
-                    }
-
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
                 }
@@ -730,6 +737,9 @@ public class MainMenu extends JFrame {
                     client.getcListener().setMainMenu(MainMenu.this);
                     client.getcListener().setChatGui(chatGui);
                     chatGui.setClient(client);
+                    loginPanel.setVisible(false);
+                    gameMode = 1;
+                    addMenu();
                 }
             }
 
