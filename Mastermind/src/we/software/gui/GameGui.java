@@ -27,7 +27,7 @@ public class GameGui extends JFrame{
     private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
-    private Client client=null;                                                                   //The client for the chat to work
+    public static Client client=null;                                                                   //The client for the chat to work
     public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;       //The buttons for the each place in the code.
     private SelectionButton checkBtn, sBtn;                                                  //checkBtn to register each round. sBtn keeps the currently selected selectionBtn.
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
@@ -41,14 +41,16 @@ public class GameGui extends JFrame{
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
     private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
     
-    public GameGui(MainMenu previous, int gM){
+    public GameGui(MainMenu previous, int gM, ChatGui chat){
     	// edw tha prepei na dimiourgritai ena instance Game
 
         this.gameMode = gM;
         if(gM==0){
         	this.game = new Game(0);
         }
-        
+
+        chatGui = chat;
+
         this.previous = previous;
         setUpButtons();
         initFrame();
@@ -93,10 +95,9 @@ public class GameGui extends JFrame{
         add(blueBtn);
         add(turnHistory);
         add(numbersPanel);
-
-        chatGui = new ChatGui();
         add(chatGui);
-        this.getRootPane().setDefaultButton(sendButton);
+
+        //this.getRootPane()
 
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
         if(gameMode == 1) {
@@ -691,111 +692,13 @@ public class GameGui extends JFrame{
                     sBtn = null;
                 }
             }
-            else if((e.getSource() == sendButton) && !(chatGui.chatInput.getText().equals("") || chatGui.chatInput.getText().equals(" "))){
-                try{
-                	if(!client.equals(null)){ 	
-                	
-                    chatHandler((chatGui.chatInput.getText()));
-                	}else{
-                		chatGui.appendToPane("System: ", 2);
-                        chatGui.appendToPane("You are not connected to the server.\n", 0);
-                        chatGui.chatInput.setText("");
-                	}
-                }catch(Exception e1){
-                    chatGui.appendToPane("System: ", 2);
-                    chatGui.appendToPane("You are not connected to the server.\n", 0);
-                    chatGui.chatInput.setText("");
-                }
-                if(sBtn != null){
-
-                    sBtn.setUnselected();
-                    sBtn = null;
-                }
-
-            }
             else if(e.getSource() == exitButton) {
 
                 System.exit(0);
             }
         }
     }
-    private void chatHandler(String chatmsg) throws IOException{
-    	if(chatmsg.startsWith("pm")){
-    		String[] msg = chatGui.chatInput.getText().split(":",3);
-    		if(msg.length<3){
-    			chatGui.appendToPane("System: ", 2);
-                chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
-                chatGui.chatInput.setText("");
-    		}
-    		else{
-    			client.sendMessage(msg[1],msg[2]);
-    			chatGui.appendToPane("To "+msg[1]+": ", 1);
-    			chatGui.appendToPane(msg[2]+"\n", 0);
-    			chatGui.chatInput.setText("");
-    		}
-    	}
-    	else if(chatmsg.startsWith("all")){
-    		String[] msg = chatGui.chatInput.getText().split(":",2);
-    		client.sendAllMessage(msg[1]);
-			chatGui.appendToPane("To everyone: ", 1);
-			chatGui.appendToPane(msg[1]+"\n", 0);
-			chatGui.chatInput.setText("");
-    	}
-    	else if(chatmsg.equals("?") || chatmsg.equals("help")){
-    		chatGui.appendToPane("? or help -->get all option\n", 8);
-    		chatGui.appendToPane("pm:name:message -->send pm message to a name\n", 8);
-			chatGui.appendToPane("all:message -->send global message\n", 8);
-			chatGui.appendToPane("invite:name -->send a game invitation\n", 8);
-			chatGui.appendToPane("invite:accept:name -->accept an invitation\n", 8);
-			chatGui.appendToPane("invite:decline:name -->decline an invitation\n", 8);
-			chatGui.appendToPane("users -->get online users at current time\n", 8);
-			chatGui.appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
-			chatGui.chatInput.setText("");
-    	}
-    	else if(chatmsg.startsWith("invite")){
-    		String[] msg = chatGui.chatInput.getText().split(":",2);
-    		if(msg.length==2){
-    			client.sendGameRequest(msg[1]);
-    			chatGui.chatInput.setText("");
-    		}
-    		else if(msg.length==3){
-    			if(msg[1].equals("accept")){
-    				if(client.getPending().contains(msg[2])){
-    				client.acceptGameRequest(msg[2]);
-    				chatGui.chatInput.setText("");
-    				}else{
-    					chatGui.appendToPane("System: ", 2);
-    	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
-    	                chatGui.chatInput.setText("");
-    				}
-    			}else if(msg[1].equals("decline")){
-    				if(client.getPending().contains(msg[2])){
-    				client.rejectGameRequest(msg[2]);
-    				chatGui.chatInput.setText("");
-    				client.clearPending();
-    				}else{
-    					chatGui.appendToPane("System: ", 2);
-    	                chatGui.appendToPane("There is no invitation from this player.\n", 0);
-    	                chatGui.chatInput.setText("");
-    	                client.clearPending();
-    				}
-    			}
-    		}
-    	}
-    	else if(chatmsg.equals("users")){
-    		client.getOnlinePlayers();
-    		chatGui.chatInput.setText("");
-    	}
-    	else if(chatmsg.equals("highscores")){
-    		client.getHighScore();
-    		chatGui.chatInput.setText("");
-    	}
-    	else{
-    		chatGui.appendToPane("System: ", 2);
-            chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
-            chatGui.chatInput.setText("");
-    	}
-    }
+
     
     public class SimpleTimer implements Runnable{
     	

@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -87,6 +88,30 @@ public class ChatGui extends JPanel{
         c.gridy = 1;
         add(chatInput, c);
         KeyBindings(this);
+
+        chatInput.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e){
+
+                if(!(chatInput.getText().equals("") || chatInput.getText().equals(" "))) {
+                    try {
+                        if (!GameGui.client.equals(null)) {
+
+                            chatHandler((chatInput.getText()));
+                        } else {
+                            appendToPane("System: ", 2);
+                            appendToPane("You are not connected to the server.\n", 0);
+                            chatInput.setText("");
+                        }
+                    } catch (Exception e1) {
+                        appendToPane("System: ", 2);
+                        appendToPane("You are not connected to the server.\n", 0);
+                        chatInput.setText("");
+                    }
+                }
+            }
+        });
 	}
 
 	private void KeyBindings(JPanel panel) {
@@ -232,6 +257,83 @@ public class ChatGui extends JPanel{
 
     }
 
+    private void chatHandler(String chatmsg) throws IOException {
+        if(chatmsg.startsWith("pm")){
+            String[] msg = chatInput.getText().split(":",3);
+            if(msg.length<3){
+                appendToPane("System: ", 2);
+                appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
+                chatInput.setText("");
+            }
+            else{
+                GameGui.client.sendMessage(msg[1],msg[2]);
+                appendToPane("To "+msg[1]+": ", 1);
+                appendToPane(msg[2]+"\n", 0);
+                chatInput.setText("");
+            }
+        }
+        else if(chatmsg.startsWith("all")){
+            String[] msg = chatInput.getText().split(":",2);
+            GameGui.client.sendAllMessage(msg[1]);
+            appendToPane("To everyone: ", 1);
+            appendToPane(msg[1]+"\n", 0);
+            chatInput.setText("");
+        }
+        else if(chatmsg.equals("?") || chatmsg.equals("help")){
+            appendToPane("? or help -->get all option\n", 8);
+            appendToPane("pm:name:message -->send pm message to a name\n", 8);
+            appendToPane("all:message -->send global message\n", 8);
+            appendToPane("invite:name -->send a game invitation\n", 8);
+            appendToPane("invite:accept:name -->accept an invitation\n", 8);
+            appendToPane("invite:decline:name -->decline an invitation\n", 8);
+            appendToPane("users -->get online users at current time\n", 8);
+            appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
+            chatInput.setText("");
+        }
+        else if(chatmsg.startsWith("invite")){
+            String[] msg = chatInput.getText().split(":",2);
+            if(msg.length==2){
+                GameGui.client.sendGameRequest(msg[1]);
+                chatInput.setText("");
+            }
+            else if(msg.length==3){
+                if(msg[1].equals("accept")){
+                    if(GameGui.client.getPending().contains(msg[2])){
+                        GameGui.client.acceptGameRequest(msg[2]);
+                        chatInput.setText("");
+                    }else{
+                        appendToPane("System: ", 2);
+                        appendToPane("There is no invitation from this player.\n", 0);
+                        chatInput.setText("");
+                    }
+                }else if(msg[1].equals("decline")){
+                    if(GameGui.client.getPending().contains(msg[2])){
+                        GameGui.client.rejectGameRequest(msg[2]);
+                        chatInput.setText("");
+                        GameGui.client.clearPending();
+                    }else{
+                        appendToPane("System: ", 2);
+                        appendToPane("There is no invitation from this player.\n", 0);
+                        chatInput.setText("");
+                        GameGui.client.clearPending();
+                    }
+                }
+            }
+        }
+        else if(chatmsg.equals("users")){
+            GameGui.client.getOnlinePlayers();
+            chatInput.setText("");
+        }
+        else if(chatmsg.equals("highscores")){
+            GameGui.client.getHighScore();
+            chatInput.setText("");
+        }
+        else{
+            appendToPane("System: ", 2);
+            appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
+            chatInput.setText("");
+        }
+    }
 }
 
 
