@@ -103,7 +103,7 @@ public class GameGui extends JFrame{
             client = new Client();
             try {
                 client.startListening(chatGui);
-                client.logMeIn("test0", "test0");
+                client.logMeIn("test1", "test1");
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -754,9 +754,10 @@ public class GameGui extends JFrame{
 			chatGui.chatInput.setText("");
     	}
     	else if(chatmsg.split(":")[0].equals("invite")){
-    		String[] msg = chatmsg.split(":",2);
+    		String[] msg = chatmsg.split(":",3);
     		if(msg.length==2){
     			client.sendGameRequest(msg[1]);
+    			chatGui.appendToPane("A game request has been sent to "+msg[1]+".\n", 0);
     			chatGui.chatInput.setText("");
     		}
     		else if(msg.length==3){
@@ -764,9 +765,10 @@ public class GameGui extends JFrame{
     				if(client.getPending().contains(msg[2])){
     				client.acceptGameRequest(msg[2]);
     				chatGui.chatInput.setText("");
-    				//starts a new game
-    				client.setInGame(true);
-    				client.setCodeMaker(true);
+    				chatGui.appendToPane("You accepted a game invitation.\n", 0);
+    				//starts a new gameGui
+    				//client.setInGame(true);
+    				//client.setCodeMaker(true);
     				chatGui.appendToPane("System: ", 2);
 	                chatGui.appendToPane("You can start making your code.\n", 0);
     				}else{
@@ -777,6 +779,7 @@ public class GameGui extends JFrame{
     			}else if(msg[1].equals("decline")){
     				if(client.getPending().contains(msg[2])){
     				client.rejectGameRequest(msg[2]);
+    				chatGui.appendToPane("You rejected a game invitation.\n", 0);
     				chatGui.chatInput.setText("");
     				client.clearPending();
     				}else{
@@ -785,6 +788,11 @@ public class GameGui extends JFrame{
     	                chatGui.chatInput.setText("");
     	                client.clearPending();
     				}
+    			}
+    			else{
+    				chatGui.appendToPane("System: ", 2);
+    	            chatGui.appendToPane("Check your syntax. If you need help just type 'help' or '?'.\n", 0);
+    	            chatGui.chatInput.setText("");
     			}
     		}
     	}

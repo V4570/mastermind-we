@@ -20,8 +20,9 @@ public class ServerThread extends Thread {
 	private String inmessage;
 	private String receiver;
 	private String message;
-	public LiveServerHandler lsh;
-
+	private LiveServerHandler lsh;
+	private BufferedWriter bw;
+	
 	public ServerThread(Socket socket, Database db, HashMap<String, Client> clients,LiveServerHandler lsh) {
 		super();
 		this.socket = socket;
@@ -30,15 +31,17 @@ public class ServerThread extends Thread {
 		this.message = null;
 		this.db = db;
 		this.lsh =lsh;
-
+		
 	}
 
 	public void run() {
 
 		transmitter = new Client(this.socket, currentThread());
+		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+			bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
+			transmitter.setBw(bw);
 			while ((inmessage = br.readLine()) != null) {
 				try {
 					String[] info = inmessage.split("%", 2);
@@ -163,13 +166,11 @@ public class ServerThread extends Thread {
 			db.addUser(username, password);
 			transmitter.setName(username);
 			clients.put(transmitter.getName(), transmitter);
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("add:server: %ok");
 			bw.newLine();
 			bw.flush();
 
 		} else {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("add:server: %taken");
 			bw.newLine();
 			bw.flush();
@@ -182,13 +183,11 @@ public class ServerThread extends Thread {
 			transmitter.setName(username);
 			clients.put(transmitter.getName(), transmitter);
 			db.updateDate(transmitter.getName());
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("login:server:" + username + "%ok");
 			bw.newLine();
 			bw.flush();
 
 		} else {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("login:server:" + username + "%not");
 			bw.newLine();
 			bw.flush();
@@ -203,16 +202,11 @@ public class ServerThread extends Thread {
 	// server 'receiver notconnected'
 	private void messageJob() throws UnknownHostException, IOException, InterruptedException {
 		if (!clients.isEmpty() && clients.containsKey(receiver)) {
-			clients.get(receiver).getThread().join(1);
-			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
-			bw.write("message:" + transmitter.getName() + ":" + receiver + "%" + message);
-			bw.newLine();
-			bw.flush();
+			clients.get(receiver).getBw().write("message:" + transmitter.getName() + ":" + receiver + "%" + message);
+			clients.get(receiver).getBw().newLine();
+			clients.get(receiver).getBw().flush();
 
 		} else {
-			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 			bw.write("message:" + "Server" + ":" + transmitter.getName() + "%User " + receiver + " is not online...");
 			bw.newLine();
 			bw.flush();
@@ -229,15 +223,11 @@ public class ServerThread extends Thread {
 	 */
 	private void requestJob() throws InterruptedException, IOException {
 		if (clients.containsKey(receiver)) {
-			clients.get(receiver).getThread().join(1);
-			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
-			bw.write("request:" + transmitter.getName() + ":" + receiver + "%" + message);
-			bw.newLine();
-			bw.flush();
+			clients.get(receiver).getBw().write("request:" + transmitter.getName() + ":" + receiver + "%" + message);
+			clients.get(receiver).getBw().newLine();
+			clients.get(receiver).getBw().flush();
 
 		} else {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(transmitter.getSocket().getOutputStream()));
 			bw.write("request:server:" + transmitter.getName() + "%" + receiver + " notconnected");
 			bw.newLine();
 			bw.flush();
@@ -248,12 +238,9 @@ public class ServerThread extends Thread {
 	// H prospatheia(mantepsia) tou transmitter stelnete ston receiver gia na
 	// elexthei
 	private void playJob() throws IOException, InterruptedException {
-		clients.get(receiver).getThread().join(1);
-		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
-		bw.write("play:" + transmitter.getName() + ":" + receiver + "%" + message);
-		bw.newLine();
-		bw.flush();
+		clients.get(receiver).getBw().write("play:" + transmitter.getName() + ":" + receiver + "%" + message);
+		clients.get(receiver).getBw().newLine();
+		clients.get(receiver).getBw().flush();
 
 	}
 
@@ -262,12 +249,9 @@ public class ServerThread extends Thread {
 	 * stelnete pisw ston receiver
 	 */
 	private void scoreJob() throws InterruptedException, IOException {
-		clients.get(receiver).getThread().join(1);
-		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(receiver).getSocket().getOutputStream()));
-		bw.write("score:" + transmitter.getName() + ":" + receiver + "%" + message);
-		bw.newLine();
-		bw.flush();
+		clients.get(receiver).getBw().write("score:" + transmitter.getName() + ":" + receiver + "%" + message);
+		clients.get(receiver).getBw().newLine();
+		clients.get(receiver).getBw().flush();
 
 	}
 
@@ -276,8 +260,6 @@ public class ServerThread extends Thread {
 	private void setHighScoreJob(String highscore)
 			throws InterruptedException, IOException, NumberFormatException, SQLException {
 		db.updateHighScore(transmitter.getName(), Integer.parseInt(highscore));
-		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 		bw.write("sethighscore:server:" + transmitter.getName() + "%ok");
 		bw.newLine();
 		bw.flush();
@@ -285,8 +267,6 @@ public class ServerThread extends Thread {
 	}
 
 	private void getHighScoresJob() throws InterruptedException, IOException, NumberFormatException, SQLException {
-		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 		bw.write("gethighscores:server:" + transmitter.getName() + "%" + db.getHighScores());
 		bw.newLine();
 		bw.flush();
@@ -298,19 +278,14 @@ public class ServerThread extends Thread {
 			for (Entry<String, Client> entry : clients.entrySet()) {
 				Client value = entry.getValue();
 				if (!value.getName().equals(transmitter.getName())) {
-					value.getThread().join(1);
-
-					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(value.getSocket().getOutputStream()));
-					bw.write("messageall:" + transmitter.getName() + ":" + value.getName() + "%" + message);
-					bw.newLine();
-					bw.flush();
+					value.getBw().write("allmessage:" + transmitter.getName() + ":" + value.getName() + "%" + message);
+					value.getBw().newLine();
+					value.getBw().flush();
 				}
 			}
 
 			System.out.println("Message sent to everyone!");
 		} else {
-			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 			bw.write(
 					"message:" + "Server" + ":" + transmitter.getName() + "% there is nobody online at this moment...");
 			bw.newLine();
@@ -321,8 +296,6 @@ public class ServerThread extends Thread {
 	
 	private void getOnlinePlayersJob() throws IOException{
 		String names = String.join(",", clients.keySet());
-		BufferedWriter bw = new BufferedWriter(
-				new OutputStreamWriter(clients.get(transmitter.getName()).getSocket().getOutputStream()));
 		bw.write("getonlineplayers:server:" + transmitter.getName() + "%" + names);
 		bw.newLine();
 		bw.flush();

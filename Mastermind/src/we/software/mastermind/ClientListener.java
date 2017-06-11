@@ -63,16 +63,9 @@ public class ClientListener extends Thread {
 					} else if (inmessage.startsWith("request")) {
 						if (message.equals("wannaplay")) {
 							if (!client.isInGame()) {
-								chatGui.appendToPane("Player "+transmitter+" send a game invitation. To accept invitation just type invite:accept:name.", 1);
+								chatGui.appendToPane("Player "+transmitter+" send a game invitation. To accept invitation just type invite:accept:name.\n", 1);
 								client.addUserToPending(transmitter);
-								// asks for user permission to start the game
-								// if user accepts then:
-								/*
-								 * client.acceptGameRequest(transmitter);
-								 * client.setEnemy(transmitter);
-								 * client.setInGame(true);
-								 */
-								// if he rejects the client.RejectGameRequest();
+								
 							} else {
 								client.rejectGameRequest(transmitter);
 							}
@@ -88,12 +81,17 @@ public class ClientListener extends Thread {
 							client.setInGame(true);
 							client.setCodeMaker(false);
 							gameGui.makeButtonsUnavailable();
-							chatGui.appendToPane(transmitter+": ", 1);
-	                    	chatGui.appendToPane("I'm setting my code!\n", 0);
+							//starts gamegui se mode 1
+							//setGameGui(gamegui	)
+							//chatGui.appendToPane(transmitter+": ", 1);
+	                    	//chatGui.appendToPane("I'm setting my code!\n", 0);
 							// accepted and game starts
 						} else if (message.equals("not")) {
 							chatGui.appendToPane(transmitter+" rejected game invitation.\n", 1);
 							// rejected
+						} else{
+							chatGui.appendToPane("Server: ", 6);
+							chatGui.appendToPane(message.split(" ")[0]+" is not online.\n", 0);
 						}
 					} else if (inmessage.startsWith("playpin")) {
 						int pos = Integer.parseInt(message.split(" ")[0]);
@@ -166,10 +164,10 @@ public class ClientListener extends Thread {
 						gameGui.turnHistory.repaint();
 					} else if (inmessage.startsWith("message")) {
 						if (transmitter.equals("Server")) {
-							chatGui.appendToPane("From Server : ", 4);
+							chatGui.appendToPane("From Server : ", 6);
 							chatGui.appendToPane(message+"\n", 0);
 						} else if (transmitter.equals("liveServer")) {
-							chatGui.appendToPane("From Server: " , 4);
+							chatGui.appendToPane("From Server: " , 6);
 							chatGui.appendToPane(message+"\n", 0);
 						} else {
 							chatGui.appendToPane("From " + transmitter + ": ", 3);
