@@ -517,7 +517,6 @@ public class GameGui extends JFrame{
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-                            game.addCurrentRound();
                             turn += 1;
                             numbersPanel.changeRound();
                     	}

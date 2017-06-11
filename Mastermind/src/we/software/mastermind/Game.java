@@ -22,7 +22,7 @@ public class Game {
 	}
 
 	public Game() { // PvP / PvE selection
-		this.currentRound = 0;
+		this.currentRound = 1;
 		this.gameScore = 0;
 		this.currentGame = 0;
 
@@ -68,7 +68,7 @@ public class Game {
 		p1.restoreCodeToDefault();
 		p2.restoreCodeToDefault();
 		gameScore = 0;
-		currentRound = 0;
+		currentRound = 1;
 	}
 
 	public Player getP1() {
@@ -123,7 +123,6 @@ public class Game {
 
 	// Returns result table
 	public ArrayList<Integer> checkGuess() {
-		currentRound++;
 		// Player1 table (p1)
 		if (!p1.isCodeMaker()) {
 			guess = p1.getGuess();

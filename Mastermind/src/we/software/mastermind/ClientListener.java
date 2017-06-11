@@ -132,7 +132,8 @@ public class ClientListener extends Thread {
 			gameGui.selectionBtn3.setUncolored();
 			gameGui.selectionBtn4.setUncolored();
 			gameGui.turnHistory.repaint();
-			if (gameGui.getGame().checkIfWin() || gameGui.getTurn() == 10) {
+			gameGui.getGame().addCurrentRound();
+			if (gameGui.getGame().checkIfWin() || gameGui.getGame().getCurrentRound() == 10) {
 				gameGui.getGame().addCurrentGame();
 				gameGui.getGame().getP2()
 						.setTotalScore(gameGui.getGame().getP2().getTotalScore() + gameGui.getGame().getGameScore());
@@ -273,7 +274,9 @@ public class ClientListener extends Thread {
 		}
 		gameGui.getGame().setRoundScore(gameGui.getGame().getResult());
 		gameGui.turnHistory.repaint();
-		if (gameGui.getGame().checkIfWin() || gameGui.getTurn() == 10) {
+		gameGui.getGame().addCurrentRound();
+		
+		if (gameGui.getGame().checkIfWin() || gameGui.getGame().getCurrentRound() == 10) {
 			gameGui.getGame().addCurrentGame();
 			gameGui.getGame().getP1()
 					.setTotalScore(gameGui.getGame().getP1().getTotalScore() + gameGui.getGame().getGameScore());
