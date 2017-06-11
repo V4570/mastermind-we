@@ -92,9 +92,22 @@ public class ClientListener extends Thread {
 						game.getP2().setTotalScore(game.getP2().getTotalScore() + Integer.parseInt(message));
 						// Shows the final score to user
 					} else if (inmessage.startsWith("gethighscores")) {
+						int i = 0;
+						String[] names = new String[4];
+						String[] scores = new String[4];
 						for (String str : message.split(",")) {
-							// do something
+							String[] val = str.split(" ");
+							names[i] = val[0];
+							scores[i] = val[1];
+							i++;
 						}
+						String highScores = "High Scores:\n";
+						highScores += "--------------------\n";
+						for(int j=0;j<4;j++){
+							highScores += j+1+". "+names[j]+" : "+scores[j]+"\n";
+						}
+						chatGui.appendToPane(highScores, 10);
+
 					} else if (inmessage.startsWith("sethighscore")) {
 						// ok
 					} else if (inmessage.startsWith("login")) {
@@ -150,7 +163,7 @@ public class ClientListener extends Thread {
 				} else {
 					chatGui.appendToPane("Mastermind: ", 2);
 					chatGui.appendToPane(client.getEnemy().getName() + "'s totalscore is: "
-							+ gameGui.getGame().getP2().getTotalScore() + " adn your score is "
+							+ gameGui.getGame().getP2().getTotalScore() + " and your score is "
 							+ gameGui.getGame().getP1().getTotalScore() + "!\n", 0);
 					if (gameGui.getGame().getP2().getTotalScore() < gameGui.getGame().getP1().getTotalScore()) {
 						chatGui.appendToPane("Mastermind: ", 2);
@@ -275,7 +288,7 @@ public class ClientListener extends Thread {
 		gameGui.getGame().setRoundScore(gameGui.getGame().getResult());
 		gameGui.turnHistory.repaint();
 		gameGui.getGame().addCurrentRound();
-		
+
 		if (gameGui.getGame().checkIfWin() || gameGui.getGame().getCurrentRound() == 10) {
 			gameGui.getGame().addCurrentGame();
 			gameGui.getGame().getP1()
@@ -360,6 +373,11 @@ public class ClientListener extends Thread {
 					}
 				} else {
 					gameGui.dispose();
+					try {
+						client.sendHighScore(gameGui.getGame().getP1().getTotalScore());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					mainMenu.setFrameVisible(gameGui);
 					client.setInGame(false);
 
