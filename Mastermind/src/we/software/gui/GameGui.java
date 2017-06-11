@@ -66,7 +66,6 @@ public class GameGui extends JFrame{
     	turn++;
     }
     
-
     public Client getClient() {
 		return client;
 	}
