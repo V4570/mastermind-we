@@ -98,7 +98,7 @@ public class ChatGui extends JPanel{
 
                 if(!(chatInput.getText().equals("") || chatInput.getText().equals(" "))) {
                     try {
-                        if (!GameGui.client.equals(null)) {
+                        if (!client.equals(null)) {
 
                             chatHandler((chatInput.getText()));
                         } else {
