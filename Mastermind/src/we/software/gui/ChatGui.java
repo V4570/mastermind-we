@@ -29,6 +29,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import we.software.mastermind.Client;
+import we.software.mastermind.Player;
 
 public class ChatGui extends JPanel{
 
@@ -41,6 +42,7 @@ public class ChatGui extends JPanel{
 	private ArrayList<String> commands = new ArrayList<String>();
 	private int previousCommand=-1;
 	private Client client;
+	private MainMenu mainMenu;
 
 	public ChatGui() {
 
@@ -104,6 +106,10 @@ public class ChatGui extends JPanel{
 
 	public void setClient(Client client){
 		this.client = client;
+	}	
+
+	public void setMainMenu(MainMenu mainMenu) {
+		this.mainMenu = mainMenu;
 	}
 
 	private void KeyBindings(JPanel panel) {
@@ -274,7 +280,7 @@ public class ChatGui extends JPanel{
     }
 
     private void chatHandler(String chatmsg) throws IOException {
-        if(chatmsg.startsWith("pm")){
+        if(chatmsg.split(":")[0].equals("pm")){
             String[] msg = chatInput.getText().split(":",3);
             if(msg.length<3){
                 appendToPane("System: ", 2);
@@ -288,7 +294,7 @@ public class ChatGui extends JPanel{
                 chatInput.setText("");
             }
         }
-        else if(chatmsg.startsWith("all")){
+        else if(chatmsg.split(":")[0].equals("all")){
             String[] msg = chatInput.getText().split(":",2);
             client.sendAllMessage(msg[1]);
             appendToPane("To everyone: ", 1);
@@ -306,16 +312,31 @@ public class ChatGui extends JPanel{
             appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
             chatInput.setText("");
         }
-        else if(chatmsg.startsWith("invite")){
-            String[] msg = chatInput.getText().split(":",2);
+        else if(chatmsg.split(":")[0].equals("invite")){
+            String[] msg = chatInput.getText().split(":",3);
             if(msg.length==2){
                 client.sendGameRequest(msg[1]);
+    			appendToPane("A game request has been sent to "+msg[1]+".\n", 0);
                 chatInput.setText("");
             }
             else if(msg.length==3){
                 if(msg[1].equals("accept")){
                     if(client.getPending().contains(msg[2])){
                         client.acceptGameRequest(msg[2]);
+                        GameGui gameGui = new GameGui(mainMenu, 1,this);
+        				mainMenu.setVisible(false);
+        				client.setCodeMaker(true);
+        				client.setInGame(true);
+        				client.setEnemy(new Player());
+        				client.getEnemy().setName(msg[2]);
+        				client.getcListener().setGameGui(gameGui);
+        				gameGui.getGame().setP1(client);
+        				gameGui.getGame().setP2(client.getEnemy());
+        				gameGui.setClient(client);
+        				gameGui.getGame().initializeArrays();
+        				appendToPane("You accepted a game invitation.\n", 0);
+        				appendToPane("System: ", 2);
+    	                appendToPane("You can start making your code.\n", 0);
                         chatInput.setText("");
                     }else{
                         appendToPane("System: ", 2);
@@ -325,6 +346,7 @@ public class ChatGui extends JPanel{
                 }else if(msg[1].equals("decline")){
                     if(client.getPending().contains(msg[2])){
                         client.rejectGameRequest(msg[2]);
+                        appendToPane("You rejected a game invitation.\n", 0);
                         chatInput.setText("");
                         client.clearPending();
                     }else{

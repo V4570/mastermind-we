@@ -18,7 +18,6 @@ public class Client extends Player {
 	private boolean inGame;
 	private String server = "83.212.99.117";
 	private int PORT = 12498;
-	private boolean codeMaker;
 	private ArrayList<String> pending;
 	
 	ChatGui chatGui;
@@ -41,14 +40,6 @@ public class Client extends Player {
 
 	public void addUserToPending(String name) {
 		pending.add(name);
-	}
-
-	public boolean isCodeMaker() {
-		return codeMaker;
-	}
-
-	public void setCodeMaker(boolean codeMaker) {
-		this.codeMaker = codeMaker;
 	}
 
 	public boolean isInGame() {

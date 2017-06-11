@@ -19,17 +19,22 @@ public class Game {
 		p1.initializeGuessArray();
 	}
 
-	public Game(Client c,boolean isClientCodeMaker,String enemyName) { // PvP / PvE selection
+	public Game() { // PvP / PvE selection
 		this.currentRound = 0;
-		this.p1 = c;
 		this.gameScore = 0;
 		this.currentGame =0;
-		c.setEnemy(new Player());
-		p2  = c.getEnemy();
-		p2.setName(enemyName);
-		c.setCodeMaker(isClientCodeMaker);
+		
 	}
 	
+	public void initializeArrays(){
+		if(p1.isCodeMaker()){
+			p1.initializeCodeToBreakArray();
+			p2.initializeGuessArray();
+		}else{
+			p2.initializeCodeToBreakArray();
+			p1.initializeGuessArray();
+		}
+	}
 	
 	public int getCurrentGame() {
 		return currentGame;
@@ -56,6 +61,11 @@ public class Game {
 	public void setP2(Player p2) {
 		this.p2 = p2;
 	}
+	
+	public void setP1(Player p1) {
+		this.p1 = p1;
+	}
+	
 
 	//Checks right guesses
 	public boolean checkIfWin() {

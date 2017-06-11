@@ -40,7 +40,7 @@ public class MainMenu extends JFrame {
 			
         try {
         	client = new Client();
-            client.logMeIn("test1", "test1");
+            client.logMeIn("test0", "test0");
 
         } catch (IOException e) {
             e.printStackTrace();

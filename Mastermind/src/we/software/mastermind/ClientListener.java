@@ -141,9 +141,10 @@ public class ClientListener extends Thread {
                 }
 		}else{
 			//gameGui.makeButtonsAvailable();
+			gameGui.makeButtonsAvailable();
 			chatGui.appendToPane(transmitter+": ", 1);
         	chatGui.appendToPane("My code is ready. You can start breaking it!\n", 0);
-        	gameGui.makeButtonsAvailable();
+        	
 		}
 		
 	}
@@ -162,18 +163,21 @@ public class ClientListener extends Thread {
 			chatGui.appendToPane(transmitter+" is in game.\n", 1);
 		}
 		else if (message.equals("ok")) {
-		
+			GameGui gameGui = new GameGui(mainMenu, 1,chatGui);
+			mainMenu.setVisible(false);
 			client.setEnemy(new Player());
 			client.getEnemy().setName(transmitter);
-			game.setP2(client.getEnemy());
+			gameGui.getGame().setP2(client.getEnemy());
+			gameGui.getGame().setP1(client);
 			chatGui.appendToPane(transmitter+" accepted game invitation.\n", 1);
 			client.setInGame(true);
 			client.setCodeMaker(false);
 			gameGui.makeButtonsUnavailable();
+			gameGui.getGame().initializeArrays();
 			//starts gamegui se mode 1
 			//setGameGui(gamegui	)
-			//chatGui.appendToPane(transmitter+": ", 1);
-        	//chatGui.appendToPane("I'm setting my code!\n", 0);
+			chatGui.appendToPane(transmitter+": ", 1);
+        	chatGui.appendToPane("I'm setting my code!\n", 0);
 			// accepted and game starts
 		} else if (message.equals("not")) {
 			chatGui.appendToPane(transmitter+" rejected game invitation.\n", 1);

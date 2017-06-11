@@ -21,6 +21,7 @@ public class Player {
     private boolean guessing = true;
     protected ArrayList<Integer> codeToBreak;
     protected ArrayList<Integer> guess;
+    protected boolean codeMaker;
     
     //Game Info
     protected int numberOfPins = 4; 
@@ -47,7 +48,15 @@ public class Player {
     
     //CodeBreaker
     
-    //Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
+    public boolean isCodeMaker() {
+		return codeMaker;
+	}
+
+	public void setCodeMaker(boolean codeMaker) {
+		this.codeMaker = codeMaker;
+	}
+
+	//Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
     public void addPin(int position , int colour){
     	guess.set(position, colour);
     }
@@ -56,6 +65,13 @@ public class Player {
     public void initializeGuessArray(){
     	for(int i=0;i<4;i++){
     		guess.add(0);
+    	}
+    			
+    }
+    
+    public void initializeCodeToBreakArray(){
+    	for(int i=0;i<4;i++){
+    		codeToBreak.add(0);
     	}
     			
     }

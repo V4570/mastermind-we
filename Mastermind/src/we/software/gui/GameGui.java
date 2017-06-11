@@ -27,7 +27,7 @@ public class GameGui extends JFrame{
     private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
-    public static Client client=null;                                                                   //The client for the chat to work
+    public Client client=null;                                                                   //The client for the chat to work
     public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;       //The buttons for the each place in the code.
     private SelectionButton checkBtn, sBtn;                                                  //checkBtn to register each round. sBtn keeps the currently selected selectionBtn.
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
@@ -47,6 +47,8 @@ public class GameGui extends JFrame{
         this.gameMode = gM;
         if(gM==0){
         	this.game = new Game(0);
+        }else{
+        	this.game = new Game();
         }
 
         chatGui = chat;
@@ -63,8 +65,20 @@ public class GameGui extends JFrame{
     public void addTurn(){
     	turn++;
     }
+    
 
-    /**
+    public Client getClient() {
+		return client;
+	}
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
+	
+	public Game getGame() {
+		return game;
+	}
+	/**
      * Initializes the frame and all of its components. All items added to the frame go here.
      */
     private void initFrame(){
@@ -194,6 +208,7 @@ public class GameGui extends JFrame{
         selectionBtn3.setEnabled(true);
         selectionBtn4.setEnabled(true);
         checkBtn.setEnabled(true);
+        repaint();
     }
 
     /**
@@ -500,26 +515,28 @@ public class GameGui extends JFrame{
                             selectionBtn3.setUncolored();
                             selectionBtn4.setUncolored();
                             turnHistory.repaint();
-                    	}
-                    	if(game.checkIfWin() || turn==10){
-                    		game.addCurrentGame();
-                    		game.getP1().setTotalScore(game.getP1().getTotalScore()+game.getGameScore());
-                    		chatGui.appendToPane("Mastermind:", 5);
-                    		chatGui.appendToPane("Your ",6);
-                    		chatGui.appendToPane("score ",7);
-                    		chatGui.appendToPane("is: ",2);
-                    		chatGui.appendToPane(""+game.getGameScore(),1);
-                    		chatGui.appendToPane(" !\n", 0);
-                    		makeButtonsUnavailable();
-                    		if(game.getCurrentGame()<=4){
-                    		chatGui.appendToPane("Game will change in", 9);
-                        	new SimpleTimer(5).run();
-                    		}
-                    		else{
-                    			chatGui.appendToPane("Game will exit in", 9);
+                            
+                            if(game.checkIfWin() || turn==10){
+                        		game.addCurrentGame();
+                        		game.getP1().setTotalScore(game.getP1().getTotalScore()+game.getGameScore());
+                        		chatGui.appendToPane("Mastermind:", 5);
+                        		chatGui.appendToPane("Your ",6);
+                        		chatGui.appendToPane("score ",7);
+                        		chatGui.appendToPane("is: ",2);
+                        		chatGui.appendToPane(""+game.getGameScore(),1);
+                        		chatGui.appendToPane(" !\n", 0);
+                        		makeButtonsUnavailable();
+                        		if(game.getCurrentGame()<=4){
+                        		chatGui.appendToPane("Game will change in", 9);
                             	new SimpleTimer(5).run();
-                    		}
+                        		}
+                        		else{
+                        			chatGui.appendToPane("Game will exit in", 9);
+                                	new SimpleTimer(5).run();
+                        		}
+                        	}
                     	}
+                    	
                     }
                 }
 
@@ -544,7 +561,7 @@ public class GameGui extends JFrame{
 						}
                     	}
                     	else{
-                    		client.addPin(selectedBtn, 1);
+                    		client.createCode(selectedBtn, 1);
                     	}
                     }
                     sBtn = null;
@@ -569,7 +586,7 @@ public class GameGui extends JFrame{
 					}
                 	}
                 	else{
-                		client.addPin(selectedBtn, 2);
+                		client.createCode(selectedBtn, 2);
                 	}
                 }
                     sBtn = null;
@@ -594,7 +611,7 @@ public class GameGui extends JFrame{
 					}
                 	}
                 	else{
-                		client.addPin(selectedBtn, 3);
+                		client.createCode(selectedBtn, 3);
                 	}
                 }
                     sBtn = null;
@@ -619,7 +636,7 @@ public class GameGui extends JFrame{
 					}
                 	}
                 	else{
-                		client.addPin(selectedBtn, 4);
+                		client.createCode(selectedBtn, 4);
                 	}
                 }
                     sBtn = null;
@@ -644,7 +661,7 @@ public class GameGui extends JFrame{
 					}
                 	}
                 	else{
-                		client.addPin(selectedBtn, 5);
+                		client.createCode(selectedBtn, 5);
                 	}
                 }
                     sBtn = null;
@@ -669,7 +686,7 @@ public class GameGui extends JFrame{
 					}
                 	}
                 	else{
-                		client.addPin(selectedBtn, 6);
+                		client.createCode(selectedBtn, 6);
                 	}
                 }
                     sBtn = null;
