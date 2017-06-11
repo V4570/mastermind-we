@@ -73,10 +73,18 @@ public class ServerThread extends Thread {
 						if(!lsh.isHide())System.out.println(
 								transmitter.getName() + "--> send request message to " + receiver + ": " + message);
 						requestJob();
-					} else if (inmessage.startsWith("play")) {
+					} else if (inmessage.startsWith("playcheck")) {
 						if(!lsh.isHide())System.out.println(
-								transmitter.getName() + "--> send play message to " + receiver + ": " + message);
-						playJob();
+								transmitter.getName() + "--> send playcheck message to " + receiver + ": " + message);
+						playCheckJob();
+					} else if (inmessage.startsWith("playpin")) {
+						if(!lsh.isHide())System.out.println(
+								transmitter.getName() + "--> send playpin message to " + receiver + ": " + message);
+						playPinJob();
+					} else if (inmessage.startsWith("playresult")) {
+						if(!lsh.isHide())System.out.println(
+								transmitter.getName() + "--> send playresult message to " + receiver + ": " + message);
+						playResultJob();
 					} else if (inmessage.startsWith("score")) {
 						if(!lsh.isHide())System.out.println(
 								transmitter.getName() + "--> send score message to " + receiver + ": " + message);
@@ -237,8 +245,22 @@ public class ServerThread extends Thread {
 
 	// H prospatheia(mantepsia) tou transmitter stelnete ston receiver gia na
 	// elexthei
-	private void playJob() throws IOException, InterruptedException {
-		clients.get(receiver).getBw().write("play:" + transmitter.getName() + ":" + receiver + "%" + message);
+	private void playCheckJob() throws IOException, InterruptedException {
+		clients.get(receiver).getBw().write("playcheck:" + transmitter.getName() + ":" + receiver + "%" + message);
+		clients.get(receiver).getBw().newLine();
+		clients.get(receiver).getBw().flush();
+
+	}
+	
+	private void playResultJob() throws IOException, InterruptedException {
+		clients.get(receiver).getBw().write("playresult:" + transmitter.getName() + ":" + receiver + "%" + message);
+		clients.get(receiver).getBw().newLine();
+		clients.get(receiver).getBw().flush();
+
+	}
+	
+	private void playPinJob() throws IOException, InterruptedException {
+		clients.get(receiver).getBw().write("playpin:" + transmitter.getName() + ":" + receiver + "%" + message);
 		clients.get(receiver).getBw().newLine();
 		clients.get(receiver).getBw().flush();
 
