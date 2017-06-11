@@ -311,14 +311,14 @@ public class ChatGui extends JPanel{
             chatInput.setText("");
         }
         else if(chatmsg.equals("?") || chatmsg.equals("help")){
-            appendToPane("? or help -->get all option\n", 8);
+            appendToPane("? or help -->get all options\n", 8);
             appendToPane("pm:name:message -->send pm message to a name\n", 8);
             appendToPane("all:message -->send global message\n", 8);
             appendToPane("invite:name -->send a game invitation\n", 8);
             appendToPane("invite:accept:name -->accept an invitation\n", 8);
             appendToPane("invite:decline:name -->decline an invitation\n", 8);
             appendToPane("users -->get online users at current time\n", 8);
-            appendToPane("highscores -->refresh hisghscores in up right corner\n", 8);
+            appendToPane("highscores -->get highscores from Server\n", 8);
             chatInput.setText("");
         }
         else if(chatmsg.split(":")[0].equals("invite")){
