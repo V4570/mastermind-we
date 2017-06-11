@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by bill on 3/28/17.
@@ -28,7 +30,7 @@ public class MainMenu extends JFrame {
 	public static boolean musicOn = true;                  //Variable that controls the music (on/off)
 	public static boolean soundfxOn = false;                //Variable that controls the sound effects (on/off)
 	private AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
-	private String username = null;
+	private String username = "";
 	private JButton minimizeButton;
 	private Client client = null;
 	private GameGui previous = null;
@@ -38,6 +40,7 @@ public class MainMenu extends JFrame {
 	private LogIn loginPanel;
 	private boolean ready = false;
 	private int gameMode = 0;
+	private boolean correctCredentials = false;
 
 
 	public MainMenu() {
@@ -340,6 +343,14 @@ public class MainMenu extends JFrame {
                     break;
             }
         }
+
+        public void giveError(int errorCode){
+
+            /*switch (errorCode){
+                case 0:
+
+            }*/
+        }
     }
 
 	/**
@@ -540,6 +551,12 @@ public class MainMenu extends JFrame {
         }
     }
 
+    public void setCorrect(boolean b){
+
+	    correctCredentials = b;
+    }
+
+
     /**
 	 * Handles the action after a button has been pressed.
 	 */
@@ -601,7 +618,7 @@ public class MainMenu extends JFrame {
 				GameGui gameGui = new GameGui(MainMenu.this, 1, chatGui);
 				setVisible(false);
 
-				//gameModePanel.panelRestart();
+				gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
 					menuMusic.closeClip();
@@ -618,7 +635,7 @@ public class MainMenu extends JFrame {
 				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
 				setVisible(false);
 
-				//gameModePanel.panelRestart();
+				gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
 					menuMusic.closeClip();
@@ -673,12 +690,22 @@ public class MainMenu extends JFrame {
             else if (e.getSource() == loginPanel.playOffline){
 
                 username = loginPanel.username.getText();
-                /*while(loginPanel.username.getText().equals("") || loginPanel.username.getText().equals(" ")){
-                    username = loginPanel.username.getText();
-                }*/
-                loginPanel.setVisible(false);
-                addMenu();
-                gameMode = 0;
+
+                if(username.equals("")||username.equals(" ")){
+
+                    //loginPanel.giveError(1);
+
+                    loginPanel.username.setText("");
+                }
+                else if(username.length()>16){
+
+                    loginPanel.username.setText("");
+                }
+                else{
+                    loginPanel.setVisible(false);
+                    gameMode = 0;
+                    addMenu();
+                }
             }
 
             else if (e.getSource() == loginPanel.login){
@@ -686,16 +713,24 @@ public class MainMenu extends JFrame {
                 try {
                     client = new Client();
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
-                    loginPanel.setVisible(false);
-                    addMenu();
+                    if(correctCredentials){
+                        loginPanel.setVisible(false);
+                        gameMode = 1;
+                        addMenu();
+                    }
+                    else{
+                        System.out.println("WROOOONG");
+                    }
 
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
                 }
 
-                client.getcListener().setMainMenu(MainMenu.this);
-                client.getcListener().setChatGui(chatGui);
-                chatGui.setClient(client);
+                if(!(client == null)){
+                    client.getcListener().setMainMenu(MainMenu.this);
+                    client.getcListener().setChatGui(chatGui);
+                    chatGui.setClient(client);
+                }
             }
 
             else if (e.getSource() == minimizeButton){
