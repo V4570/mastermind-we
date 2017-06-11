@@ -93,8 +93,8 @@ public class ClientListener extends Thread {
 						// Shows the final score to user
 					} else if (inmessage.startsWith("gethighscores")) {
 						int i = 0;
-						String[] names = new String[4];
-						String[] scores = new String[4];
+						String[] names = new String[message.split(",").length];
+						String[] scores = new String[message.split(",").length];
 						for (String str : message.split(",")) {
 							String[] val = str.split(" ");
 							names[i] = val[0];
@@ -103,7 +103,7 @@ public class ClientListener extends Thread {
 						}
 						String highScores = "High Scores:\n";
 						highScores += "--------------------\n";
-						for(int j=0;j<4;j++){
+						for(int j=0;j<names.length;j++){
 							highScores += j+1+". "+names[j]+" : "+scores[j]+"\n";
 						}
 						chatGui.appendToPane(highScores, 10);
