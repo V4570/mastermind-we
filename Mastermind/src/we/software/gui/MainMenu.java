@@ -8,6 +8,7 @@ import we.software.mastermind.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -34,27 +35,23 @@ public class MainMenu extends JFrame {
 	private boolean modeSelected = false;
 	private MenuButton selected = null;
 	private ChatGui chatGui;
+	private LogIn loginPanel;
+	private boolean ready = false;
+	private int gameMode = 0;
 
 
 	public MainMenu() {
-			
-        try {
-        	client = new Client();
-            client.logMeIn("test0", "test0");
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		client.getcListener().setMainMenu(this);
-        
+
+
+
 		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
 		howToPlayPanel = new HowToPlay();
+		loginPanel = new LogIn();
 		chatGui = new ChatGui();
 		chatGui.setBoundsForMainMenu();
-		client.getcListener().setChatGui(chatGui);
-		chatGui.setClient(client);
 		chatGui.setMainMenu(this);
 
 		howToPlay = addMenuButton("howtoplayv2.png");
@@ -62,6 +59,7 @@ public class MainMenu extends JFrame {
 		options = addMenuButton("optionsv2.png");
 
 		PreloadImages.preloadImages();
+
 		initFrame();
 
 	}
@@ -93,17 +91,11 @@ public class MainMenu extends JFrame {
 		    modeSelected = true;
 		}
 
-		add(howToPlay);
-		add(play);
-		add(options);
-		add(gameModePanel);
-		add(howToPlayPanel);
-		add(optionsPanel);
-		add(exitButton);
-		add(minimizeButton);
-		add(chatGui);
+        add(exitButton);
+        add(minimizeButton);
+        add(loginPanel);
 
-		setTitle("Mastermind WE - Pre Alpha 0.0.1");
+        setTitle("Mastermind WE - Pre Alpha 0.0.1");
 		setUndecorated(true);
 		setVisible(true);
 		if(musicOn) menuMusic.playMenuClip();
@@ -112,58 +104,35 @@ public class MainMenu extends JFrame {
 
 	}
 
+	public String getUsername(){
+
+	    return "Default";
+    }
+
+	private void addMenu(){
+
+	    add(howToPlay);
+        add(play);
+        add(options);
+        add(gameModePanel);
+        add(howToPlayPanel);
+        add(optionsPanel);
+        add(chatGui);
+        revalidate();
+    }
+
+
 
 	public void setFrameVisible(GameGui previous) {
 	    this.previous = previous;
 	    previous.dispose();
 		setVisible(true);
 		if(musicOn) menuMusic.playMenuClip();
-		selected.setUnselected();
+		if(!(selected == null)) selected.setUnselected();
 		selected = null;
 		chatGui.setBoundsForMainMenu();
 		add(chatGui);
-	}
-
-    /**
-     * Prompts the user to enter a username and a password to enter the system.
-     */
-	public void getUsername() {
-
-		String[] options = { "OK" };
-		JPanel panel = new JPanel();
-		JLabel lbl = new JLabel("Enter Your username: ");
-		JTextField txt = new JTextField(10);
-
-		boolean isOk = true;
-		int selectedOption = 0;
-
-		panel.add(lbl);
-		panel.add(txt);
-		// Checking Server connectivity remove lines 127-131 to make it
-		// like it was
-		// H allagh pou egine einai proxeirorammeni alla leitourgikh
-		// Zitaei apo ton xrhsth na dwsei onoma kai stin sunexeia tsekarei an
-		// ekeinh th stigmh einai kapoios me auto to onoma sundedemenos ston
-		// server an nai tote tou zitaei na
-		// ksanavalei onoma an oxi sunexizei kanonika
-		// gia na xrisimopoieisetai ton server tha anevasw ta stoixeia tou server pou prepei
-		// na alaxthoun sto arxeio Client stis seires 16 'Server' kai 17 'PORT'
-		// parakalw na min ginoun upload sto github gia logous asfaleias
-		// o server einai panw sxedon 24/7
-
-
-		while ((selectedOption != 1 && txt.getText().equals(""))) {
-				selectedOption = JOptionPane.showOptionDialog(null, panel, "Login", JOptionPane.NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-				username = txt.getText();
-
-		}
-		/*try {
-			player.addMe(username);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
+		revalidate();
 	}
 
     /**
@@ -182,12 +151,203 @@ public class MainMenu extends JFrame {
 		return button;
 	}
 
+	class LogIn extends JPanel {
+
+	    private BufferedImage background, signupBackground, loginBackground, offlineBackground, serverOfflineBackground, modeSelect;
+	    private BufferedImage currentBackground;
+	    private MenuButton login, signup, playOffline, online, offline, noAccount, backArrow;
+	    private JTextField username, password;
+	    private JLabel wrongUser, wrongPassword, userExists;
+	    private ImageIcon wrongUserIcon, wrongPasswordIcon, userExistsIcon;
+	    private int mode = 0;
+        private MenuButton previous1 = null;
+        private MenuButton previous2 = null;
+
+	    public LogIn(){
+
+
+	        loadImages();
+            setBounds(0, 0, background.getWidth(), background.getHeight());
+	        setOpaque(false);
+
+	        setUpTextFields();
+	        setupButtons();
+
+	        setLayout(null);
+
+	        add(username);
+	        add(password);
+	        add(login);
+	        add(signup);
+	        add(playOffline);
+	        add(noAccount);
+	        add(backArrow);
+	        add(online);
+	        add(offline);
+
+	        setBackground(0);
+	    }
+
+        private void loadImages(){
+
+	        try{
+	            background = ImageIO.read(LoadAssets.load("modePanelv2.png"));
+	            modeSelect = ImageIO.read(LoadAssets.load("Layers/selectMode.png"));
+	            signupBackground = ImageIO.read(LoadAssets.load("Layers/signUp.png"));
+	            loginBackground = ImageIO.read(LoadAssets.load("Layers/login.png"));
+	            offlineBackground = ImageIO.read(LoadAssets.load("Layers/selectUsername.png"));
+	            serverOfflineBackground = ImageIO.read(LoadAssets.load("Layers/serverOffline.png"));
+            }catch(IOException e){
+	            e.printStackTrace();
+            }
+
+            wrongPasswordIcon = new ImageIcon(LoadAssets.load("Layers/wrongUsername.png"));
+            wrongUserIcon = new ImageIcon(LoadAssets.load("Layers/wrongPass.png"));
+            userExistsIcon = new ImageIcon(LoadAssets.load("Layers/userExists.png"));
+
+        }
+
+	    @Override
+        protected void paintComponent(Graphics g){
+
+            g.drawImage(background, 0, 0, null);
+            g.drawImage(currentBackground, 487+35, 244+25, null);
+        }
+
+        private void setupButtons(){
+
+            login = new MenuButton("login.png", 487+81 , 244+315, 0, 0);
+            login.setVisible(false);
+            login.addActionListener(b);
+
+            signup = new MenuButton("signUp.png", 487+87, 244+295, 0, 0);
+            signup.setVisible(false);
+            signup.addActionListener(b);
+
+            playOffline = new MenuButton("playOffline.png", 487+87, 244+296, 0, 0);
+            playOffline.setVisible(false);
+            playOffline.addActionListener(b);
+
+            noAccount = new MenuButton("noAccount.png", 487+52, 244+274, 0, 0);
+            noAccount.setVisible(false);
+            noAccount.addActionListener(b);
+
+            backArrow = new MenuButton("backArrow.png", 487+32, 244+28, 0, 0);
+            backArrow.setVisible(false);
+            backArrow.addActionListener(b);
+
+            online = new MenuButton("online.png", 487+94, 244+106, 0, 0);
+            online.setVisible(false);
+            online.addActionListener(b);
+
+            offline = new MenuButton("offline.png", 487+85, 244+177, 0, 0);
+            offline.setVisible(false);
+            offline.addActionListener(b);
+        }
+
+        private void setUpTextFields(){
+
+            username = new JTextField();
+            username.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+            username.setOpaque(false);
+
+            password = new JTextField(10);
+            password.setOpaque(false);
+            password.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+
+            Font f1 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+            username.setFont(f1);
+            username.setForeground(Color.white);
+
+            password.setFont(f1);
+            password.setForeground(Color.white);
+
+            username.setVisible(false);
+            password.setVisible(false);
+
+
+        }
+
+        private void hidePrevious(){
+            if(!(previous1 == null)) previous1.setVisible(false);
+            if(!(previous2 == null)) previous2.setVisible(false);
+            repaint();
+        }
+
+        public void setBackground(int bg){
+
+            switch(bg){
+                case 0:
+                    currentBackground = modeSelect;
+                    username.setVisible(false);
+                    password.setVisible(false);
+
+                    hidePrevious();
+                    previous1 = online;
+                    previous2 = offline;
+
+                    online.setVisible(true);
+                    offline.setVisible(true);
+                    backArrow.setVisible(false);
+                    break;
+                case 1:
+                    currentBackground = loginBackground;
+                    username.setBounds(487+55, 244+116, 196, 33);
+                    password.setBounds(487+55, 244+211, 196, 33);
+
+                    hidePrevious();
+                    login.setVisible(true);
+                    previous1 = login;
+                    previous2 = noAccount;
+
+                    backArrow.setVisible(true);
+                    username.setVisible(true);
+                    password.setVisible(true);
+                    noAccount.setVisible(true);
+                    break;
+                case 2:
+                    currentBackground = signupBackground;
+                    username.setBounds(487+55, 244+120, 196, 33);
+                    password.setBounds(487+55, 244+228, 196, 33);
+
+                    hidePrevious();
+                    previous1 = signup;
+
+                    username.setVisible(true);
+                    password.setVisible(true);
+                    signup.setVisible(true);
+                    break;
+                case 3:
+                    currentBackground = offlineBackground;
+                    username.setBounds(487+55, 244+160, 196, 33);
+
+                    hidePrevious();
+                    previous1 = playOffline;
+
+                    username.setVisible(true);
+                    password.setVisible(false);
+                    backArrow.setVisible(true);
+                    playOffline.setVisible(true);
+                    break;
+                case 4:
+                    currentBackground = serverOfflineBackground;
+
+                    hidePrevious();
+
+                    username.setVisible(false);
+                    password.setVisible(false);
+                    backArrow.setVisible(true);
+                    break;
+            }
+        }
+    }
+
 	/**
      * This class handles the properties of the game mode panel.
      */
 	class GameMode extends JPanel {
 
-		private Image background;
+		private BufferedImage background;
 		private MenuButton pVsAi, pVsP;
 		private boolean flag = false;
 		private boolean flagOptions = true;
@@ -218,7 +378,7 @@ public class MainMenu extends JFrame {
 		private void initPanel() {
 			setLayout(null);
 			add(pVsAi);
-			add(pVsP);
+			if(!(gameMode == 0)) add(pVsP);
 
 			setBounds(193, 300, background.getWidth(null), background.getHeight(null));
 			setOpaque(false);
@@ -325,8 +485,8 @@ public class MainMenu extends JFrame {
 	}
 
     /**
-     * The panel that appears after the users selects the "How to play" button.
-     * Explains the rules of the game and how to play it.
+     * The panel that appears after the users selects the "How to playOffline" button.
+     * Explains the rules of the game and how to playOffline it.
      */
 	class HowToPlay extends JPanel{
 
@@ -441,7 +601,7 @@ public class MainMenu extends JFrame {
 				GameGui gameGui = new GameGui(MainMenu.this, 1, chatGui);
 				setVisible(false);
 
-				gameModePanel.panelRestart();
+				//gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
 					menuMusic.closeClip();
@@ -458,7 +618,7 @@ public class MainMenu extends JFrame {
 				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
 				setVisible(false);
 
-				gameModePanel.panelRestart();
+				//gameModePanel.panelRestart();
 				gameModePanel.setPanelInvisible();
 				if (musicOn)
 					menuMusic.closeClip();
@@ -486,6 +646,58 @@ public class MainMenu extends JFrame {
                     optionsPanel.soundFXButton.setUnselected();
                 }
 			}
+
+			else if (e.getSource() == loginPanel.backArrow){
+
+			    loginPanel.setBackground(0);
+            }
+
+			else if (e.getSource() == loginPanel.offline){
+
+			    loginPanel.setBackground(3);
+            }
+
+            else if (e.getSource() == loginPanel.online){
+
+			    /*loginPanel.setVisible(false);
+			    addMenu();*/
+			    gameMode = 1;
+			    loginPanel.setBackground(1);
+            }
+
+            else if (e.getSource() == loginPanel.noAccount){
+
+                loginPanel.setBackground(2);
+            }
+
+            else if (e.getSource() == loginPanel.playOffline){
+
+                username = loginPanel.username.getText();
+                /*while(loginPanel.username.getText().equals("") || loginPanel.username.getText().equals(" ")){
+                    username = loginPanel.username.getText();
+                }*/
+                loginPanel.setVisible(false);
+                addMenu();
+                gameMode = 0;
+            }
+
+            else if (e.getSource() == loginPanel.login){
+
+                try {
+                    client = new Client();
+                    client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
+                    loginPanel.setVisible(false);
+                    addMenu();
+
+                } catch (Exception ex) {
+                    loginPanel.setBackground(4);
+                }
+
+                client.getcListener().setMainMenu(MainMenu.this);
+                client.getcListener().setChatGui(chatGui);
+                chatGui.setClient(client);
+            }
+
             else if (e.getSource() == minimizeButton){
 			    setState(Frame.ICONIFIED);
             }

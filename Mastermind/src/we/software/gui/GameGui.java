@@ -33,7 +33,7 @@ public class GameGui extends JFrame{
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
-    Timer timer;
+    private Timer timer;
 
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
@@ -112,7 +112,6 @@ public class GameGui extends JFrame{
         add(numbersPanel);
         add(chatGui);
 
-        //this.getRootPane()
 
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
         /*if(gameMode == 1) {
