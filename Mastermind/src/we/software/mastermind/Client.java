@@ -23,12 +23,13 @@ public class Client extends Player {
 	
 	ChatGui chatGui;
 
-	public Client() {
+	public Client() throws UnknownHostException, IOException {
 		super();
 		enemy = null;
 		username = null;
 		inGame = false;
 		pending =new ArrayList<String>();
+		startListening();
 	}
 	public void clearPending(){
 		pending.clear();
@@ -79,9 +80,9 @@ public class Client extends Player {
 	}
 
 	// Starts the client ServerThread
-	public void startListening(ChatGui chatGui) throws UnknownHostException, IOException {
+	public void startListening() throws UnknownHostException, IOException {
 		socket = new Socket(server, PORT);
-		cListener = new ClientListener(this, socket, chatGui);
+		cListener = new ClientListener(this, socket);
 		cListener.start();
 	}
 

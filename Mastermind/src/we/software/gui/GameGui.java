@@ -101,17 +101,17 @@ public class GameGui extends JFrame{
         //this.getRootPane()
 
         //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
-        if(gameMode == 1) {
+        /*if(gameMode == 1) {
             client = new Client();
             try {
-                client.startListening(chatGui);
+                client.startListening();
                 client.logMeIn("test0", "test0");
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+        }*/
 
         setTitle("Mastermind WE - Pre Alpha 0.0.1");
         setSize(WIDTH, HEIGHT);

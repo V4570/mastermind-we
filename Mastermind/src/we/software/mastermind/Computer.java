@@ -46,9 +46,9 @@ public class Computer extends Player{
 
 		    int rand = 1+ (int)(Math.random()*6);
 
-		    if(!CodeToBreak.contains(rand)){
+		    if(!codeToBreak.contains(rand)){
 
-		        CodeToBreak.add(rand);
+		        codeToBreak.add(rand);
             }
             else{
 		        i--;
@@ -63,7 +63,7 @@ public class Computer extends Player{
 		for (int i = 0; i<super.numberOfPins; i++) {
 
 		    int rand = 1+ (int)(Math.random()*6);
-			CodeToBreak.add(rand);
+			codeToBreak.add(rand);
 	    }
 		
     }
@@ -73,7 +73,7 @@ public class Computer extends Player{
     	
     	
 		for (int i = 0; i < super.numberOfPins; i++) {
-			 CodeToBreak.add((int)(Math.random()*7));
+			 codeToBreak.add((int)(Math.random()*7));
 	        
 	    }
 				

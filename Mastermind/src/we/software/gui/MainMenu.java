@@ -29,7 +29,7 @@ public class MainMenu extends JFrame {
 	private AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
 	private String username = null;
 	private JButton minimizeButton;
-	private Client player = null;
+	private Client client = null;
 	private GameGui previous = null;
 	private boolean modeSelected = false;
 	private MenuButton selected = null;
@@ -45,13 +45,23 @@ public class MainMenu extends JFrame {
 		} catch (IOException e1) {
 			System.out.println("Tsekare Server...");
 		}*/
+		
+        try {
+        	client = new Client();
+            client.logMeIn("test0", "test0");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
 		howToPlayPanel = new HowToPlay();
 		chatGui = new ChatGui();
 		chatGui.setBoundsForMainMenu();
+		client.getcListener().setChatGui(chatGui);
+		chatGui.setClient(client);
 
 		howToPlay = addMenuButton("howtoplayv2.png");
 		play = addMenuButton("playv2.png");

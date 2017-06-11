@@ -19,8 +19,8 @@ public class Player {
     
     //Current Game player information.
     private boolean guessing = true;
-    protected ArrayList<Integer> CodeToBreak;
-    private ArrayList<Integer> guess;
+    protected ArrayList<Integer> codeToBreak;
+    protected ArrayList<Integer> guess;
     
     //Game Info
     protected int numberOfPins = 4; 
@@ -29,7 +29,7 @@ public class Player {
 
     //---Constructor---
     public Player(){
-    	CodeToBreak = new ArrayList<Integer>();
+    	codeToBreak = new ArrayList<Integer>();
     	guess = new ArrayList<Integer>();
     }
         
@@ -38,11 +38,11 @@ public class Player {
     //CodeMaker
     
     public void createCode(int position , int colour){
-    	CodeToBreak.set(position, colour);
+    	codeToBreak.set(position, colour);
     }
     
     public ArrayList<Integer> getCode(){
- 	   return CodeToBreak;
+ 	   return codeToBreak;
     }
     
     //CodeBreaker
