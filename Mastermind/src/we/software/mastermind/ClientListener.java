@@ -66,8 +66,10 @@ public class ClientListener extends Thread {
 					if (inmessage.startsWith("add")) {
 						if (message.equals("ok")) {
 							client.setUsername(reciever);
+							mainMenu.login();
 						} else if (message.equals("taken")) {
-							mainMenu.getUsername();
+							mainMenu.checkError(2);
+							//mainMenu.getUsername();
 						}
 					} else if (inmessage.startsWith("request")) {
 						requestHandler();
@@ -116,9 +118,13 @@ public class ClientListener extends Thread {
 						if (message.equals("ok")) {
 							//mainMenu.setCorrect(true);
 							mainMenu.login();
-						} else if (message.equals("not")) {
+						} else if (message.equals("wrongpass")) {
 							//mainMenu.setCorrect(false);
 							mainMenu.checkError(1);
+						}
+						else if (message.equals("wrongusername")) {
+							//mainMenu.setCorrect(false);
+							mainMenu.checkError(0);
 						}
 					} else if (inmessage.startsWith("getonlineplayers")) {
 						chatGui.appendToPane("Online players: ", 1);
