@@ -9,9 +9,7 @@ public class Computer extends Player{
 	
     
     //Easy Difficulty : Code to crack for the player has 6 colours, no duplicates , no NULL colour.
-    //Medium Difficulty : Code to crack for the player has 6 colours, has duplicates , no NULL colour.
-    //Hard Difficulty : Code to crack for the player has 6 colours, has duplicates , has NULL colour.
-    
+    //Medium Difficulty : Code to crack for the player has 6 colours, has duplicates , no NULL colour.    
     
 
     public Computer(int difficultyChoise) {
@@ -23,9 +21,6 @@ public class Computer extends Player{
                 break;
             case 1:
         	    mediumAlgorithm();
-        	    break;
-            case 2:
-        	    hardAlgorithm();
         	    break;
         }
     }
@@ -68,17 +63,6 @@ public class Computer extends Player{
 		
     }
     
-  //Γεμιζει τον πινακα με Pegs που μπορει να εχουν και ιδιο χρωμα πολλες φορες, και κενα
-    public void hardAlgorithm(){
-    	
-    	
-		for (int i = 0; i < super.numberOfPins; i++) {
-			 codeToBreak.add((int)(Math.random()*7));
-	        
-	    }
-				
-
-    }
     
   
 }
