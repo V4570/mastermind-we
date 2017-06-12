@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Created by ralph on 3/24/17.
- */
 public class Player {
 
 	//General User Information
@@ -56,7 +53,7 @@ public class Player {
 		this.codeMaker = codeMaker;
 	}
 
-	//Position in the array list (Input = 0-3), setting the colour of the selected peg. (Input = 0-6 , with 0 as the default) 
+	 
     public void addPin(int position , int colour){
     	guess.set(position, colour);
     }

@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class Game {
 
-	private Player p1;
+	private Player p1; // Player or Client
 	private Player p2; // Player or Computer (CodeMaker)
 
 	private int currentRound;
 	private int currentGame;
 	private int gameScore;
-	private int maxRounds = 10;
 	private ArrayList<Integer> result;
 	private ArrayList<Integer> guess;
 	private ArrayList<Integer> code;
 
-	public Game(int difficulty) {
+	public Game(int difficulty) { // PvAi
 		p1 = new Player();
 		p2 = new Computer(difficulty);
 		p1.initializeGuessArray();
+		p1.setCodeMaker(false);
 	}
 
-	public Game() { // PvP / PvE selection
+	public Game() { // PvP
 		this.currentRound = 0;
 		this.gameScore = 0;
 		this.currentGame = 0;
@@ -39,7 +39,8 @@ public class Game {
 	public ArrayList<Integer> getResult() {
 		return result;
 	}
-
+	
+	//initializes all the arrays
 	public void initializeArrays() {
 
 		p1.initializeCodeToBreakArray();
@@ -57,11 +58,13 @@ public class Game {
 	public int getCurrentGame() {
 		return currentGame;
 	}
-
+	
+	//+1 game in currentGame value
 	public void addCurrentGame() {
 		this.currentGame++;
 	}
-
+	
+	//prepares the game for a new game (use only in pvsp)
 	public void clearGame() {
 		p1.restoreGuessToDefault();
 		p2.restoreGuessToDefault();
@@ -86,7 +89,8 @@ public class Game {
 	public void setP1(Player p1) {
 		this.p1 = p1;
 	}
-
+	
+	//+1 round in currentRound value
 	public void addCurrentRound() {
 		currentRound++;
 	}
@@ -128,18 +132,16 @@ public class Game {
 			guess = p1.getGuess();
 			System.out.println(guess);
 
-			// Player2 or AI table (p2)
 			code = p2.getCode();
 			System.out.println(code);
 		} else {
 			guess = p2.getGuess();
 			System.out.println(guess);
 
-			// Player2 or AI table (p2)
 			code = p1.getCode();
 			System.out.println(code);
 		}
-		// Initializing final table (p3)
+		
 		result = new ArrayList<Integer>();
 
 		ArrayList<Integer> ex = new ArrayList<Integer>();

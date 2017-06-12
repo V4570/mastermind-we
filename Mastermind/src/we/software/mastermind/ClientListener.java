@@ -81,6 +81,8 @@ public class ClientListener extends Thread {
 
 					} else if (inmessage.startsWith("playresult")) {
 						playResultHandler();
+					} else if(inmessage.startsWith("playleft")){
+						
 					} else if (inmessage.startsWith("message")) {
 						messageHandler();
 
@@ -112,9 +114,10 @@ public class ClientListener extends Thread {
 						// ok
 					} else if (inmessage.startsWith("login")) {
 						if (message.equals("ok")) {
-							//
+							//mainMenu.setCorrect(true);
 						} else if (message.equals("not")) {
-							//
+							//mainMenu.setCorrect(false);
+							mainMenu.checkError(1);
 						}
 					} else if (inmessage.startsWith("getonlineplayers")) {
 						chatGui.appendToPane("Online players: ", 1);
