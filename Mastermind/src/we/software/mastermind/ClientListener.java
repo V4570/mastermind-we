@@ -212,7 +212,7 @@ public class ClientListener extends Thread {
 				client.addUserToPending(transmitter);
 
 			} else {
-				client.rejectGameRequest(transmitter);
+				client.rejectInGameRequest(transmitter);
 			}
 		} else if (message.equals("ingame")) {
 			chatGui.appendToPane(transmitter + " is in game.\n", 1);
