@@ -15,13 +15,9 @@ import java.util.ArrayList;
  */
 public class PreloadImages {
 
-    private static ImageIcon glassRed, glassGreen, glassBlue, glassYellow, glassWhite, glassBlack;
-    private static ImageIcon glowRed, glowGreen, glowBlue, glowYellow, glowWhite, glowBlack;
-    private static BufferedImage whitePeg, blackPeg, greenPeg, bluePeg, yellowPeg, redPeg, whiteClue, redClue;
-
-    private static ArrayList<ImageIcon> glasses = new ArrayList();
-    private static ArrayList<BufferedImage> numbers = new ArrayList();
-    private static ArrayList<BufferedImage> pegs = new ArrayList();
+    private static ArrayList<ImageIcon> glasses = new ArrayList<ImageIcon>();
+    private static ArrayList<BufferedImage> numbers = new ArrayList<BufferedImage>();
+    private static ArrayList<BufferedImage> pegs = new ArrayList<BufferedImage>();
 
 
     public static void preloadImages(){
@@ -34,30 +30,30 @@ public class PreloadImages {
 
     private static void loadGlasses(){
 
-        glassRed = new ImageIcon(LoadAssets.load("Buttons/glassRed.png"));
+        ImageIcon glassRed = new ImageIcon(LoadAssets.load("Buttons/glassRed.png"));
         glasses.add(glassRed);
-        glassGreen = new ImageIcon(LoadAssets.load("Buttons/glassGreen.png"));
+        ImageIcon glassGreen = new ImageIcon(LoadAssets.load("Buttons/glassGreen.png"));
         glasses.add(glassGreen);
-        glassBlue = new ImageIcon(LoadAssets.load("Buttons/glassBlue.png"));
+        ImageIcon glassBlue = new ImageIcon(LoadAssets.load("Buttons/glassBlue.png"));
         glasses.add(glassBlue);
-        glassYellow = new ImageIcon(LoadAssets.load("Buttons/glassYellow.png"));
+        ImageIcon glassYellow = new ImageIcon(LoadAssets.load("Buttons/glassYellow.png"));
         glasses.add(glassYellow);
-        glassWhite = new ImageIcon(LoadAssets.load("Buttons/glassWhite.png"));
+        ImageIcon glassWhite = new ImageIcon(LoadAssets.load("Buttons/glassWhite.png"));
         glasses.add(glassWhite);
-        glassBlack = new ImageIcon(LoadAssets.load("Buttons/glassBlack.png"));
+        ImageIcon glassBlack = new ImageIcon(LoadAssets.load("Buttons/glassBlack.png"));
         glasses.add(glassBlack);
 
-        glowRed = new ImageIcon(LoadAssets.load("Buttons/glowRed.png"));
+        ImageIcon glowRed = new ImageIcon(LoadAssets.load("Buttons/glowRed.png"));
         glasses.add(glowRed);
-        glowGreen = new ImageIcon(LoadAssets.load("Buttons/glowGreen.png"));
+        ImageIcon glowGreen = new ImageIcon(LoadAssets.load("Buttons/glowGreen.png"));
         glasses.add(glowGreen);
-        glowBlue = new ImageIcon(LoadAssets.load("Buttons/glowBlue.png"));
+        ImageIcon glowBlue = new ImageIcon(LoadAssets.load("Buttons/glowBlue.png"));
         glasses.add(glowBlue);
-        glowYellow = new ImageIcon(LoadAssets.load("Buttons/glowYellow.png"));
+        ImageIcon glowYellow = new ImageIcon(LoadAssets.load("Buttons/glowYellow.png"));
         glasses.add(glowYellow);
-        glowWhite = new ImageIcon(LoadAssets.load("Buttons/glowWhite.png"));
+        ImageIcon glowWhite = new ImageIcon(LoadAssets.load("Buttons/glowWhite.png"));
         glasses.add(glowWhite);
-        glowBlack = new ImageIcon(LoadAssets.load("Buttons/glowBlack.png"));
+        ImageIcon glowBlack = new ImageIcon(LoadAssets.load("Buttons/glowBlack.png"));
         glasses.add(glowBlack);
     }
 
@@ -79,22 +75,22 @@ public class PreloadImages {
 
         try {
 
-            redPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/redv2.png"));
+            BufferedImage redPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/redv2.png"));
             pegs.add(redPeg);
-            greenPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/greenv2.png"));
+            BufferedImage greenPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/greenv2.png"));
             pegs.add(greenPeg);
-            bluePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bluev2.png"));
+            BufferedImage bluePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/bluev2.png"));
             pegs.add(bluePeg);
-            yellowPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/yellowv2.png"));
+            BufferedImage yellowPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/yellowv2.png"));
             pegs.add(yellowPeg);
-            whitePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/whitev2.png"));
+            BufferedImage whitePeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/whitev2.png"));
             pegs.add(whitePeg);
-            blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/magentav2.png"));
+            BufferedImage blackPeg = ImageIO.read(LoadAssets.load("Pegs_Evaluation/magentav2.png"));
             pegs.add(blackPeg);
 
-            whiteClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueWhite.png"));
+            BufferedImage whiteClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueWhite.png"));
             pegs.add(whiteClue);
-            redClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueRed.png"));
+            BufferedImage redClue = ImageIO.read(LoadAssets.load("Pegs_Evaluation/clueRed.png"));
             pegs.add(redClue);
 
         } catch (IOException e) {
