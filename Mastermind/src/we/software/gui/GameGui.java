@@ -24,7 +24,7 @@ public class GameGui extends JFrame{
     private final int WIDTH = 1280;
     private final int HEIGHT = WIDTH / 16*9;
     private ButtonListener btnListener = new ButtonListener();
-    private MenuButton exitButton, optionsButton, backButton, music, soundFx;                //Functionality buttons
+    private MenuButton exitButton, minimize, optionsButton, backButton, music, soundFx;                //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
     public Client client = null;                                                             //The client for the chat to work
@@ -95,6 +95,7 @@ public class GameGui extends JFrame{
         numbersPanel = new NumbersPanel();
 
         add(exitButton);
+        add(minimize);
         add(backButton);
         add(music);
         add(soundFx);
@@ -139,6 +140,9 @@ public class GameGui extends JFrame{
 
         exitButton = new MenuButton("exitv2.png", 1240, 5, 0, 0);
         exitButton.addActionListener(btnListener);
+
+        minimize = new MenuButton("minimize.png", 1200, 5, 0, 0);
+        minimize.addActionListener(btnListener);
 
         backButton = new MenuButton("backtomenuv2.png", 969, 660, 0, 0);
         backButton.addActionListener(btnListener);
@@ -676,9 +680,15 @@ public class GameGui extends JFrame{
                     soundFx.setUnselected();
                 }
             }
+            else if(e.getSource() == minimize){
+                setState(Frame.ICONIFIED);
+            }
             else if(e.getSource() == exitButton) {
 
-                System.exit(0);
+                int exit = JOptionPane.showConfirmDialog(GameGui.this, "Are you sure you want to exit?", "Exit",
+                        JOptionPane.YES_NO_OPTION);
+                if (exit == 0)
+                    System.exit(0);
             }
         }
     }

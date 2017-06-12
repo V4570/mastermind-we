@@ -41,10 +41,12 @@ public class MainMenu extends JFrame {
 	private boolean ready = false;
 	private int gameMode = 0;
 
+	public static void main(String[] args) {
+
+		new MainMenu();
+	}
 
 	public MainMenu() {
-
-
 
 
 		menuMusic = new AudioLoad("MainMenu.wav");
@@ -743,6 +745,8 @@ public class MainMenu extends JFrame {
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
+                    loginPanel.username.setText("");
+                    loginPanel.password.setText("");
                 }
             }
 
@@ -757,6 +761,8 @@ public class MainMenu extends JFrame {
                     client.addMe(loginPanel.username.getText(), loginPanel.password.getText());
                 }catch (Exception e1){
                     loginPanel.setBackground(4);
+                    loginPanel.username.setText("");
+                    loginPanel.password.setText("");
                 }
 			}
 
@@ -769,7 +775,6 @@ public class MainMenu extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 				if (exit == 0)
 					System.exit(0);
-				// setState(Frame.ICONIFIED);
 			}
 		}
 	}
