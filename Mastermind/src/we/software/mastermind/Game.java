@@ -127,7 +127,6 @@ public class Game {
 
 	// Returns result table
 	public ArrayList<Integer> checkGuess() {
-		// Player1 table (p1)
 		if (!p1.isCodeMaker()) {
 			guess = p1.getGuess();
 			System.out.println(guess);
@@ -145,7 +144,8 @@ public class Game {
 		result = new ArrayList<Integer>();
 
 		ArrayList<Integer> ex = new ArrayList<Integer>();
-
+		
+		//compares the two codes
 		for (int i = 0; i < 4; i++) {
 			if (guess.get(i).equals(code.get(i))) {
 				result.add(2);

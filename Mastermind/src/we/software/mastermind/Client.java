@@ -202,15 +202,6 @@ public class Client extends Player {
 		bw.flush();
 	}
 
-	// it will change soon
-	public void sendFinalScore() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		bw.write("fscore:" + username + ":" + enemy.getName() + "%" + "");
-		bw.newLine();
-		bw.flush();
-
-	}
-
 	public void sendHighScore(int highscore) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		bw.write("sethighscore:" + username + ":server%" + highscore);

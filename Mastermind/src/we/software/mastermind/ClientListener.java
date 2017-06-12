@@ -14,17 +14,19 @@ import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
 
 public class ClientListener extends Thread {
-	// private static final java.awt.Color Color.AQUA = null;
+	//client variables
 	private Client client;
 	private Socket socket;
-	private MainMenu mainMenu;
-	private GameGui gameGui;
-	private ChatGui chatGui;
-	private Game game;
 	private String transmitter;
 	private String reciever;
 	private String inmessage;
 	private String message = null;
+	
+	
+	private MainMenu mainMenu;
+	private GameGui gameGui;
+	private ChatGui chatGui;
+	private Game game;
 	protected Timer timer;
 
 	public ClientListener(Client client, Socket socket) {
@@ -94,10 +96,7 @@ public class ClientListener extends Thread {
 						chatGui.appendToPane("From " + transmitter + " to everyone: ", 7);
 						chatGui.appendToPane(message + "\n", 0);
 
-					} else if (inmessage.startsWith("fscore")) {
-						game.getP2().setTotalScore(game.getP2().getTotalScore() + Integer.parseInt(message));
-						// Shows the final score to user
-					} else if (inmessage.startsWith("gethighscores")) {
+					} else if (inmessage.startsWith("gethighscores")) { //shows high socres in chat
 						int i = 0;
 						String[] names = new String[message.split(",").length];
 						String[] scores = new String[message.split(",").length];
@@ -114,36 +113,36 @@ public class ClientListener extends Thread {
 						}
 						chatGui.appendToPane(highScores, 10);
 
-					} else if (inmessage.startsWith("sethighscore")) {
-						// ok
 					} else if (inmessage.startsWith("login")) {
 						if (message.equals("ok")) {
-							//mainMenu.setCorrect(true);
+							//user login accepted
 							client.setName(reciever);
 							mainMenu.login();
 						} else if (message.equals("wrongpass")) {
-							//mainMenu.setCorrect(false);
+							//user login declined
 							mainMenu.checkError(1);
 						}
 						else if (message.equals("wrongusername")) {
-							//mainMenu.setCorrect(false);
+							//user login declined
 							mainMenu.checkError(0);
 						}
 					} else if (inmessage.startsWith("getonlineplayers")) {
+						//shows online players in chat
 						chatGui.appendToPane("Online players: ", 1);
 						chatGui.appendToPane(message + "\n", 0);
 					}
 
 				} catch (ArrayIndexOutOfBoundsException aioe) {
-					System.out.println("Sit on it .!. aioe");
+					System.out.println("Check for nulls.");
 				}
 			} // end of while
 		} catch (IOException e) {
-			System.out.println("Check me...");
+			System.out.println("Check before while listener.");
 		}
 
 	}// end of method run
 
+	//handles check messages
 	public void playCheckHandler() throws IOException {
 		if (client.isCodeMaker()) {
 			for (int i = 0; i < gameGui.getGame().getP2().getGuess().size(); i++) {
@@ -206,6 +205,7 @@ public class ClientListener extends Thread {
 
 	}
 
+	//handles requests messages
 	public void requestHandler() throws IOException {
 
 		if (message.equals("wannaplay")) {
@@ -246,6 +246,7 @@ public class ClientListener extends Thread {
 		}
 	}
 
+	//handles play pin messages
 	private void playPinHandler() {
 		int pos = Integer.parseInt(message.split(" ")[0]);
 		int color = Integer.parseInt(message.split(" ")[1]);
@@ -277,6 +278,7 @@ public class ClientListener extends Thread {
 		}
 	}
 
+	//handles all kind of messages
 	private void messageHandler() {
 
 		if (transmitter.equals("Server")) {
@@ -292,6 +294,7 @@ public class ClientListener extends Thread {
 
 	}
 
+	//handles play result messages
 	private void playResultHandler() {
 		int i = 0;
 		for (String val : message.split(" ")) {
@@ -337,6 +340,7 @@ public class ClientListener extends Thread {
 		}
 	}
 
+	//a timer to exit the game
 	public class SimpleTimer implements Runnable {
 
 		int count;

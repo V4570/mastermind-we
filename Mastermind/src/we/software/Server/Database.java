@@ -30,16 +30,15 @@ public class Database {
 
 		try {
 			con = DriverManager.getConnection(url, dbusername, dbpassword);
-			// st = con.createStatement();
 		}
 
 		catch (SQLException ex) {
-			ex.printStackTrace();
-			System.out.println("Den douleuei");
+			System.out.println("Sql Exception. Not working.(check credentials or url)");
 
 		}
 	}
-
+	
+	//checks if a name exists in db
 	public boolean usernameExists(String username) throws SQLException {
 
 		String upd = "SELECT * FROM " + tablename + " WHERE username = ?";
@@ -50,6 +49,7 @@ public class Database {
 
 	}
 
+	//checks if a name-password combination is right if it is return true else return false
 	public boolean passwordCheck(String username, String password) throws SQLException, UnsupportedEncodingException {
 		String upd = "SELECT * FROM " + tablename + " WHERE username = ?";
 		String salt;
@@ -71,6 +71,7 @@ public class Database {
 
 	}
 
+	//adds a new user to db
 	public void addUser(String username, String password) throws SQLException, UnsupportedEncodingException {
 		String upd = "INSERT INTO " + tablename + " (username, password, salt) " + "VALUES (?,?,?)";
 		PreparedStatement ps = con.prepareStatement(upd);
@@ -82,6 +83,7 @@ public class Database {
 		ps.execute();
 	}
 
+	//updates password of a user
 	public void updatePassword(String username, String password) throws SQLException, UnsupportedEncodingException {
 		String upd = "UPDATE players SET password, salt = ? WHERE username = ? ";
 		PreparedStatement ps = con.prepareStatement(upd);
@@ -92,6 +94,7 @@ public class Database {
 		ps.executeUpdate();
 	}
 
+	//updates high score of a user
 	public void updateHighScore(String username, int highscore) throws SQLException {
 		String upd = "UPDATE players SET highscore = ? WHERE username = ? ";
 		PreparedStatement ps = con.prepareStatement(upd);
@@ -100,6 +103,7 @@ public class Database {
 		ps.executeUpdate();
 	}
 
+	//updates date for a user in db
 	public void updateDate(String username) throws SQLException {
 		String upd = "UPDATE players SET date = ? WHERE username = ? ";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -110,6 +114,7 @@ public class Database {
 		ps.executeUpdate();
 	}
 
+	//returns a string with the first greatest high scores in db 
 	public String getHighScores() throws SQLException {
 		ArrayList<String> hs = new ArrayList<String>();
 		int h;
@@ -135,6 +140,7 @@ public class Database {
 		return b;
 	}
 
+	//returns the password to sha_512 on authentication process or when a new user creates an account
 	public String get_SHA_512_SecurePassword(String passwordToHash, String salt) throws UnsupportedEncodingException {
 		String generatedPassword = null;
 		try {
@@ -152,6 +158,7 @@ public class Database {
 		return generatedPassword;
 	}
 
+	//returns a random salt string
 	protected String getSaltString() {
 		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		StringBuilder salt = new StringBuilder();

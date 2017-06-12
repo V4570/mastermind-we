@@ -22,7 +22,6 @@ public class ServerThread extends Thread {
 	private String message;
 	private LiveServerHandler lsh;
 	private BufferedWriter bw;
-	
 
 	public ServerThread(Socket socket, Database db, HashMap<String, Client> clients, LiveServerHandler lsh) {
 		super();
@@ -76,8 +75,7 @@ public class ServerThread extends Thread {
 						}
 					} else if (inmessage.startsWith("playerleft")) {
 						if (!lsh.isHide())
-							System.out.println(
-									transmitter.getName() + "--> left while he was in game");
+							System.out.println(transmitter.getName() + "--> left while he was in game");
 						leftWhilePlayingJob();
 					} else if (inmessage.startsWith("request")) {
 						if (!lsh.isHide())
@@ -99,11 +97,6 @@ public class ServerThread extends Thread {
 							System.out.println(transmitter.getName() + "--> send playresult message to " + receiver
 									+ ": " + message);
 						playResultJob();
-					} else if (inmessage.startsWith("score")) {
-						if (!lsh.isHide())
-							System.out.println(
-									transmitter.getName() + "--> send score message to " + receiver + ": " + message);
-						scoreJob();
 					} else if (inmessage.startsWith("sethighscore")) {
 						if (!lsh.isHide())
 							System.out.println(
@@ -127,13 +120,14 @@ public class ServerThread extends Thread {
 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					System.out.println("Check message format");
-					// System.out.println(e.);
 					Thread.sleep(100);
 				} catch (SQLException e) {
-					System.out.println("Sql problem");
+					System.out.println("Problem in sql");
 					System.out.println(e.getMessage());
 				}
-				if (!lsh.isHide()) {
+				if (!lsh.isHide()) { // every time that a player sends a message
+										// shows in server's terminal which
+										// users are connected
 					System.out.print("[");
 					int count = 0;
 					for (Entry<String, Client> entry : clients.entrySet()) {
@@ -195,9 +189,7 @@ public class ServerThread extends Thread {
 
 	}// end of run method
 
-	// O transmitter stelnei aitima gia na kataxwrithei sto mitrwo tou server
-	// kai na mporei na paiksei me allous. Ean to onoma einai diathesimo tote
-	// pairnei pisw to minima 'ok' alliws pairnei to minima 'taken'
+	// handles requests of new users
 	private void addJob(String password) throws UnknownHostException, IOException, InterruptedException, SQLException {
 		if (!db.usernameExists(username)) {
 			db.addUser(username, password);
@@ -207,13 +199,11 @@ public class ServerThread extends Thread {
 			bw.newLine();
 			bw.flush();
 			if (!lsh.isHide())
-				System.out.println(
-						transmitter.getName() + "--> added succesfully");
+				System.out.println(transmitter.getName() + "--> added succesfully");
 
 		} else {
 			if (!lsh.isHide())
-				System.out.println(
-						transmitter.getName() + "--> name is taken");
+				System.out.println(transmitter.getName() + "--> name is taken");
 			bw.write("add:server: %taken");
 			bw.newLine();
 			bw.flush();
@@ -222,34 +212,31 @@ public class ServerThread extends Thread {
 		}
 
 	}
-	
 
+	// handles login requests
 	private void logInJob(String password) throws SQLException, IOException {
-		if(db.usernameExists(username)){
-		if (db.passwordCheck(username, password)) {
-			transmitter.setName(username);
-			clients.put(transmitter.getName(), transmitter);
-			db.updateDate(transmitter.getName());
-			bw.write("login:server:" + username + "%ok");
-			bw.newLine();
-			bw.flush();
-			if (!lsh.isHide())
-				System.out.println(
-						transmitter.getName() + "--> log in successfully");
+		if (db.usernameExists(username)) {
+			if (db.passwordCheck(username, password)) {
+				transmitter.setName(username);
+				clients.put(transmitter.getName(), transmitter);
+				db.updateDate(transmitter.getName());
+				bw.write("login:server:" + username + "%ok");
+				bw.newLine();
+				bw.flush();
+				if (!lsh.isHide())
+					System.out.println(transmitter.getName() + "--> log in successfully");
 
+			} else {
+				if (!lsh.isHide())
+					System.out.println(transmitter.getName() + "--> invalid password");
+				bw.write("login:server:" + username + "%wrongpass");
+				bw.newLine();
+				bw.flush();
+				socket.close();
+			}
 		} else {
 			if (!lsh.isHide())
-				System.out.println(
-						transmitter.getName() + "--> invalid password");
-			bw.write("login:server:" + username + "%wrongpass");
-			bw.newLine();
-			bw.flush();
-			socket.close();
-		}
-		}else{
-			if (!lsh.isHide())
-				System.out.println(
-						transmitter.getName() + "--> username does not exist");
+				System.out.println(transmitter.getName() + "--> username does not exist");
 			bw.write("login:server:" + username + "%wrongusername");
 			bw.newLine();
 			bw.flush();
@@ -258,31 +245,39 @@ public class ServerThread extends Thread {
 
 	}
 
+	// handles situations where one user left a pvp game while it was in
+	// progress
 	public void leftWhilePlayingJob() throws IOException {
 		if (transmitter.isInGame()) {
-			if (!clients.isEmpty() && clients.containsKey(transmitter.getUserThatPlayWith()) && !transmitter.getUserThatPlayWith().equals(null)) {
-				
-				clients.get(transmitter.getUserThatPlayWith()).getBw()
-				.write("playerleft:" + transmitter.getName() + ":" + transmitter.getUserThatPlayWith() + "% ok");
-		clients.get(transmitter.getUserThatPlayWith()).getBw().newLine();
-		clients.get(transmitter.getUserThatPlayWith()).getBw().flush();
-				
+			if (!clients.isEmpty() && clients.containsKey(transmitter.getUserThatPlayWith())
+					&& !transmitter.getUserThatPlayWith().equals(null)) {
+
+				clients.get(transmitter.getUserThatPlayWith()).getBw().write(
+						"playerleft:" + transmitter.getName() + ":" + transmitter.getUserThatPlayWith() + "% ok");
+				clients.get(transmitter.getUserThatPlayWith()).getBw().newLine();
+				clients.get(transmitter.getUserThatPlayWith()).getBw().flush();
+
 				transmitter.setInGame(false);
 				clients.get(transmitter.getUserThatPlayWith()).setInGame(false);
 				clients.get(transmitter.getUserThatPlayWith()).setUserThatPlayWith(null);
 				transmitter.setUserThatPlayWith(null);
-				
-				
+
 			}
 		}
 	}
 
-	// O transmitter stelnei minima ston receiver an to onoma tou receiver einai
-	// kataxwrimeno sto HAshMap 'clients' tou server to minima prowtheite
-	// kanonika se diaforetiki periptwsi o transmitter pairnei minima apo ton
-	// server 'receiver notconnected'
+	// handles all private messages
 	private void messageJob() throws UnknownHostException, IOException, InterruptedException {
-		if (!clients.isEmpty() && clients.containsKey(receiver)) {
+		if (!clients.isEmpty() && clients.containsKey(receiver)) { // if client
+																	// is online
+																	// sends the
+																	// message
+																	// else
+																	// inform
+																	// transmitter
+																	// that
+																	// client is
+																	// offline
 			clients.get(receiver).getBw().write("message:" + transmitter.getName() + ":" + receiver + "%" + message);
 			clients.get(receiver).getBw().newLine();
 			clients.get(receiver).getBw().flush();
@@ -297,15 +292,13 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	/*
-	 * O transmitter stelnei aitima ston receiver gia na paiksoun. An o receiver
-	 * einai online kai dexthei tote stelnei minima 'ok' an einai offline
-	 * stelnete minima 'notconnected', an den thelei stelnete minima
-	 * 'anotherday'
-	 */
+	// handles all game requests
 	private void requestJob() throws InterruptedException, IOException {
-		if (clients.containsKey(receiver)) {
-			if (message.equals("ok")) {
+		if (clients.containsKey(receiver)) { // if player is online continue
+												// else send a message to player
+												// to inform him
+			if (message.equals("ok")) { // if message is ok it means that a
+										// player accepted a game request
 				transmitter.setUserThatPlayWith(receiver);
 				transmitter.setInGame(true);
 				clients.get(receiver).setUserThatPlayWith(transmitter.getName());
@@ -323,8 +316,8 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	// H prospatheia(mantepsia) tou transmitter stelnete ston receiver gia na
-	// elexthei
+	// sends a check message to the enemy so to let him know that the player
+	// finish his round
 	private void playCheckJob() throws IOException, InterruptedException {
 		clients.get(receiver).getBw().write("playcheck:" + transmitter.getName() + ":" + receiver + "%" + message);
 		clients.get(receiver).getBw().newLine();
@@ -332,6 +325,7 @@ public class ServerThread extends Thread {
 
 	}
 
+	// sends the result of a round to the enemy player
 	private void playResultJob() throws IOException, InterruptedException {
 		clients.get(receiver).getBw().write("playresult:" + transmitter.getName() + ":" + receiver + "%" + message);
 		clients.get(receiver).getBw().newLine();
@@ -339,6 +333,7 @@ public class ServerThread extends Thread {
 
 	}
 
+	// sends the position and the color to enemy player
 	private void playPinJob() throws IOException, InterruptedException {
 		clients.get(receiver).getBw().write("playpin:" + transmitter.getName() + ":" + receiver + "%" + message);
 		clients.get(receiver).getBw().newLine();
@@ -346,19 +341,8 @@ public class ServerThread extends Thread {
 
 	}
 
-	/*
-	 * To score tis prospatheias tou reciever afou elexthei apo ton transmitter
-	 * stelnete pisw ston receiver
-	 */
-	private void scoreJob() throws InterruptedException, IOException {
-		clients.get(receiver).getBw().write("score:" + transmitter.getName() + ":" + receiver + "%" + message);
-		clients.get(receiver).getBw().newLine();
-		clients.get(receiver).getBw().flush();
-
-	}
-
-	// To teliko score kathe partidas apostelete apo ton transmitter ston
-	// receiver
+	// Total score of each player in a pvp game comapred with the one that is
+	// stored in the database if is greater replaces it
 	private void setHighScoreJob(String highscore)
 			throws InterruptedException, IOException, NumberFormatException, SQLException {
 		db.updateHighScore(transmitter.getName(), Integer.parseInt(highscore));
@@ -370,6 +354,8 @@ public class ServerThread extends Thread {
 
 	}
 
+	// sends a message to user which contains the 4 players with the greatest
+	// highscores from database
 	private void getHighScoresJob() throws InterruptedException, IOException, NumberFormatException, SQLException {
 		bw.write("gethighscores:server:" + transmitter.getName() + "%" + db.getHighScores());
 		bw.newLine();
@@ -377,6 +363,7 @@ public class ServerThread extends Thread {
 
 	}
 
+	// sends a message to every user connected at this time
 	private void messageAllJob() throws UnknownHostException, IOException, InterruptedException {
 		if (!clients.isEmpty() && clients.size() > 1) {
 			for (Entry<String, Client> entry : clients.entrySet()) {
@@ -387,9 +374,7 @@ public class ServerThread extends Thread {
 					value.getBw().flush();
 				}
 			}
-
-			System.out.println("Message sent to everyone!");
-		} else {
+		} else { // if noone is connected sends a message to inform user
 			bw.write(
 					"message:" + "Server" + ":" + transmitter.getName() + "% there is nobody online at this moment...");
 			bw.newLine();
@@ -398,6 +383,7 @@ public class ServerThread extends Thread {
 		}
 	}
 
+	// sends to player a string with all the online players at current time
 	private void getOnlinePlayersJob() throws IOException {
 		String names = String.join(",", clients.keySet());
 		bw.write("getonlineplayers:server:" + transmitter.getName() + "%" + names);
@@ -406,6 +392,8 @@ public class ServerThread extends Thread {
 
 	}
 
+	// when a user disconnects for a reason this method remove him from the
+	// hashmap which contains all the online clients
 	private void closeJob() throws IOException {
 		if (transmitter != null) {
 			if (transmitter.getName() != null) {
@@ -416,7 +404,7 @@ public class ServerThread extends Thread {
 		}
 		leftWhilePlayingJob();
 		socket.close();
-		
+
 	}
 
 }

@@ -43,20 +43,21 @@ public class LiveServerHandler extends Thread{
 		
 	}
 	
+	
 	public void commandHandler(String m) throws UnknownHostException, IOException, InterruptedException{
-		if(m.equals("hide")){
+		if(m.equals("hide")){ //hide messages that appear in terminal
 			hide = true;
-		}else if(m.equals("show")){
+		}else if(m.equals("show")){ //show messages that appear in terminal
 			hide = false;
 		}else{
 		String[] info = m.split("%",2);
 		String cmd = info[0];
 		String message = info[1];
 		
-		if(cmd.startsWith("allmessage")){
+		if(cmd.startsWith("allmessage")){ //sends a message to every connected user from server
 			this.messageAllJob(message);
 		}
-		else if(cmd.startsWith("message")){
+		else if(cmd.startsWith("message")){ // sends pm to a specific user from server
 			String receiver = cmd.split(":",2)[1];
 			this.messageJob(receiver,message);
 		}
@@ -64,6 +65,7 @@ public class LiveServerHandler extends Thread{
 		
 	}
 	
+	// sends everyone message
 	private void messageAllJob(String message) throws UnknownHostException, IOException, InterruptedException {
 		if (!clients.isEmpty()) {
 			for (Entry<String, Client> entry : clients.entrySet()) {
@@ -84,6 +86,7 @@ public class LiveServerHandler extends Thread{
 		}
 	}
 	
+	//sends private message
 	private void messageJob(String receiver, String message) throws UnknownHostException, IOException, InterruptedException {
 		if (!clients.isEmpty() && clients.containsKey(receiver)) {
 			clients.get(receiver).getThread().join(1);

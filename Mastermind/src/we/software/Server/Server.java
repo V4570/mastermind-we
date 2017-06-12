@@ -15,7 +15,8 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		new Server().runServer();
 	}
-
+	
+	//here is where server starts
 	public void runServer() throws IOException {
 		server = new ServerSocket(PORT,100);
 		db = new Database();
@@ -23,8 +24,8 @@ public class Server {
 		lsh.start();
 		System.out.println("Server is running....");
 		while (true) {
-			socket = server.accept();
-			new ServerThread(socket,db, clients,lsh).start();
+			socket = server.accept(); //every accepted connection has its own thread
+			new ServerThread(socket,db, clients,lsh).start(); //starts new thread for the client
 		}
 
 	}
