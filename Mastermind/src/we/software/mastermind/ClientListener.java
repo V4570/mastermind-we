@@ -392,6 +392,7 @@ public class ClientListener extends Thread {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					if(mainMenu.musicOn) gameGui.gameMusic.closeClip();
 					mainMenu.setFrameVisible(gameGui);
 					client.setInGame(false);
 

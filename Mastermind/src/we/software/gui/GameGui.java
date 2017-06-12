@@ -49,7 +49,7 @@ public class GameGui extends JFrame {
 										// round.
 	public Game game;
 	private Timer timer;
-	private AudioLoad gameMusic;
+	public AudioLoad gameMusic;
 	private int selectedBtn; // Integer that keeps the position of the selected
 								// selectionBtn
 	private int turn = 1; // Integer that holds current turn.
