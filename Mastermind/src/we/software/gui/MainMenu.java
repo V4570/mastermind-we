@@ -709,6 +709,7 @@ public class MainMenu extends JFrame {
 			else if (e.getSource() == gameModePanel.pVsP) {
 
 			    gameModePanel.showCommands();
+			    gameMode = 1;
 			}
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
