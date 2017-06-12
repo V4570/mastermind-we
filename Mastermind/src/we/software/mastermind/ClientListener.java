@@ -83,8 +83,14 @@ public class ClientListener extends Thread {
 
 					} else if (inmessage.startsWith("playresult")) {
 						playResultHandler();
-					} else if(inmessage.startsWith("playleft")){
-						
+					} else if(inmessage.startsWith("playerleft")){
+						if(client.isInGame()) {
+							gameGui.makeButtonsUnavailable();
+							chatGui.appendToPane("Server: ", 6);
+							chatGui.appendToPane(client.getEnemy().getName()+" left...\n", 0);
+							chatGui.appendToPane("System: ", 2);
+							chatGui.appendToPane("Press 'BACK TO MENU' to return to the Main Menu.\n", 0);
+						}
 					} else if (inmessage.startsWith("message")) {
 						messageHandler();
 

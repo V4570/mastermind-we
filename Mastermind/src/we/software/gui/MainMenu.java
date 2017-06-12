@@ -104,6 +104,10 @@ public class MainMenu extends JFrame {
 		if(musicOn) menuMusic.playMenuClip();
 
 	}
+	
+	public Client getClient() {
+		return client;
+	}
 
 	private void addMenu(){
 
@@ -658,8 +662,8 @@ public class MainMenu extends JFrame {
 				gameModePanel.flagOptions = false;
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
-
-				GameGui gameGui = new GameGui(MainMenu.this, gameMode, chatGui);
+				if(!client.equals(null)) client.setInGame(true);
+				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
 				setVisible(false);
 
 				gameModePanel.panelRestart();

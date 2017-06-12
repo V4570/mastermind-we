@@ -646,7 +646,16 @@ public class GameGui extends JFrame{
                 }
             }
             else if(e.getSource() == backButton){
-
+            	
+            	if(gameMode==0 && !previous.getClient().equals(null)) previous.getClient().setInGame(false);
+            	if(gameMode==1){
+            		try {
+            			client.setInGame(false);
+						client.playerLeftWhilePlaying();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+            	}
                 if(MainMenu.musicOn) gameMusic.closeClip();
                 dispose();
                 previous.setFrameVisible(GameGui.this);     //Sets the previous as frame visible
@@ -729,8 +738,7 @@ public class GameGui extends JFrame{
 				chatGui.appendToPane("\n", 9);
 				timer.stop();
 				if(gameMode==0){
-
-				    if(MainMenu.musicOn) gameMusic.closeClip();
+					if(!previous.getClient().equals(null)) previous.getClient().setInGame(false);				    if(MainMenu.musicOn) gameMusic.closeClip();
 				    dispose();
 				    previous.setFrameVisible(GameGui.this);
 				}

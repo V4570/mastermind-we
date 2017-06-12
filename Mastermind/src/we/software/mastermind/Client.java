@@ -85,6 +85,13 @@ public class Client extends Player {
 		bw.flush();
 
 	}
+	
+	public void playerLeftWhilePlaying() throws IOException{
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		bw.write("playerleft:" + username + ":server%ok" );
+		bw.newLine();
+		bw.flush();
+	}
 
 	// check credentials of user in order to log in
 	public void logMeIn(String name, String password) throws IOException {
