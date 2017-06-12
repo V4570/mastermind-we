@@ -225,6 +225,7 @@ public class ClientListener extends Thread {
 		} else if (message.equals("ok")) {
 			gameGui = new GameGui(mainMenu, 1, chatGui);
 			gameGui.setClient(client);
+			if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
 			mainMenu.setVisible(false);
 			client.setEnemy(new Player());
 			client.getEnemy().setName(transmitter);
