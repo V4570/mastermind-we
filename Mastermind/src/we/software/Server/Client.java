@@ -8,10 +8,29 @@ public class Client {
 	private Socket socket;
 	private Thread thread;
 	private BufferedWriter bw;
+	private String userThatPlayWith=null;
+	private boolean isInGame=false;
 
 	public Client(Socket socket, Thread thread) {
 		this.socket = socket;
 		this.thread = thread;
+	}
+	
+	public boolean isInGame() {
+		return isInGame;
+	}
+
+	public void setInGame(boolean isInGame) {
+		this.isInGame = isInGame;
+	}
+	
+
+	public String getUserThatPlayWith() {
+		return userThatPlayWith;
+	}
+
+	public void setUserThatPlayWith(String userThatPlayWith) {
+		this.userThatPlayWith = userThatPlayWith;
 	}
 	
 	public BufferedWriter getBw() {
