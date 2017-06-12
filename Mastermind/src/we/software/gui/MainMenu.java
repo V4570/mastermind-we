@@ -98,6 +98,7 @@ public class MainMenu extends JFrame {
         add(minimizeButton);
         add(loginPanel);
 
+		//addMenu();
         setTitle("Mastermind WE - Pre Alpha 0.0.1");
 		setUndecorated(true);
 		setVisible(true);
@@ -229,7 +230,7 @@ public class MainMenu extends JFrame {
             login.setVisible(false);
             login.addActionListener(b);
 
-            signup = new MenuButton("signUp.png", 487+87, 244+295, 0, 0);
+            signup = new MenuButton("signup.png", 487+87, 244+295, 0, 0);
             signup.setVisible(false);
             signup.addActionListener(b);
 
@@ -381,10 +382,11 @@ public class MainMenu extends JFrame {
      */
 	class GameMode extends JPanel {
 
-		private BufferedImage background;
+		private BufferedImage background, commands, drawCommands;
 		private MenuButton pVsAi, pVsP;
 		private boolean flag = false;
 		private boolean flagOptions = true;
+		private boolean commandsFlag = false;
 
 		private GameMode() {
 
@@ -403,6 +405,7 @@ public class MainMenu extends JFrame {
 
 			try {
 				background = ImageIO.read(LoadAssets.load("playPanel.png"));
+				commands = ImageIO.read(LoadAssets.load("Layers/commands.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -412,7 +415,7 @@ public class MainMenu extends JFrame {
 		private void initPanel() {
 			setLayout(null);
 			add(pVsAi);
-			if(!(gameMode == 0)) add(pVsP);
+			if(!(gameMode == 1)) add(pVsP);
 
 			setBounds(193, 300, background.getWidth(null), background.getHeight(null));
 			setOpaque(false);
@@ -423,7 +426,22 @@ public class MainMenu extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.drawImage(background, 0, 0, null);
+			g.drawImage(drawCommands, 515, 73, null);
 		}
+
+		private void showCommands(){
+
+		    if(commandsFlag){
+		        commandsFlag = false;
+		        drawCommands = null;
+		        repaint();
+            }
+            else{
+		        commandsFlag = true;
+		        drawCommands = commands;
+		        repaint();
+            }
+        }
 
 		private void setPanelVisible() {
 			if (!flag) {
@@ -436,12 +454,16 @@ public class MainMenu extends JFrame {
 			if (flag) {
 				setVisible(!flag);
 				flag = !flag;
+				commandsFlag = false;
+				drawCommands = null;
 			}
 		}
 
 		private void panelRestart() {
 			pVsP.setVisible(true);
 			pVsAi.setVisible(true);
+			commandsFlag = false;
+			drawCommands = null;
 		}
 	}
 
@@ -639,20 +661,7 @@ public class MainMenu extends JFrame {
 
 			else if (e.getSource() == gameModePanel.pVsP) {
 
-				gameModePanel.pVsP.setVisible(false);
-				gameModePanel.pVsAi.setVisible(false);
-
-				gameModePanel.flagOptions = false;
-				if (soundfxOn)
-					gameModePanel.pVsP.playSound();
-
-				GameGui gameGui = new GameGui(MainMenu.this, 1, chatGui);
-				setVisible(false);
-
-				gameModePanel.panelRestart();
-				gameModePanel.setPanelInvisible();
-				if (musicOn)
-					menuMusic.closeClip();
+			    gameModePanel.showCommands();
 			}
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
@@ -746,6 +755,7 @@ public class MainMenu extends JFrame {
                     client.getcListener().setChatGui(chatGui);
                     chatGui.setClient(client);
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
+                    gameMode = 1;
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
                     loginPanel.username.setText("");
@@ -762,6 +772,7 @@ public class MainMenu extends JFrame {
                     client.getcListener().setChatGui(chatGui);
                     chatGui.setClient(client);
                     client.addMe(loginPanel.username.getText(), loginPanel.password.getText());
+                    gameMode = 1;
                 }catch (Exception e1){
                     loginPanel.setBackground(4);
                     loginPanel.username.setText("");
