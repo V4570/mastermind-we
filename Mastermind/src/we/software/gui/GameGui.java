@@ -657,7 +657,7 @@ public class GameGui extends JFrame {
 				}
 			} else if (e.getSource() == backButton) {
 
-				if (gameMode == 0 && !previous.getClient().equals(null))
+				if (gameMode == 0 && !(previous.getClient() == null))
 					previous.getClient().setInGame(false);
 				if (gameMode == 1) {
 					try {
@@ -743,7 +743,7 @@ public class GameGui extends JFrame {
 				chatGui.appendToPane("\n", 9);
 				timer.stop();
 				if (gameMode == 0) {
-					if (!previous.getClient().equals(null))
+					if (!(previous.getClient() == null))
 						previous.getClient().setInGame(false);
 					if (MainMenu.musicOn)
 						gameMusic.closeClip();
