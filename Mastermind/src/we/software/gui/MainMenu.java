@@ -574,9 +574,7 @@ public class MainMenu extends JFrame {
 
     public void login(){
 
-        client.getcListener().setMainMenu(MainMenu.this);
-        client.getcListener().setChatGui(chatGui);
-        chatGui.setClient(client);
+        
         loginPanel.setVisible(false);
         gameMode = 1;
         addMenu();
@@ -738,6 +736,9 @@ public class MainMenu extends JFrame {
                 try {
 
                     client = new Client();
+                    client.getcListener().setMainMenu(MainMenu.this);
+                    client.getcListener().setChatGui(chatGui);
+                    chatGui.setClient(client);
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
