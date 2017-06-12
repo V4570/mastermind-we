@@ -383,10 +383,10 @@ public class MainMenu extends JFrame {
 	class GameMode extends JPanel {
 
 		private BufferedImage background, commands, drawCommands;
-		private MenuButton pVsAi, pVsP;
+		private MenuButton pVsAi, pVsP, easy, medium;
 		private boolean flag = false;
 		private boolean flagOptions = true;
-		private boolean commandsFlag = false;
+		private boolean commandsFlag, flagDif = false;
 
 		private GameMode() {
 
@@ -395,6 +395,14 @@ public class MainMenu extends JFrame {
 
 			pVsP = new MenuButton("pvp.png", 506, 44, 0, 0);
 			pVsP.addActionListener(b);
+
+			easy = new MenuButton("easy.png", 813, 82, 0, 0);
+			easy.setVisible(false);
+			easy.addActionListener(b);
+
+			medium = new MenuButton("medium.png", 813, 112, 0, 0);
+			medium.setVisible(false);
+			medium.addActionListener(b);
 
 			readImages();
 			initPanel();
@@ -415,6 +423,8 @@ public class MainMenu extends JFrame {
 		private void initPanel() {
 			setLayout(null);
 			add(pVsAi);
+			add(easy);
+			add(medium);
 			if(!(gameMode == 1)) add(pVsP);
 
 			setBounds(193, 300, background.getWidth(null), background.getHeight(null));
@@ -465,6 +475,20 @@ public class MainMenu extends JFrame {
 			commandsFlag = false;
 			drawCommands = null;
 		}
+
+		public void difficulty(){
+
+		    if(flagDif){
+		        flagDif = false;
+		        easy.setVisible(false);
+		        medium.setVisible(false);
+            }
+            else{
+		        flagDif = true;
+		        easy.setVisible(true);
+		        medium.setVisible(true);
+            }
+        }
 	}
 
     /**
@@ -610,6 +634,29 @@ public class MainMenu extends JFrame {
         addMenu();
     }
 
+    private void startGame(int dif){
+
+        gameModePanel.pVsP.setVisible(false);
+        gameModePanel.pVsAi.setVisible(false);
+
+        gameModePanel.flagOptions = false;
+        if (soundfxOn)
+            gameModePanel.pVsAi.playSound();
+        if(!client.equals(null)) client.setInGame(true);
+        GameGui gameGui = new GameGui(MainMenu.this, dif, gameMode, chatGui);
+        setVisible(false);
+
+        gameModePanel.panelRestart();
+        gameModePanel.setPanelInvisible();
+        if (musicOn)
+            menuMusic.closeClip();
+    }
+
+    public int getMode(){
+
+        return gameMode;
+    }
+
     /**
 	 * Handles the action after a button has been pressed.
 	 */
@@ -665,21 +712,17 @@ public class MainMenu extends JFrame {
 			}
 			else if (e.getSource() == gameModePanel.pVsAi) {
 
-				gameModePanel.pVsP.setVisible(false);
-				gameModePanel.pVsAi.setVisible(false);
-
-				gameModePanel.flagOptions = false;
-				if (soundfxOn)
-					gameModePanel.pVsAi.playSound();
-				if(!client.equals(null)) client.setInGame(true);
-				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
-				setVisible(false);
-
-				gameModePanel.panelRestart();
-				gameModePanel.setPanelInvisible();
-				if (musicOn)
-					menuMusic.closeClip();
+			    gameModePanel.difficulty();
+			    gameMode = 0;
 			}
+			else if (e.getSource() == gameModePanel.easy){
+
+			    startGame(0);
+            }
+            else if (e.getSource() == gameModePanel.medium){
+
+			    startGame(1);
+            }
 			else if (e.getSource() == optionsPanel.musicButton) {
 
 				if (musicOn) {
@@ -730,8 +773,6 @@ public class MainMenu extends JFrame {
                 username = loginPanel.username.getText();
 
                 if(username.equals("")||username.equals(" ")){
-
-                    //loginPanel.giveError(1);
 
                     loginPanel.username.setText("");
                 }

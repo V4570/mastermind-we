@@ -331,7 +331,7 @@ public class ChatGui extends JPanel{
                 if(msg[1].equals("accept")){
                     if(client.getPending().contains(msg[2])){
                         client.acceptGameRequest(msg[2]);
-                        GameGui gameGui = new GameGui(mainMenu, 1,this);
+                        GameGui gameGui = new GameGui(mainMenu, mainMenu.getMode(), 1,this);
                         if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
         				mainMenu.setVisible(false);
         				

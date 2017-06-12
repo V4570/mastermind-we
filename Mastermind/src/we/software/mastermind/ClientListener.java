@@ -223,7 +223,7 @@ public class ClientListener extends Thread {
 		} else if (message.equals("ingame")) {
 			chatGui.appendToPane(transmitter + " is in game.\n", 1);
 		} else if (message.equals("ok")) {
-			gameGui = new GameGui(mainMenu, 1, chatGui);
+			gameGui = new GameGui(mainMenu, mainMenu.getMode() , 1, chatGui);
 			gameGui.setClient(client);
 			if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
 			mainMenu.setVisible(false);

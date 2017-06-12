@@ -62,14 +62,14 @@ public class GameGui extends JFrame {
 										// register each turn's guess
 	private int gameMode; // 0 for pvsAi, 1 for pvsP
 
-	public GameGui(MainMenu previous, int gM, ChatGui chat) {
+	public GameGui(MainMenu previous, int dif, int gM, ChatGui chat) {
 
 		gameMusic = new AudioLoad("gameMusic.wav");
 		if (MainMenu.musicOn)
 			gameMusic.playMenuClip();
 		this.gameMode = gM;
 		if (gM == 0) {
-			this.game = new Game(0);
+			this.game = new Game(dif);
 		} else {
 			this.game = new Game();
 		}
