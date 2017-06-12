@@ -5,11 +5,12 @@ import javax.swing.*;
 /**
  * Created by Bill on 17-May-17.
  */
-public abstract class Button extends JButton{
+abstract class Button extends JButton{
 
-    protected ImageIcon image, imageHover;
+    ImageIcon image;
+    ImageIcon imageHover;
 
-    public Button(String imagePath, int xPos, int yPos){
+    Button(String imagePath, int xPos, int yPos){
 
         image = new ImageIcon(LoadAssets.load("Buttons/"+imagePath));
         try{

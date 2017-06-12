@@ -5,17 +5,17 @@ import java.util.ArrayList;
 public class Player {
 
 	//General User Information
-    protected String username;
+    String username;
     private int totalScore=0;
     
     //Current Game player information.
     private boolean guessing = true;
-    protected ArrayList<Integer> codeToBreak;
-    protected ArrayList<Integer> guess;
-    protected boolean codeMaker;
+    ArrayList<Integer> codeToBreak;
+    private ArrayList<Integer> guess;
+    private boolean codeMaker;
     
     //Game Info
-    protected int numberOfPins = 4; 
+    int numberOfPins = 4;
     
     
 
