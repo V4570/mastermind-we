@@ -572,6 +572,16 @@ public class MainMenu extends JFrame {
 	    loginPanel.giveError(errorCode);
     }
 
+    public void login(){
+
+        client.getcListener().setMainMenu(MainMenu.this);
+        client.getcListener().setChatGui(chatGui);
+        chatGui.setClient(client);
+        loginPanel.setVisible(false);
+        gameMode = 1;
+        addMenu();
+    }
+
     /**
 	 * Handles the action after a button has been pressed.
 	 */
@@ -731,15 +741,6 @@ public class MainMenu extends JFrame {
                     client.logMeIn(loginPanel.username.getText(), loginPanel.password.getText());
                 } catch (Exception ex) {
                     loginPanel.setBackground(4);
-                }
-
-                if(!(client == null)){
-                    client.getcListener().setMainMenu(MainMenu.this);
-                    client.getcListener().setChatGui(chatGui);
-                    chatGui.setClient(client);
-                    loginPanel.setVisible(false);
-                    gameMode = 1;
-                    addMenu();
                 }
             }
 
