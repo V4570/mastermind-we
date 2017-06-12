@@ -103,11 +103,19 @@ public class MainMenu extends JFrame {
 		if(musicOn) menuMusic.playMenuClip();
 
 	}
-	
+
+    /**
+     * Returns the active client
+     * @return
+     */
 	public Client getClient() {
 		return client;
 	}
 
+    /**
+     * Adds the functionality to the main menu after the user has
+     * passed the login panel.
+     */
 	private void addMenu(){
 
 	    add(howToPlay);
@@ -121,7 +129,12 @@ public class MainMenu extends JFrame {
     }
 
 
-
+    /**
+     * Sets the frame visible after the program has returned from the game
+     * display.
+     *
+     * @param previous
+     */
 	public void setFrameVisible(GameGui previous) {
 
 	    this.previous = previous;
@@ -624,6 +637,9 @@ public class MainMenu extends JFrame {
 	    loginPanel.giveError(errorCode);
     }
 
+    /**
+     * Used by the clientlistener to login the player in the game.
+     */
     public void login(){
 
         
@@ -632,6 +648,10 @@ public class MainMenu extends JFrame {
         addMenu();
     }
 
+    /**
+     * Starts a game in offline mode.
+     * @param dif is the difficulty selected by the user.
+     */
     private void startGame(int dif){
 
         gameModePanel.pVsP.setVisible(false);

@@ -8,7 +8,7 @@ import java.net.URL;
 class LoadAssets {
 
     /**
-     * Helps with loading the files
+     * Helps with loading the files and not having to write this line over and over
      */
     public static URL load(String path){
         return LoadAssets.class.getResource("/"+ path);

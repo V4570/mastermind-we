@@ -157,6 +157,11 @@ public class ChatGui extends JPanel{
 		}
 	}
 
+    /**
+     * Depending on the choice given it styles the text that gets appended to the chat.
+     * @param msg
+     * @param choice
+     */
     public void appendToPane(String msg, int choice) {
 
         StyledDocument doc = chatHistory.getStyledDocument();
