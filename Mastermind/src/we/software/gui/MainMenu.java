@@ -624,6 +624,9 @@ public class MainMenu extends JFrame {
 	    loginPanel.giveError(errorCode);
     }
 
+    /**
+     * Used by the clientlistener to login the player in the game.
+     */
     public void login(){
 
         
@@ -632,6 +635,10 @@ public class MainMenu extends JFrame {
         addMenu();
     }
 
+    /**
+     * Starts a game in offline mode.
+     * @param dif is the difficulty selected by the user.
+     */
     private void startGame(int dif){
 
         gameModePanel.pVsP.setVisible(false);
