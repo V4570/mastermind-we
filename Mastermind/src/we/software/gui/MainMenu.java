@@ -29,7 +29,7 @@ public class MainMenu extends JFrame {
 	private ButtonListener b = new ButtonListener();
 	public static boolean musicOn = true;                  //Variable that controls the music (on/off)
 	public static boolean soundfxOn = false;                //Variable that controls the sound effects (on/off)
-	private AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
+	public AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
 	private String username = "";
 	private JButton minimizeButton;
 	private Client client = null;

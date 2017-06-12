@@ -37,7 +37,6 @@ public class ChatGui extends JPanel{
 	public JTextPane chatHistory;
 	public Thread chatThread;
 	public boolean chatRunning = false;
-	//private KeyInput kp;
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
 	private ArrayList<String> commands = new ArrayList<String>();
 	private int previousCommand=-1;
@@ -334,6 +333,8 @@ public class ChatGui extends JPanel{
                         client.acceptGameRequest(msg[2]);
                         GameGui gameGui = new GameGui(mainMenu, 1,this);
         				mainMenu.setVisible(false);
+        				if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
+        					
         				client.setCodeMaker(true);
         				client.setInGame(true);
         				client.setEnemy(new Player());
