@@ -396,11 +396,11 @@ public class MainMenu extends JFrame {
 			pVsP = new MenuButton("pvp.png", 506, 44, 0, 0);
 			pVsP.addActionListener(b);
 
-			easy = new MenuButton("easy.png", 813, 82, 0, 0);
+			easy = new MenuButton("easy.png", 797, 77, 0, 0);
 			easy.setVisible(false);
 			easy.addActionListener(b);
 
-			medium = new MenuButton("medium.png", 813, 112, 0, 0);
+			medium = new MenuButton("medium.png", 806, 103, 0, 0);
 			medium.setVisible(false);
 			medium.addActionListener(b);
 
@@ -642,7 +642,7 @@ public class MainMenu extends JFrame {
         gameModePanel.flagOptions = false;
         if (soundfxOn)
             gameModePanel.pVsAi.playSound();
-        if(!client.equals(null)) client.setInGame(true);
+        if(!(client == null)) client.setInGame(true);
         GameGui gameGui = new GameGui(MainMenu.this, dif, gameMode, chatGui);
         setVisible(false);
 
