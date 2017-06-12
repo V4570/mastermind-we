@@ -119,6 +119,7 @@ public class ClientListener extends Thread {
 					} else if (inmessage.startsWith("login")) {
 						if (message.equals("ok")) {
 							//mainMenu.setCorrect(true);
+							client.setName(reciever);
 							mainMenu.login();
 						} else if (message.equals("wrongpass")) {
 							//mainMenu.setCorrect(false);

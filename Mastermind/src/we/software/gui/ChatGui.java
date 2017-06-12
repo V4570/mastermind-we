@@ -308,7 +308,7 @@ public class ChatGui extends JPanel{
         }
         else if(chatmsg.split(":")[0].equals("invite")){
             String[] msg = chatInput.getText().split(":",3);
-            if(msg.length==2){
+            if(msg.length==2 && !msg[1].equals(client.getName())){
                 client.sendGameRequest(msg[1]);
     			appendToPane("A game request has been sent to "+msg[1]+".\n", 0);
                 chatInput.setText("");
