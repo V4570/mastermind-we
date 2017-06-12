@@ -21,32 +21,19 @@ public class GameGui extends JFrame {
 	private final int WIDTH = 1280;
 	private final int HEIGHT = WIDTH / 16 * 9;
 	private ButtonListener btnListener = new ButtonListener();
-	private MenuButton exitButton, minimize, optionsButton, backButton, music, soundFx; // Functionality
+	private MenuButton exitButton, minimize, backButton, music, soundFx; // Functionality
 																						// buttons
 	public HistoryPanel turnHistory; // The panel that holds all the turns of
 										// the game
 	private ChatGui chatGui; // The chat used in pvsp game mode.
 	public Client client = null; // The client for the chat to work
-	public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4; // The
-																						// buttons
-																						// for
-																						// the
-																						// each
-																						// place
-																						// in
-																						// the
-																						// code.
+	public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;
 	private SelectionButton checkBtn, sBtn; // checkBtn to register each round.
 											// sBtn keeps the currently selected
 											// selectionBtn.
-	private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn; // The
-																						// buttons
-																						// for
-																						// the
-																						// color
-																						// selection
-	public NumbersPanel numbersPanel; // The panel that holds the number of each
-										// round.
+
+	private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;
+	public NumbersPanel numbersPanel;
 	public Game game;
 	private Timer timer;
 	public AudioLoad gameMusic;
@@ -81,22 +68,41 @@ public class GameGui extends JFrame {
 
 	}
 
+    /**
+     *
+     * @return the current turn
+     */
 	public int getTurn() {
 		return turn;
 	}
 
+    /**
+     * Adds to the turn value. Used mostly in the pvsp.
+     */
 	public void addTurn() {
 		turn++;
 	}
 
+    /**
+     *
+     * @return the active client of the game.
+     */
 	public Client getClient() {
 		return client;
 	}
 
+    /**
+     *
+     * @param client sets the active client for the game
+     */
 	public void setClient(Client client) {
 		this.client = client;
 	}
 
+    /**
+     *
+     * @return the initialized active game
+     */
 	public Game getGame() {
 		return game;
 	}
@@ -146,6 +152,9 @@ public class GameGui extends JFrame {
 
 	}
 
+    /**
+     * Clears the frame in order to be ready for a new game.
+     */
 	public void clearGame() {
 
 		numbersPanel.resetRounds();
@@ -344,6 +353,11 @@ public class GameGui extends JFrame {
 
 		}
 
+        /**
+         *
+         * Gets an id and add the corresponding color to the rounds arraylist
+         * that is displayed in the turn history panel.
+         */
 		public void addToRounds(int id) {
 
 			switch (id) {
@@ -371,6 +385,11 @@ public class GameGui extends JFrame {
 			}
 		}
 
+        /**
+         *
+         * Gets an id and adds the corresponding clue to the clues arraylist
+         * that is displayed in the turn history panel.
+         */
 		public void addToClues(int clue) {
 
 			switch (clue) {
@@ -386,6 +405,9 @@ public class GameGui extends JFrame {
 			}
 		}
 
+        /**
+         * Empties the rounds and clues to start a new game.
+         */
 		public void resetHistoryPanel() {
 
 			rounds.clear();
@@ -393,6 +415,9 @@ public class GameGui extends JFrame {
 		}
 	}
 
+    /**
+     * This class handles the action for all the buttons in the frame;
+     */
 	class ButtonListener implements ActionListener {
 
 		@Override
@@ -709,6 +734,9 @@ public class GameGui extends JFrame {
 		}
 	}
 
+    /**
+     * A simple timer to countdown after a game has ended in order to auto-quit.
+     */
 	public class SimpleTimer implements Runnable {
 
 		int count;
@@ -727,6 +755,9 @@ public class GameGui extends JFrame {
 		}
 	}
 
+    /**
+     * Checks the timer and exits when 5 seconds have passed.
+     */
 	public class TimeClass implements ActionListener {
 		int counter;
 
