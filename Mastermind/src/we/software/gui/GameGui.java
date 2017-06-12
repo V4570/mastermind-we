@@ -24,26 +24,27 @@ public class GameGui extends JFrame{
     private final int WIDTH = 1280;
     private final int HEIGHT = WIDTH / 16*9;
     private ButtonListener btnListener = new ButtonListener();
-    private MenuButton exitButton, optionsButton, backButton, sendButton;                    //Functionality buttons
+    private MenuButton exitButton, optionsButton, backButton, music, soundFx;                //Functionality buttons
     public HistoryPanel turnHistory;                                                         //The panel that holds all the turns of the game
     private ChatGui chatGui;                                                                 //The chat used in pvsp game mode.
-    public Client client=null;                                                                   //The client for the chat to work
+    public Client client = null;                                                             //The client for the chat to work
     public SelectionButton selectionBtn1, selectionBtn2, selectionBtn3, selectionBtn4;       //The buttons for the each place in the code.
     private SelectionButton checkBtn, sBtn;                                                  //checkBtn to register each round. sBtn keeps the currently selected selectionBtn.
     private SelectionButton redBtn, greenBtn, blueBtn, yellowBtn, whiteBtn, blackBtn;        //The buttons for the color selection
     public NumbersPanel numbersPanel;                                                        //The panel that holds the number of each round.
     public Game game;
     private Timer timer;
-
+    private AudioLoad gameMusic;
     private int selectedBtn;                                                                 //Integer that keeps the position of the selected selectionBtn
     private int turn = 1;                                                                    //Integer that holds current turn.
     private int[] turnGuess = {0, 0, 0, 0};                                                  //Array to hold the current turn's guess.
     private boolean notValid = false;                                                        //Boolean variable to check if requirements have been met to register each turn's guess
-    private int gameMode;                                                                //0 for pvsAi, 1 for pvsP
+    private int gameMode;                                                                    //0 for pvsAi, 1 for pvsP
     
     public GameGui(MainMenu previous, int gM, ChatGui chat){
-    	// edw tha prepei na dimiourgritai ena instance Game
 
+        gameMusic = new AudioLoad("gameMusic.wav");
+        if(MainMenu.musicOn) gameMusic.playMenuClip();
         this.gameMode = gM;
         if(gM==0){
         	this.game = new Game(0);
@@ -95,7 +96,8 @@ public class GameGui extends JFrame{
 
         add(exitButton);
         add(backButton);
-        add(sendButton);
+        add(music);
+        add(soundFx);
         add(selectionBtn1);
         add(selectionBtn2);
         add(selectionBtn3);
@@ -110,19 +112,6 @@ public class GameGui extends JFrame{
         add(turnHistory);
         add(numbersPanel);
         add(chatGui);
-
-
-        //If gameMode == 1, meaning its pvsP, then the chat must be initialized and added to the frame.
-        /*if(gameMode == 1) {
-            client = new Client();
-            try {
-                client.startListening();
-                client.logMeIn("test0", "test0");
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
 
         setTitle("Mastermind WE - Pre Alpha 0.0.1");
         setSize(WIDTH, HEIGHT);
@@ -154,8 +143,13 @@ public class GameGui extends JFrame{
         backButton = new MenuButton("backtomenuv2.png", 969, 660, 0, 0);
         backButton.addActionListener(btnListener);
 
-        sendButton = new MenuButton("send.png", 635, 722, 0, 0);
-        sendButton.addActionListener(btnListener);
+        music = new MenuButton("switch.png", 1158, 583, 0, 0);
+        if(!MainMenu.musicOn) music.staySelected();
+        music.addActionListener(btnListener);
+
+        soundFx = new MenuButton("switch.png", 1158, 626, 0, 0);
+        if(!MainMenu.soundfxOn) soundFx.staySelected();
+        soundFx.addActionListener(btnListener);
 
         selectionBtn1 = new SelectionButton("glassButton.png", 300, 350);
         selectionBtn1.addActionListener(btnListener);
@@ -248,40 +242,17 @@ public class GameGui extends JFrame{
     public class HistoryPanel extends JPanel{
 
         private ArrayList<BufferedImage> rounds, clues, pegs;
-        private ArrayList<HighScore> highScores;
 
         public HistoryPanel(){
 
             rounds = new ArrayList<>();
             clues = new ArrayList<>();
-            highScores = new ArrayList<>();
-
-            int score = 9999;
-            for(int i = 0; i<4; i++){
-                highScores.add(new HighScore("Bill"+i, score));
-                score -= 1000;
-            }
 
             pegs = (ArrayList<BufferedImage>) PreloadImages.getPegs().clone();
 
             setBounds(969, 35, 290, 538);
             setOpaque(false);
 
-        }
-
-        private class HighScore{
-            private String name;
-            private int score;
-            public HighScore(String n, int s){
-                name = n;
-                score = s;
-            }
-            public String getName(){
-                return name;
-            }
-            public int getScore(){
-                return score;
-            }
         }
 
         /**
@@ -302,9 +273,6 @@ public class GameGui extends JFrame{
 
             int eval_X = 228;       //Represents the width value for the clues. Updates up to 2 and then resets.
             int eval_Y = 478;
-
-            int hs_X = 32;
-            int hs_Y = 16;
 
             for(BufferedImage img : rounds){
 
@@ -340,13 +308,6 @@ public class GameGui extends JFrame{
                 eval_X += 18;
             }
 
-            /*g.setColor(Color.white);
-            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
-            for(HighScore hs: highScores){
-
-                g.drawString(hs.getName()+": "+Integer.toString(hs.getScore())+" pts.", hs_X, hs_Y);
-                hs_Y += 23;
-            }*/
         }
 
 
@@ -377,7 +338,6 @@ public class GameGui extends JFrame{
             }
         }
 
-        int jj = 0;
         public void addToClues(int clue){
 
             switch(clue){
@@ -683,6 +643,7 @@ public class GameGui extends JFrame{
             }
             else if(e.getSource() == backButton){
 
+                if(MainMenu.musicOn) gameMusic.closeClip();
                 dispose();
                 previous.setFrameVisible(GameGui.this);     //Sets the previous as frame visible
                 if(sBtn != null){
@@ -691,12 +652,28 @@ public class GameGui extends JFrame{
                     sBtn = null;
                 }
             }
-            else if(e.getSource() == optionsButton){
+            else if(e.getSource() == music){
 
-                if(sBtn != null){
+                if(MainMenu.musicOn){
+                    MainMenu.musicOn = false;
+                    gameMusic.closeClip();
+                    music.staySelected();
+                }
+                else{
+                    MainMenu.musicOn = true;
+                    gameMusic.playMenuClip();
+                    music.setUnselected();
+                }
+            }
+            else if(e.getSource() == soundFx){
 
-                    sBtn.setUnselected();
-                    sBtn = null;
+                if(MainMenu.soundfxOn){
+                    MainMenu.soundfxOn = false;
+                    soundFx.staySelected();
+                }
+                else{
+                    MainMenu.soundfxOn = true;
+                    soundFx.setUnselected();
                 }
             }
             else if(e.getSource() == exitButton) {
@@ -742,8 +719,10 @@ public class GameGui extends JFrame{
 				chatGui.appendToPane("\n", 9);
 				timer.stop();
 				if(gameMode==0){
-				dispose();
-				previous.setFrameVisible(GameGui.this);
+
+				    if(MainMenu.musicOn) gameMusic.closeClip();
+				    dispose();
+				    previous.setFrameVisible(GameGui.this);
 				}
 				else{
 					GameGui.this.clearGame();
@@ -755,6 +734,7 @@ public class GameGui extends JFrame{
 						client.setCodeMaker(true);
 					}
 					}else{
+					    if(MainMenu.musicOn) gameMusic.closeClip();
 						dispose();
 						previous.setFrameVisible(GameGui.this);
 					}

@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
 	private int posY = 230;                                 //The starting vertical position of the menu buttons
 	private ButtonListener b = new ButtonListener();
 	public static boolean musicOn = true;                  //Variable that controls the music (on/off)
-	public static boolean soundfxOn = false;                //Variable that controls the sound effects (on/off)
+	public static boolean soundfxOn = true;                //Variable that controls the sound effects (on/off)
 	public AudioLoad menuMusic;                            //The audio file of the music tha plays in the menu
 	private String username = "";
 	private JButton minimizeButton;
@@ -102,14 +102,7 @@ public class MainMenu extends JFrame {
 		setVisible(true);
 		if(musicOn) menuMusic.playMenuClip();
 
-		//getUsername();
-
 	}
-
-	public String getUsername(){
-
-	    return "Default";
-    }
 
 	private void addMenu(){
 
@@ -126,10 +119,20 @@ public class MainMenu extends JFrame {
 
 
 	public void setFrameVisible(GameGui previous) {
+
 	    this.previous = previous;
 	    previous.dispose();
 		setVisible(true);
-		if(musicOn) menuMusic.playMenuClip();
+
+		if(musicOn){
+		    menuMusic.playMenuClip();
+		    optionsPanel.musicButton.setUnselected();
+        }
+        else optionsPanel.musicButton.staySelected();
+
+        if(soundfxOn) optionsPanel.musicButton.setUnselected();
+        else optionsPanel.musicButton.staySelected();
+
 		if(!(selected == null)) selected.setUnselected();
 		selected = null;
 		chatGui.setBoundsForMainMenu();
@@ -655,7 +658,7 @@ public class MainMenu extends JFrame {
 				if (soundfxOn)
 					gameModePanel.pVsAi.playSound();
 
-				GameGui gameGui = new GameGui(MainMenu.this, 0, chatGui);
+				GameGui gameGui = new GameGui(MainMenu.this, gameMode, chatGui);
 				setVisible(false);
 
 				gameModePanel.panelRestart();
