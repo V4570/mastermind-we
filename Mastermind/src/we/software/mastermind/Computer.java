@@ -1,7 +1,5 @@
 package we.software.mastermind;
 
-import java.util.ArrayList;
-
 /**
  * Created by bill on 3/24/17.
  */

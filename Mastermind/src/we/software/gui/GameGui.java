@@ -8,11 +8,9 @@ import we.software.mastermind.Game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.Timer;
 
 /**
  * Created by Bill on 06-Apr-17. This class is the frame that hosts each game.
@@ -486,7 +484,6 @@ public class GameGui extends JFrame {
 								client.sendGameCheck();
 							} catch (IOException e1) {
 								System.out.println("game check couldn t send");
-								;
 							}
 
 							selectionBtn1.setUncolored();

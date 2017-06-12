@@ -13,8 +13,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import we.software.gui.ChatGui;
-import we.software.gui.GameGui;
-import we.software.gui.MainMenu;
 
 public class Client extends Player {
 	private Player enemy;
@@ -27,7 +25,7 @@ public class Client extends Player {
 	
 	ChatGui chatGui;
 
-	public Client() throws UnknownHostException, IOException {
+	public Client() throws IOException {
 		super();
 		readServerInfo();
 		startListening();
@@ -112,7 +110,7 @@ public class Client extends Player {
 	}
 
 	// Starts the client ServerThread
-	public void startListening() throws UnknownHostException, IOException {
+	public void startListening() throws IOException {
 		socket = new Socket(server, PORT);
 		cListener = new ClientListener(this, socket);
 		cListener.start();

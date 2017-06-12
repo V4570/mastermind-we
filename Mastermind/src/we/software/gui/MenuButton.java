@@ -1,6 +1,5 @@
 package we.software.gui;
 
-import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.event.MouseAdapter;

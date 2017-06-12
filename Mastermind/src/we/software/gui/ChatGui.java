@@ -1,11 +1,5 @@
 package we.software.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
 import java.awt.*;
 
 import java.awt.event.*;
@@ -14,18 +8,10 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import javax.swing.border.*;
-
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import we.software.mastermind.Client;
@@ -332,7 +318,7 @@ public class ChatGui extends JPanel{
                     if(client.getPending().contains(msg[2])){
                         client.acceptGameRequest(msg[2]);
                         GameGui gameGui = new GameGui(mainMenu, mainMenu.getMode(), 1,this);
-                        if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
+                        if (MainMenu.musicOn) mainMenu.menuMusic.closeClip();
         				mainMenu.setVisible(false);
         				
         					

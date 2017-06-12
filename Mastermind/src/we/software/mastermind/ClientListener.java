@@ -6,16 +6,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import javafx.scene.paint.Color;
 import we.software.gui.ChatGui;
 import we.software.gui.GameGui;
 import we.software.gui.MainMenu;
-import we.software.gui.GameGui.SimpleTimer;
-import we.software.gui.GameGui.TimeClass;
 
 public class ClientListener extends Thread {
 	// private static final java.awt.Color Color.AQUA = null;
@@ -225,7 +221,7 @@ public class ClientListener extends Thread {
 		} else if (message.equals("ok")) {
 			gameGui = new GameGui(mainMenu, mainMenu.getMode() , 1, chatGui);
 			gameGui.setClient(client);
-			if (mainMenu.musicOn) mainMenu.menuMusic.closeClip();
+			if (MainMenu.musicOn) mainMenu.menuMusic.closeClip();
 			mainMenu.setVisible(false);
 			client.setEnemy(new Player());
 			client.getEnemy().setName(transmitter);
