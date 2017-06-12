@@ -48,7 +48,6 @@ public class MainMenu extends JFrame {
 
 	public MainMenu() {
 
-
 		menuMusic = new AudioLoad("MainMenu.wav");
 		gameModePanel = new GameMode();
 		optionsPanel = new Options();
