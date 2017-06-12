@@ -1,6 +1,11 @@
 package we.software.mastermind;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -16,19 +21,21 @@ public class Client extends Player {
 	private ClientListener cListener;
 	private Socket socket;
 	private boolean inGame;
-	private String server = "83.212.99.117";
-	private int PORT = 12498;
+	private String server = "";
+	private int PORT = -1;
 	private ArrayList<String> pending;
 	
 	ChatGui chatGui;
 
 	public Client() throws UnknownHostException, IOException {
 		super();
+		readServerInfo();
+		startListening();
 		enemy = null;
 		username = null;
 		inGame = false;
 		pending =new ArrayList<String>();
-		startListening();
+		
 	}
 	public void clearPending(){
 		pending.clear();
@@ -68,6 +75,40 @@ public class Client extends Player {
 
 	public ClientListener getcListener() {
 		return cListener;
+	}
+	
+	public void readServerInfo() throws IOException{
+		File serverinfo = new File("/.Mastermind/serverinfo.txt");
+		File serverdir = new File("/.Mastermind");
+		if(!serverdir.exists()){
+			serverdir.mkdir();
+		}
+		if(serverinfo.isFile() && serverinfo.exists()){
+			FileReader fr = new FileReader(serverinfo);
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			while((line = br.readLine()) != null){
+				if(line.split(":")[0].equals("Server")){
+					server = line.split(":")[1];
+				}else if(line.split(":")[0].equals("Port")){
+					PORT = Integer.parseInt(line.split(":")[1]);
+				}
+			}
+			br.close();
+			if(server.equals("") || PORT==-1){
+				chatGui.appendToPane("System: ", 2);
+				chatGui.appendToPane("You cannot connected to the server please check file .Mastermind/serverinfo.txt", 0);
+			}
+		}
+		else{
+			FileWriter fw = new FileWriter(serverinfo);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("Server:");
+			bw.newLine();
+			bw.write("Port:");
+			bw.flush();
+			bw.close();
+		}
 	}
 
 	// Starts the client ServerThread
