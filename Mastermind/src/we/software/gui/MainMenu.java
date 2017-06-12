@@ -699,8 +699,6 @@ public class MainMenu extends JFrame {
 
             else if (e.getSource() == loginPanel.online){
 
-			    /*loginPanel.setVisible(false);
-			    addMenu();*/
 			    gameMode = 1;
 			    loginPanel.setBackground(1);
             }
@@ -744,6 +742,20 @@ public class MainMenu extends JFrame {
                     loginPanel.setBackground(4);
                 }
             }
+
+            else if (e.getSource() == loginPanel.signup){
+
+                try{
+
+                    client = new Client();
+                    client.getcListener().setMainMenu(MainMenu.this);
+                    client.getcListener().setChatGui(chatGui);
+                    chatGui.setClient(client);
+                    client.addMe(loginPanel.username.getText(), loginPanel.password.getText());
+                }catch (Exception e1){
+                    loginPanel.setBackground(4);
+                }
+			}
 
             else if (e.getSource() == minimizeButton){
 			    setState(Frame.ICONIFIED);
